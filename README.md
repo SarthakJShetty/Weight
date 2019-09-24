@@ -1,2 +1,2 @@
 # Weight
-Probabilistic path planning for multi-UAV swarms
+Probabilistic path planning for heterogenous UAV swarms.
