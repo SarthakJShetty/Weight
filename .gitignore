@@ -1,3 +1,4 @@
 quad/Quad.code-workspace
 .rosinstall
 .rosinstall.bak
+quad/.vscode/c_cpp_properties.json
