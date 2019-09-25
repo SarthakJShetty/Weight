@@ -10,8 +10,14 @@
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
 #include "weight.hpp"
+#include "variables.hpp"
+
 
 mavros_msgs::State current_state;
+
+// extern vector<int> maximum_value_x_indices;
+// extern vector<int> maximum_value_y_indices;
+
 
 void state_cb(const mavros_msgs::State::ConstPtr& msg){
     current_state = *msg;
@@ -19,6 +25,7 @@ void state_cb(const mavros_msgs::State::ConstPtr& msg){
 
 int main(int argc, char **argv)
 {
+    weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, maximum_value_x_indices, maximum_value_y_indices, map_priority, element_cycler);
     ros::init(argc, argv, "offb_node");
     ros::NodeHandle nh;
 
