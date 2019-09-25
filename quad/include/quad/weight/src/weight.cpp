@@ -1,36 +1,5 @@
 #include "weight.hpp"
 
-//This is the survivor's x, y coordinate & direction
-int survivor_x_coordinate = 2;
-int survivor_y_coordinate = 2;
-//Survivor's direction 1-> ++, 2-> -+, 3-> --, 4-> +-
-int survivor_direction = 4;
-
-//UAVs current position
-int uav_y_position = 2;
-int uav_x_position = 2;
-
-//Corner coordinates of each of the quadrants of exploration
-int x_corner_coordinate_1 = x_max;
-int y_corner_coordinate_1 = 0;
-
-int x_corner_coordinate_2 = 0;
-int y_corner_coordinate_2 = 0;
-
-int x_corner_coordinate_3 = 0;
-int y_corner_coordinate_3 = y_max;
-
-int x_corner_coordinate_4 = x_max;
-int y_corner_coordinate_4 = y_max;
-
-int maximum_value = 0;
-
-    //These vectors hold the X and the Y
-vector<int> maximum_value_x_indices;
-vector<int> maximum_value_y_indices;
-
-int map_priority[y_max][x_max];
-
 int weight_generator(weighted_map map[y_max][x_max], int x_max, int y_max)
 {
     //Initializing a map with 0 weights
@@ -78,7 +47,7 @@ int locator(weighted_map map[y_max][x_max], int x_max, int y_max, int uav_x_posi
 	return 0;
 }
 
-int weight_generator_function(int maximum_value, vector<int> maximum_value_x_indices, vector<int> maximum_value_y_indices, int map_priority[y_max][x_max], int element_cycler)
+int weight_generator_function(int uav_x_position, int uav_y_position, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, vector<int> maximum_value_x_indices, vector<int> maximum_value_y_indices, int map_priority[y_max][x_max], int element_cycler)
 {
 	weighted_map map[y_max][x_max];
 	weight_generator(map, x_max, y_max);
