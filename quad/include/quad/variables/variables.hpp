@@ -4,6 +4,40 @@
 
 using namespace std;
 
+//Boundaries of the flood environment
+extern const int x_max;
+extern const int y_max;
+
+//This is the survivor's x, y coordinate & direction
+int survivor_x_coordinate = 2;
+int survivor_y_coordinate = 2;
+
+//Survivor's direction 1-> ++, 2-> -+, 3-> --, 4-> +-
+int survivor_direction = 4;
+
+//UAVs current position
+int uav_y_position = 2;
+int uav_x_position = 2;
+
+//Corner coordinates of each of the quadrants of exploration
+int x_corner_coordinate_1 = x_max;
+int y_corner_coordinate_1 = 0;
+
+int x_corner_coordinate_2 = 0;
+int y_corner_coordinate_2 = 0;
+
+int x_corner_coordinate_3 = 0;
+int y_corner_coordinate_3 = y_max;
+
+int x_corner_coordinate_4 = x_max;
+int y_corner_coordinate_4 = y_max;
+
+int maximum_value = 0;
+
+int element_cycler = 0;
+
+int map_priority[y_max][x_max];
+
 //These vectors hold the X and the Y
 vector<int> maximum_value_x_indices;
 vector<int> maximum_value_y_indices;
