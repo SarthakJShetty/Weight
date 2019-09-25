@@ -14,7 +14,6 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES weight
   CATKIN_DEPENDS geometry_msgs mavros roscpp rospy std_msgs
-#  DEPENDS system_lib
 )
 SET(WEIGHT_INCLUDE_DIR include/quad/weight/include/)
 SET(WEIGHT_SRC_DIR include/quad/weight/src/)
