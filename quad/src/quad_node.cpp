@@ -61,7 +61,6 @@ int main(int argc, char **argv)
     ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
     //Topic to check whether control is ONBOARD or OFFBOARD
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>("mavros/set_mode");
-
     //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
 
@@ -92,14 +91,13 @@ int main(int argc, char **argv)
 
     while (ros::ok())
     {
-
         if (counter == -1)
         {
+            counter += 1;
             //Initial set of coordinates being published to the position topic of the UAV
             pose.pose.position.x = list_maximum_value_x_indices[counter];
             pose.pose.position.y = list_maximum_value_y_indices[counter];
             pose.pose.position.z = 2;
-            counter += 1;
         }
         else
         {
@@ -127,9 +125,9 @@ int main(int argc, char **argv)
                 else
                 {
                     cout << "RTL" << endl;
-                    pose.pose.position.x = 2;
-                    pose.pose.position.y = 2;
-                    pose.pose.position.z = 2;
+                    pose.pose.position.x = 0;
+                    pose.pose.position.y = 0;
+                    pose.pose.position.z = 1;
                 }
             }
         }
@@ -162,6 +160,5 @@ int main(int argc, char **argv)
         ros::spinOnce();
         rate.sleep();
     }
-
     return 0;
 }
