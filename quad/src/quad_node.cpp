@@ -20,7 +20,10 @@ float current_position_y;
 float current_position_z;
 
 //This keeps track of the waypoint currently conveyed to the UAV. If = 100 stops
-int counter = 0;
+int counter = -1;
+
+extern vector<int> maximum_value_x_indices;
+extern vector<int> maximum_value_y_indices;
 
 //Distance keeps track of initial position and desired positon
 float dist;
@@ -40,7 +43,7 @@ void pose_sub(const geometry_msgs::PoseStamped msg)
 int main(int argc, char **argv)
 {
     //Generates the waypoints for the UAV to followw
-    weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, maximum_value_x_indices, maximum_value_y_indices, map_priority, element_cycler);
+    weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, map_priority, element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
 
     ros::init(argc, argv, "offb_node");
     ros::NodeHandle nh;
@@ -86,39 +89,45 @@ int main(int argc, char **argv)
     while (ros::ok())
     {
 
-        if (counter == 0)
+        if (counter == -1)
         {
             pose.pose.position.x = 10;
             pose.pose.position.y = 10;
             pose.pose.position.z = 2;
+            counter += 1;
         }
-
-        dist = sqrt(pow((pose.pose.position.x - current_position_x), 2) + pow((pose.pose.position.y - current_position_y), 2));
-
-        cout << "Current X Position" << current_position_x << endl;
-        cout << "Current Y Position" << current_position_y << endl;
-        cout << "Current X Waypoint" << pose.pose.position.x << endl;
-        cout << "Current Y Waypoint" << pose.pose.position.y << endl;
-        
-        cout << "Distance" << dist << endl;
-
-        if (dist < 0.5)
+        else
         {
-            cout << "Distance <0.5" << endl;
-            if (counter < 100)
+
+            dist = sqrt(pow((pose.pose.position.x - current_position_x), 2) + pow((pose.pose.position.y - current_position_y), 2));
+
+            cout << "Current X Position" << current_position_x << endl;
+            cout << "Current Y Position" << current_position_y << endl;
+            cout << "Current X Waypoint" << pose.pose.position.x << endl;
+            cout << "Current Y Waypoint" << pose.pose.position.y << endl;
+
+            cout << "Distance" << dist << endl;
+
+            if (dist < 0.5)
             {
-                cout << "Counter" << counter < endl;
-                counter += 1;
-                pose.pose.position.x = maximum_value_x_indices[counter];
-                pose.pose.position.y = maximum_value_y_indices[counter];
-                pose.pose.position.z = 5;
-            }
-            else
-            {
-                cout << "RTL" << endl;
-                pose.pose.position.x = 10;
-                pose.pose.position.y = 10;
-                pose.pose.position.z = 2;
+                cout << "Distance <0.5" << endl;
+                if (counter < 100)
+                {
+                    cout << "Counter" << counter << endl;
+                    cout << "Maximum_Value_X_Indices: " << counter <<" "<<list_maximum_value_x_indices[counter] << endl;
+                    cout << "Maximum_Value_Y_Indices: " << counter <<" "<<list_maximum_value_y_indices[counter] << endl;
+                    pose.pose.position.x = list_maximum_value_x_indices[counter];
+                    pose.pose.position.y = list_maximum_value_y_indices[counter];
+                    pose.pose.position.z = 2;
+                    counter += 1;
+                }
+                else
+                {
+                    cout << "RTL" << endl;
+                    pose.pose.position.x = 0;
+                    pose.pose.position.y = 0;
+                    pose.pose.position.z = 0;
+                }
             }
         }
         if (current_state.mode != "OFFBOARD" &&
