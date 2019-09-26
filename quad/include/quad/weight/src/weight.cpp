@@ -47,7 +47,7 @@ int locator(weighted_map map[y_max][x_max], int x_max, int y_max, int uav_x_posi
 	return 0;
 }
 
-int weight_generator_function(int uav_x_position, int uav_y_position, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, vector<int> maximum_value_x_indices, vector<int> maximum_value_y_indices, int map_priority[y_max][x_max], int element_cycler)
+int weight_generator_function(int uav_x_position, int uav_y_position, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int map_priority[y_max][x_max], int element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
 {
 	weighted_map map[y_max][x_max];
 	weight_generator(map, x_max, y_max);
@@ -209,8 +209,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 					if (maximum_value != 0)
 					{
 						map_priority[row_iterator_2][column_iterator_2] = element_cycler;
-						maximum_value_x_indices.push_back(column_iterator_2);
-						maximum_value_y_indices.push_back(row_iterator_2);
+						list_maximum_value_x_indices[element_cycler] = (column_iterator_2);
+						list_maximum_value_y_indices[element_cycler] = (row_iterator_2);
 					}
 				}
 			}
@@ -222,10 +222,10 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 
 	locator(map, x_max, y_max, uav_x_position, uav_y_position);
 
-	for (int i = 0; i < (maximum_value_x_indices.size()); i++)
+	for (int i = 0; i < (y_max*x_max); i++)
 	{
-		cout << "Maximum Value X Index:" << maximum_value_x_indices[i] << endl;
-		cout << "Maximum Value Y Index:" << maximum_value_y_indices[i] << endl;
+		cout << "Maximum Value X Index:" << list_maximum_value_x_indices[i] << endl;
+		cout << "Maximum Value Y Index:" << list_maximum_value_y_indices[i] << endl;
 	}
 
 	for (int i = 0; i < y_max; i++)
@@ -236,6 +236,5 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 		}
 		cout << endl;
 	}
-	cout << maximum_value_x_indices.size() << endl;
 	return 0;
 }
