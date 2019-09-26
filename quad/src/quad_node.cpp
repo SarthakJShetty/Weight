@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 {
     //Generates the waypoints for the UAV to followw
     weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, map_priority, element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
-    
+
     //Initializing the node to handle all the process associated with the code
     ros::init(argc, argv, "offb_node");
 
@@ -95,8 +95,8 @@ int main(int argc, char **argv)
         {
             counter += 1;
             //Initial set of coordinates being published to the position topic of the UAV
-            pose.pose.position.x = list_maximum_value_x_indices[counter];
-            pose.pose.position.y = list_maximum_value_y_indices[counter];
+            pose.pose.position.x = list_maximum_value_y_indices[counter];
+            pose.pose.position.y = list_maximum_value_x_indices[counter];
             pose.pose.position.z = 2;
         }
         else
@@ -104,21 +104,26 @@ int main(int argc, char **argv)
             //Difference between the current position and the next waypoint (x, y)
             dist = sqrt(pow((pose.pose.position.x - current_position_x), 2) + pow((pose.pose.position.y - current_position_y), 2));
 
-            cout << "Current X Position" << current_position_x << endl;
-            cout << "Current Y Position" << current_position_y << endl;
-            cout << "Current X Waypoint" << pose.pose.position.x << endl;
-            cout << "Current Y Waypoint" << pose.pose.position.y << endl;
+            //From hereon out, we switch the X and Y coordinates to match that of the map
+
+            //Printing the current position of the UAV
+            cout << "Current X Position: " << current_position_y << endl;
+            cout << "Current Y Position: " << current_position_x << endl;
+
+            //Printing the waypoint that the UAV has to reach
+            cout << "Current X Waypoint: " << pose.pose.position.y << endl;
+            cout << "Current Y Waypoint: " << pose.pose.position.x << endl;
 
             if (dist < 0.5)
             {
-                cout << "Distance <0.5" << endl;
-                if (counter < 100)
+                cout << "Distance < 0.5" << endl;
+                if (counter < (y_max * x_max))
                 {
                     cout << "Counter" << counter << endl;
-                    cout << "Maximum_Value_X_Indices: " << counter <<" "<<list_maximum_value_x_indices[counter] << endl;
-                    cout << "Maximum_Value_Y_Indices: " << counter <<" "<<list_maximum_value_y_indices[counter] << endl;
-                    pose.pose.position.x = list_maximum_value_x_indices[counter];
-                    pose.pose.position.y = list_maximum_value_y_indices[counter];
+                    cout << "Maximum_Value_X_Indices: " << counter << " " << list_maximum_value_y_indices[counter] << endl;
+                    cout << "Maximum_Value_Y_Indices: " << counter << " " << list_maximum_value_x_indices[counter] << endl;
+                    pose.pose.position.x = list_maximum_value_y_indices[counter];
+                    pose.pose.position.y = list_maximum_value_x_indices[counter];
                     pose.pose.position.z = 2;
                     counter += 1;
                 }
