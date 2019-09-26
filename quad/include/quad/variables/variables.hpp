@@ -16,8 +16,8 @@ int survivor_y_coordinate = 2;
 int survivor_direction = 4;
 
 //UAVs current position
-int uav_y_position = 2;
-int uav_x_position = 2;
+int uav_y_position = 10;
+int uav_x_position = 10;
 
 //Corner coordinates of each of the quadrants of exploration
 int x_corner_coordinate_1 = x_max;
