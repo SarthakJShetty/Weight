@@ -38,6 +38,6 @@ int element_cycler = 0;
 
 int map_priority[y_max][x_max];
 
-//These vectors hold the X and the Y
-vector<int> maximum_value_x_indices;
-vector<int> maximum_value_y_indices;
+//Creating lists to iterate through waypoints. Hypothesis is that sharing of vectors is causing seg faults.
+int list_maximum_value_x_indices[y_max*x_max];
+int list_maximum_value_y_indices[y_max*x_max];
