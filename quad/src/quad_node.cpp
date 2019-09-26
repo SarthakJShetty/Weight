@@ -35,6 +35,7 @@ void state_cb(const mavros_msgs::State::ConstPtr &msg)
 
 void pose_sub(const geometry_msgs::PoseStamped msg)
 {
+    //Subscribing to the current position of the UAV
     current_position_x = msg.pose.position.x;
     current_position_y = msg.pose.position.y;
     current_position_z = msg.pose.position.z;
@@ -44,18 +45,21 @@ int main(int argc, char **argv)
 {
     //Generates the waypoints for the UAV to followw
     weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, map_priority, element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
-
+    
+    //Initializing the node to handle all the process associated with the code
     ros::init(argc, argv, "offb_node");
+
     ros::NodeHandle nh;
 
+    //Subscribes to the current position of the UAV
     ros::Subscriber position_subscriber = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 10, pose_sub);
 
     ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>("mavros/state", 10, state_cb);
-
+    //Topic to publish to, to change the UAVs position
     ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local", 10);
-
+    //Topic to check whether the UAV is armed or not
     ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
-
+    //Topic to check whether control is ONBOARD or OFFBOARD
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>("mavros/set_mode");
 
     //the setpoint publishing rate MUST be faster than 2Hz
@@ -91,22 +95,21 @@ int main(int argc, char **argv)
 
         if (counter == -1)
         {
-            pose.pose.position.x = 10;
-            pose.pose.position.y = 10;
+            //Initial set of coordinates being published to the position topic of the UAV
+            pose.pose.position.x = list_maximum_value_x_indices[counter];
+            pose.pose.position.y = list_maximum_value_y_indices[counter];
             pose.pose.position.z = 2;
             counter += 1;
         }
         else
         {
-
+            //Difference between the current position and the next waypoint (x, y)
             dist = sqrt(pow((pose.pose.position.x - current_position_x), 2) + pow((pose.pose.position.y - current_position_y), 2));
 
             cout << "Current X Position" << current_position_x << endl;
             cout << "Current Y Position" << current_position_y << endl;
             cout << "Current X Waypoint" << pose.pose.position.x << endl;
             cout << "Current Y Waypoint" << pose.pose.position.y << endl;
-
-            cout << "Distance" << dist << endl;
 
             if (dist < 0.5)
             {
@@ -124,9 +127,9 @@ int main(int argc, char **argv)
                 else
                 {
                     cout << "RTL" << endl;
-                    pose.pose.position.x = 0;
-                    pose.pose.position.y = 0;
-                    pose.pose.position.z = 0;
+                    pose.pose.position.x = 2;
+                    pose.pose.position.y = 2;
+                    pose.pose.position.z = 2;
                 }
             }
         }
