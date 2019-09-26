@@ -20,7 +20,7 @@ This repository contains files related to the "Multi-UAV Swarm for Search & Resc
 
         sarthak@Cipher:~/catkin_ws/src$ ./environmentlaunch.sh
 
-4. Run the node where the experiments are designed.```quad_node``` in this case:
+4. Run the node where the experiments are designed. ```quad_node``` in this case:
 
         sarthak@Cipher:~/catkin_ws/src$ rosrun  quad quad_node
         
