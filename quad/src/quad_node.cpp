@@ -39,15 +39,16 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
 
     //Subscribes to the current position of the UAV
-    ros::Subscriber position_subscriber = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 10, pose_sub);
+    ros::Subscriber position_subscriber = nh.subscribe<geometry_msgs::PoseStamped>("uav0/mavros/local_position/pose", 10, pose_sub);
 
-    ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>("mavros/state", 10, state_cb);
+    ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>("uav0/mavros/state", 10, state_cb);
     //Topic to publish to, to change the UAVs position
-    ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local", 10);
+    ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>("uav0/mavros/setpoint_position/local", 10);
     //Topic to check whether the UAV is armed or not
-    ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
+    ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>("uav0/mavros/cmd/arming");
     //Topic to check whether control is ONBOARD or OFFBOARD
-    ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>("mavros/set_mode");
+    ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>("uav0/mavros/set_mode");
+    
     //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
 
@@ -107,8 +108,8 @@ int main(int argc, char **argv)
                 if (counter < (y_max * x_max))
                 {
                     cout << "Counter" << counter << endl;
-                    cout << "Maximum_Value_X_Indices: " << counter << " " << list_maximum_value_y_indices[counter] << endl;
-                    cout << "Maximum_Value_Y_Indices: " << counter << " " << list_maximum_value_x_indices[counter] << endl;
+                    cout << "Maximum_Value_X_Indices: " << counter << " " << list_maximum_value_x_indices[counter] << endl;
+                    cout << "Maximum_Value_Y_Indices: " << counter << " " << list_maximum_value_y_indices[counter] << endl;
                     pose.pose.position.x = list_maximum_value_y_indices[counter];
                     pose.pose.position.y = list_maximum_value_x_indices[counter];
                     pose.pose.position.z = 2;
