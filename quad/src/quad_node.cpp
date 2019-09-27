@@ -14,19 +14,6 @@
 #include "variables.hpp"
 
 mavros_msgs::State current_state;
-//current_position is used to check whether or not the drone can take the next set of waypoints or not
-float current_position_x;
-float current_position_y;
-float current_position_z;
-
-//This keeps track of the waypoint currently conveyed to the UAV. If = 100 stops
-int counter = -1;
-
-extern vector<int> maximum_value_x_indices;
-extern vector<int> maximum_value_y_indices;
-
-//Distance keeps track of initial position and desired positon
-float dist;
 
 void state_cb(const mavros_msgs::State::ConstPtr &msg)
 {
@@ -130,8 +117,8 @@ int main(int argc, char **argv)
                 else
                 {
                     cout << "RTL" << endl;
-                    pose.pose.position.x = 0;
-                    pose.pose.position.y = 0;
+                    pose.pose.position.x = 1;
+                    pose.pose.position.y = 1;
                     pose.pose.position.z = 1;
                 }
             }

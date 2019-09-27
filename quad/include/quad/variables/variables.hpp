@@ -8,6 +8,17 @@ using namespace std;
 extern const int x_max;
 extern const int y_max;
 
+//current_position is used to check whether or not the drone can take the next set of waypoints or not
+float current_position_x;
+float current_position_y;
+float current_position_z;
+
+//This keeps track of the waypoint currently conveyed to the UAV. If = 100 stops
+int counter = -1;
+
+//Distance keeps track of initial position and desired positon
+float dist;
+
 //This is the survivor's x, y coordinate & direction
 int survivor_x_coordinate = 2;
 int survivor_y_coordinate = 2;
