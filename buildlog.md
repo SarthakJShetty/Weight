@@ -6,7 +6,7 @@ There are 3 parts here:
 
 1. Stuff that was completed
 2. Stuff that remains
-3. Stuff to work on tommorrow
+3. Stuff to work on tomorrow
 
 ## 1.0 Date: 27/09/2019
 
@@ -20,7 +20,7 @@ There are 3 parts here:
 + Control both UAVs from ROS code.
 + Avoid hardcoding the UAV publisher/subscriber. Use loops with variables from 0 -> N_UAV.
 
-### 1.3 Tommorrow:
+### 1.3 Tomorrow:
 
 + Partitioning of enviroment into "N" partitions, using Voronoi partitioning.
 + Generate waypoints in individual partitions.
