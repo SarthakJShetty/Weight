@@ -4,17 +4,23 @@
 
 using namespace std;
 
+//Testing a theory here. Experimental!
+int pre_pub_sub_initializer;
+
+//Declaring the number of UAVs being used here
+const int N_UAV = 2;
+
 //Boundaries of the flood environment
 extern const int x_max;
 extern const int y_max;
 
 //current_position is used to check whether or not the drone can take the next set of waypoints or not
-float current_position_x;
-float current_position_y;
-float current_position_z;
+float current_position_x[N_UAV];
+float current_position_y[N_UAV];
+float current_position_z[N_UAV];
 
 //This keeps track of the waypoint currently conveyed to the UAV. If = 100 stops
-int counter = -1;
+int counter[N_UAV];
 
 //Distance keeps track of initial position and desired positon
 float dist;
