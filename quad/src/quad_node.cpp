@@ -17,11 +17,13 @@ mavros_msgs::State current_state[N_UAV];
 
 void state_cb(const mavros_msgs::State::ConstPtr &msg)
 {
+    cout << "STATE SUB INITIALIZER" << endl;
     current_state[pre_pub_sub_initializer] = *msg;
 }
 
 void pose_sub(const geometry_msgs::PoseStamped msg)
 {
+    cout << "PRE PUB SUB INITIALIZER: " << pre_pub_sub_initializer << endl;
     //Subscribing to the current position of the UAV
     current_position_x[pre_pub_sub_initializer] = msg.pose.position.x;
     current_position_y[pre_pub_sub_initializer] = msg.pose.position.y;
@@ -52,7 +54,7 @@ int main(int argc, char **argv)
     ros::ServiceClient arming_client[N_UAV];
     ros::ServiceClient set_mode_client[N_UAV];
 
-    for (pre_pub_sub_initializer = 0; pre_pub_sub_initializer < N_UAV; pre_pub_sub_initializer++)
+    for (int pre_pub_sub_initializer = 0; pre_pub_sub_initializer < N_UAV; pre_pub_sub_initializer++)
     {
         stringstream pub_sub_initializer;
         pub_sub_initializer << pre_pub_sub_initializer;
@@ -89,6 +91,11 @@ int main(int argc, char **argv)
     ros::Rate rate(20.0);
 
     geometry_msgs::PoseStamped pose[N_UAV];
+
+    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    {
+        counter[UAV_COUNTER] = -1;
+    }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
@@ -130,9 +137,13 @@ int main(int argc, char **argv)
     {
         for (int i = 100; ros::ok() && i > 0; --i)
         {
+            cout << "INITAL PUBLISHING: " << i << endl;
+            cout << "UAV_COUNTER: " << UAV_COUNTER << endl;
             local_pos_pub[UAV_COUNTER].publish(pose[UAV_COUNTER]);
+            cout << "HERE" << endl;
             ros::spinOnce();
             rate.sleep();
+            cout << endl;
         }
     }
     mavros_msgs::SetMode offb_set_mode[N_UAV];
@@ -205,7 +216,8 @@ int main(int argc, char **argv)
                     }
                     else
                     {
-                        cout << "RTL" << endl;
+                        cout << "UAV COUNTER: " << UAV_COUNTER << " "
+                             << "RTL" << endl;
                         pose[UAV_COUNTER].pose.position.x = 1;
                         pose[UAV_COUNTER].pose.position.y = 1;
                         pose[UAV_COUNTER].pose.position.z = 1;
@@ -218,7 +230,8 @@ int main(int argc, char **argv)
                 if (set_mode_client[UAV_COUNTER].call(offb_set_mode[UAV_COUNTER]) &&
                     offb_set_mode[UAV_COUNTER].response.mode_sent)
                 {
-                    ROS_INFO("Offboard enabled");
+                    cout << "UAV COUNTER: " << UAV_COUNTER << " "
+                         << "Offboard enabled" << endl;
                 }
                 last_request[UAV_COUNTER] = ros::Time::now();
             }
@@ -230,7 +243,8 @@ int main(int argc, char **argv)
                     if (arming_client[UAV_COUNTER].call(arm_cmd[UAV_COUNTER]) &&
                         arm_cmd[UAV_COUNTER].response.success)
                     {
-                        ROS_INFO("Vehicle armed");
+                        cout << "UAV COUNTER: " << UAV_COUNTER << " "
+                             << "Vehicle armed" << endl;
                     }
                     last_request[UAV_COUNTER] = ros::Time::now();
                 }
