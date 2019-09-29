@@ -5,7 +5,7 @@
 using namespace std;
 
 //Testing a theory here. Experimental!
-int pre_pub_sub_initializer;
+int hello_there;
 
 //Declaring the number of UAVs being used here
 const int N_UAV = 2;
