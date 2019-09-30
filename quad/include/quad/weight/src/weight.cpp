@@ -2,7 +2,7 @@
 
 int weight_generator(weighted_map map[y_max][x_max], int x_max, int y_max)
 {
-    //Initializing a map with 0 weights
+	//Initializing a map with 0 weights
 	for (int j = 0; j < y_max; j++)
 	{
 		for (int i = 0; i < x_max; i++)
@@ -15,7 +15,7 @@ int weight_generator(weighted_map map[y_max][x_max], int x_max, int y_max)
 
 int exploration_generator(weighted_map map[y_max][x_max], int x_max, int y_max)
 {
-    //Initializing the exploration component of the map structure
+	//Initializing the exploration component of the map structure
 	for (int j = 0; j < y_max; j++)
 	{
 		for (int i = 0; i < x_max; i++)
@@ -28,7 +28,7 @@ int exploration_generator(weighted_map map[y_max][x_max], int x_max, int y_max)
 
 int locator(weighted_map map[y_max][x_max], int x_max, int y_max, int uav_x_position, int uav_y_position)
 {
-    //Locating the UAV in the map generated
+	//Locating the UAV in the map generated
 	for (int j = 0; j < y_max; j++)
 	{
 		for (int i = 0; i < x_max; i++)
@@ -55,7 +55,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 
 	map[uav_y_position][uav_x_position].weight = 1000;
 
-    //Visualizing the for loops as vectors helps. Y direction as vertical movement, X as horizontal movement
+	//Visualizing the for loops as vectors helps. Y direction as vertical movement, X as horizontal movement
 	while ((x_corner_coordinate_1 != uav_x_position))
 	{
 		for (int j = uav_y_position; j >= y_corner_coordinate_1; j--)
@@ -79,8 +79,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 2;
 				}
-				locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				cout << endl;
+				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				// cout << endl;
 			}
 		}
 		x_corner_coordinate_1 -= 1;
@@ -109,8 +109,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 1;
 				}
-				locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				cout << endl;
+				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				// cout << endl;
 			}
 		}
 		x_corner_coordinate_2 += 1;
@@ -139,8 +139,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 2;
 				}
-				locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				cout << endl;
+				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				// cout << endl;
 			}
 		}
 		x_corner_coordinate_3 += 1;
@@ -169,15 +169,15 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 100;
 				}
-				locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				cout << endl;
+				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				// cout << endl;
 			}
 		}
 		x_corner_coordinate_4 -= 1;
 		y_corner_coordinate_4 -= 1;
 	}
 
-    /*Finding the maximum element in the map
+	/*Finding the maximum element in the map
     1. Cycle through each row and find maximum
     2. If you find maximum store it as the maximum value
     3. If you encounter >= current maximum then append index (x, y) 
@@ -216,13 +216,11 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 			}
 		}
 		maximum_value = 0;
-		locator(map, x_max, y_max, uav_x_position, uav_y_position);
-		cout << endl;
+		// locator(map, x_max, y_max, uav_x_position, uav_y_position);
+		// cout << endl;
 	}
 
-	locator(map, x_max, y_max, uav_x_position, uav_y_position);
-
-	for (int i = 0; i < (y_max*x_max); i++)
+	for (int i = 0; i < (y_max * x_max); i++)
 	{
 		cout << "Maximum Value X Index:" << list_maximum_value_x_indices[i] << endl;
 		cout << "Maximum Value Y Index:" << list_maximum_value_y_indices[i] << endl;
