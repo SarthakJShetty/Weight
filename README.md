@@ -1,7 +1,7 @@
 # Weight
 Probabilistic path planning for heterogenous UAV swarms.
 
-:warning: Code is buggy :warning:
+:warning: **Code is buggy** :warning:
 
 This repository contains files related to the "Multi-UAV Swarm for Search & Rescue" project, undertaken at the [Mobile Robotics Laboratory](http://aero.iisc.ac.in/people/debasish-ghose/) in the [Indian Institute of Science, Bengaluru](https://iisc.ac.in).
 
