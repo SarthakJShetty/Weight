@@ -5,7 +5,7 @@
 using namespace std;
 
 //Testing a theory here. Experimental!
-int hello_there;
+int global_pointer;
 
 //Declaring the number of UAVs being used here
 const int N_UAV = 2;

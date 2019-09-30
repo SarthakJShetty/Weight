@@ -18,16 +18,16 @@ mavros_msgs::State current_state[N_UAV];
 void state_cb(const mavros_msgs::State::ConstPtr &msg)
 {
     cout << "STATE SUB INITIALIZER" << endl;
-    current_state[hello_there] = *msg;
+    current_state[global_pointer] = *msg;
 }
 
 void pose_sub(const geometry_msgs::PoseStamped msg)
 {
-    cout << "PRE PUB SUB INITIALIZER: " << hello_there << endl;
+    cout << "PRE PUB SUB INITIALIZER: " << global_pointer << endl;
     //Subscribing to the current position of the UAV
-    current_position_x[hello_there] = msg.pose.position.x;
-    current_position_y[hello_there] = msg.pose.position.y;
-    current_position_z[hello_there] = msg.pose.position.z;
+    current_position_x[global_pointer] = msg.pose.position.x;
+    current_position_y[global_pointer] = msg.pose.position.y;
+    current_position_z[global_pointer] = msg.pose.position.z;
 }
 
 int main(int argc, char **argv)
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
     for (int pre_pub_sub_initializer = 0; pre_pub_sub_initializer < N_UAV; pre_pub_sub_initializer++)
     {
-        hello_there = pre_pub_sub_initializer;
+        global_pointer = pre_pub_sub_initializer;
         stringstream pub_sub_initializer;
         pub_sub_initializer << pre_pub_sub_initializer;
 
@@ -95,13 +95,13 @@ int main(int argc, char **argv)
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        hello_there = UAV_COUNTER;
+        global_pointer = UAV_COUNTER;
         counter[UAV_COUNTER] = -1;
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        hello_there = UAV_COUNTER;
+        global_pointer = UAV_COUNTER;
         cout << "PUSHING TO POSE OF UAV: " << UAV_COUNTER << endl;
         pose[UAV_COUNTER].pose.position.x = 0;
         pose[UAV_COUNTER].pose.position.y = 0;
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        hello_there = UAV_COUNTER;
+        global_pointer = UAV_COUNTER;
         cout << "PRESENTING POSE OF UAV: " << UAV_COUNTER << endl;
         cout << "X: " << pose[UAV_COUNTER].pose.position.x << endl;
         cout << "Y: " << pose[UAV_COUNTER].pose.position.y << endl;
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < N_UAV; i++)
     {
-        hello_there = i;
+        global_pointer = i;
         if (!current_state[i].connected)
         {
             cout << "CURRENT_STATE" << endl;
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
     //send a few setpoints before starting
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        hello_there = UAV_COUNTER;
+        global_pointer = UAV_COUNTER;
         for (int i = 100; ros::ok() && i > 0; --i)
         {
             cout << "INITAL PUBLISHING: " << i << endl;
@@ -156,7 +156,7 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < N_UAV; i++)
     {
-        hello_there = i;
+        global_pointer = i;
         cout << "OFFBOARD TRIGGER" << endl;
         offb_set_mode[i].request.custom_mode = "OFFBOARD";
     }
@@ -164,7 +164,7 @@ int main(int argc, char **argv)
     mavros_msgs::CommandBool arm_cmd[N_UAV];
     for (int i = 0; i < N_UAV; i++)
     {
-        hello_there = i;
+        global_pointer = i;
         cout << "ARMING" << endl;
         arm_cmd[i].request.value = true;
     }
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
     ros::Time last_request[N_UAV];
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        hello_there = UAV_COUNTER;
+        global_pointer = UAV_COUNTER;
         cout << "LAST REQUEST" << endl;
         last_request[UAV_COUNTER] = ros::Time::now();
     }
@@ -181,7 +181,7 @@ int main(int argc, char **argv)
     {
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
         {
-            hello_there = UAV_COUNTER;
+            global_pointer = UAV_COUNTER;
             if (counter[UAV_COUNTER] == -1)
             {
                 counter[UAV_COUNTER] += 1;
