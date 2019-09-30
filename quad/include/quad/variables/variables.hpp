@@ -14,6 +14,28 @@ const int N_UAV = 2;
 extern const int x_max;
 extern const int y_max;
 
+//Subscribers and publishers declared here
+ros::Subscriber position_subscriber[N_UAV];
+ros::Subscriber state_sub[N_UAV];
+ros::Publisher local_pos_pub[N_UAV];
+ros::ServiceClient arming_client[N_UAV];
+ros::ServiceClient set_mode_client[N_UAV];
+
+//Declaring the pose here for both UAVs
+geometry_msgs::PoseStamped pose[N_UAV];
+
+//State of the UAVs connected/non-connected
+mavros_msgs::State current_state[N_UAV];
+
+//Topic to set UAV to off-board mode
+mavros_msgs::SetMode offb_set_mode[N_UAV];
+
+//ARMING the UAV with this topic
+mavros_msgs::CommandBool arm_cmd[N_UAV];
+
+//Topic to check last request time
+ros::Time last_request[N_UAV];
+
 //current_position is used to check whether or not the drone can take the next set of waypoints or not
 float current_position_x[N_UAV];
 float current_position_y[N_UAV];
