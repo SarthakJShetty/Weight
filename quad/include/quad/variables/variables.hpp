@@ -8,7 +8,7 @@ using namespace std;
 int global_pointer;
 
 //Threshld to switch to next waypoint
-float dist_threshold = 0.5
+float dist_threshold = 0.5;
 
 //Declaring the number of UAVs being used here
 const int N_UAV = 2;
