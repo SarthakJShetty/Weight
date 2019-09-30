@@ -1,9 +1,3 @@
-/**
- * @file offb_node.cpp
- * @brief Offboard control example node, written with MAVROS version 0.19.x, PX4 Pro Flight
- * Stack and tested in Gazebo SITL
- */
-
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <mavros_msgs/CommandBool.h>
@@ -131,8 +125,8 @@ int main(int argc, char **argv)
         global_pointer = UAV_COUNTER;
         for (int i = 100; ros::ok() && i > 0; --i)
         {
-            cout << "INITAL PUBLISHING: " << i << endl;
-            cout << "UAV_COUNTER: " << UAV_COUNTER << endl;
+            cout << "UAV_COUNTER: " << UAV_COUNTER << " "
+                 << "INITAL PUBLISHING: " << i << endl;
             local_pos_pub[UAV_COUNTER].publish(pose[UAV_COUNTER]);
             ros::spinOnce();
             rate.sleep();
@@ -192,12 +186,12 @@ int main(int argc, char **argv)
                 cout << "UAV_COUNTER: " << UAV_COUNTER << " "
                      << "Current Y Waypoint: " << pose[UAV_COUNTER].pose.position.x << endl;
 
-                if (dist < 0.5)
+                if (dist < dist_threshold)
                 {
-                    cout << "Distance < 0.5" << endl;
+                    cout << "Distance < " << dist_threshold << endl;
                     if (counter[UAV_COUNTER] < (y_max * x_max))
                     {
-                        cout << "Counter" << counter[UAV_COUNTER] << endl;
+                        cout << "Counter: " << counter[UAV_COUNTER] << endl;
                         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
                              << "Maximum_Value_X_Indices: " << counter[UAV_COUNTER] << " " << list_maximum_value_x_indices[counter[UAV_COUNTER]] << endl;
                         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
