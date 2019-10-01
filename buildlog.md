@@ -8,6 +8,24 @@ There are 3 parts here:
 2. Stuff that remains
 3. Stuff to work on tomorrow
 
+## 2.0 Date: 01/10/2019
+
+### 2.1 Completed:
+
++ Multiple UAV control using MAVROS has been established
++ Code can be adopted for "N" UAVs as well.
+
+### 2.2 Remaining:
+
++ UAVs are not localized in the same coordinate system. Need to look into this.
++ Add exploration parameter to the weighted map structure.
+
+### 1.3 Tomorrow:
+
++ Fix the common coordinate issue for the UAVs.
++ Readup papers and design a dynamic area allocation algorithm, given N UAVs.
++ Will deploy Voronoi Partitioning as a final option.
+
 ## 1.0 Date: 27/09/2019
 
 ### 1.1 Completed:
