@@ -24,6 +24,12 @@ ros::Publisher local_pos_pub[N_UAV];
 ros::ServiceClient arming_client[N_UAV];
 ros::ServiceClient set_mode_client[N_UAV];
 
+//Declaring the CV node here, which subscribes to the computer vision node subscribes to
+ros::Subscriber cv_node[N_UAV];
+
+//Generating an integer to store the binary value sent over by the CV node
+std_msgs::Int8 cv_msgs[N_UAV];
+
 //Declaring the pose here for both UAVs
 geometry_msgs::PoseStamped pose[N_UAV];
 

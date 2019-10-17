@@ -3,6 +3,7 @@
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
+#include <std_msgs/Int8.h>
 #include <math.h>
 #include "weight.hpp"
 #include "variables.hpp"
@@ -10,6 +11,11 @@
 void state_cb(const mavros_msgs::State::ConstPtr &msg)
 {
     current_state[global_pointer] = *msg;
+}
+
+void cv_sub(const std_msgs::Int8 msg)
+{
+    cv_msgs[global_pointer] = msg;
 }
 
 void pose_sub(const geometry_msgs::PoseStamped msg)
@@ -40,9 +46,16 @@ int main(int argc, char **argv)
 
     for (int pre_pub_sub_initializer = 0; pre_pub_sub_initializer < N_UAV; pre_pub_sub_initializer++)
     {
+        //New subscriber to be declared here that subscribes to the topic published by the computer
         global_pointer = pre_pub_sub_initializer;
         stringstream pub_sub_initializer;
         pub_sub_initializer << pre_pub_sub_initializer;
+
+        //Highly experimental, integrating the CV subscriber here
+        string cv_node_subsciber_string;
+        cv_node_subsciber_string = "/uav" + pub_sub_initializer.str() + "/cv_node";
+        cout << "cv_node_subscriber_string: " << cv_node_subsciber_string << endl;
+        cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int8>(cv_node_subsciber_string, 10, cv_sub);
 
         string position_subscriber_string;
         position_subscriber_string = "/uav" + pub_sub_initializer.str() + "/mavros/local_position/pose";
@@ -154,6 +167,12 @@ int main(int argc, char **argv)
         last_request[UAV_COUNTER] = ros::Time::now();
     }
 
+    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    {
+        global_pointer = UAV_COUNTER;
+        cv_msgs[UAV_COUNTER].data = 0;
+    }
+
     while (ros::ok())
     {
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
@@ -191,6 +210,15 @@ int main(int argc, char **argv)
                     cout << "Distance < " << dist_threshold << endl;
                     if (counter[UAV_COUNTER] < (y_max * x_max))
                     {
+                        if (cv_msgs[UAV_COUNTER].data == 1)
+                        {
+                            cout << "Human Detected by: " << UAV_COUNTER << " UAV" << endl;
+                            cout << "RTL" << endl;
+                            pose[UAV_COUNTER].pose.position.x = 1;
+                            pose[UAV_COUNTER].pose.position.y = 1;
+                            pose[UAV_COUNTER].pose.position.z = 1;
+                        }
+
                         cout << "Counter: " << counter[UAV_COUNTER] << endl;
                         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
                              << "Maximum_Value_X_Indices: " << counter[UAV_COUNTER] << " " << list_maximum_value_x_indices[counter[UAV_COUNTER]] << endl;
