@@ -217,6 +217,7 @@ int main(int argc, char **argv)
                             pose[UAV_COUNTER].pose.position.x = 1;
                             pose[UAV_COUNTER].pose.position.y = 1;
                             pose[UAV_COUNTER].pose.position.z = 1;
+                            counter[UAV_COUNTER] = (y_max * x_max);
                         }
 
                         cout << "Counter: " << counter[UAV_COUNTER] << endl;
