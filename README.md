@@ -7,20 +7,11 @@ This repository contains files related to the "Multi-UAV Swarm for Search & Resc
 
 ## Steps:
 
-1. Change the permissions to run ```startscript.sh``` & ```mavroslaunch.sh```:
-    
-        sarthak@Cipher:~/catkin_ws/src$ chmod +x environmentlaunch.sh
-        sarthak@Cipher:~/catkin_ws/src$ chmod +x mavroslaunch.sh
-
-2. Trigger ```MAVROS```:
-
-        sarthak@Cipher:~/catkin_ws/src$ ./mavroslaunch.sh
-
-3. Trigger the ```ENVIRONMENT``` in a different terminal:
+1. Trigger the ```ENVIRONMENT```. This launches ```mavros```, ```mavlink``` & the prototyping environment:
 
         sarthak@Cipher:~/catkin_ws/src$ ./environmentlaunch.sh
 
-4. Run the node where the experiments are designed. ```quad_node``` in this case:
+2. Run the node where the experiments are designed. ```quad_node``` in this case:
 
         sarthak@Cipher:~/catkin_ws/src$ rosrun  quad quad_node
         
