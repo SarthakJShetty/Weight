@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
              roscpp mavros
              rospy
              std_msgs
+             mavros_msgs
              )
 
 find_package(cmake_modules REQUIRED)
@@ -13,7 +14,7 @@ find_package(cmake_modules REQUIRED)
 catkin_package(
     INCLUDE_DIRS include
     LIBRARIES weight variables
-    CATKIN_DEPENDS geometry_msgs mavros roscpp rospy std_msgs
+    CATKIN_DEPENDS geometry_msgs mavros roscpp rospy std_msgs mavros_msgs
     # DEPENDS system_lib
 )
 

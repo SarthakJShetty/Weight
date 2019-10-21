@@ -11,7 +11,7 @@ int global_pointer;
 float dist_threshold = 0.5;
 
 //Declaring the number of UAVs being used here
-const int N_UAV = 2;
+const int N_UAV = 1;
 
 //Boundaries of the flood environment
 extern const int x_max;

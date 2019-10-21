@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <mavros_msgs/CommandBool.h>
+#include <mavros_msgs/CommandTOL.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
 #include <std_msgs/Int8.h>
@@ -97,10 +98,21 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
-        cout << "PUSHING TO POSE OF UAV: " << UAV_COUNTER << endl;
-        pose[UAV_COUNTER].pose.position.x = 0;
-        pose[UAV_COUNTER].pose.position.y = 0;
-        pose[UAV_COUNTER].pose.position.z = 2;
+        ros::ServiceClient takeoff_cl = nh.serviceClient<mavros_msgs::CommandTOL>("uav0/mavros/cmd/takeoff");
+        mavros_msgs::CommandTOL srv_takeoff;
+        srv_takeoff.request.altitude = 100;
+        srv_takeoff.request.latitude = 0;
+        srv_takeoff.request.longitude = 0;
+        srv_takeoff.request.min_pitch = 0;
+        srv_takeoff.request.yaw = 0;
+        if (takeoff_cl.call(srv_takeoff))
+        {
+            ROS_ERROR("srv_takeoff send ok %d", srv_takeoff.response.success);
+        }
+        else
+        {
+            ROS_ERROR("Failed Takeoff");
+        }
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
