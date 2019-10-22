@@ -21,8 +21,11 @@ extern const int y_max;
 ros::Subscriber position_subscriber[N_UAV];
 ros::Subscriber state_sub[N_UAV];
 ros::Publisher local_pos_pub[N_UAV];
+
+//Service clients to handle ROS services
 ros::ServiceClient arming_client[N_UAV];
 ros::ServiceClient set_mode_client[N_UAV];
+ros::ServiceClient takeoff_client[N_UAV];
 
 //Declaring the CV node here, which subscribes to the computer vision node subscribes to
 ros::Subscriber cv_node[N_UAV];
@@ -41,6 +44,9 @@ mavros_msgs::SetMode offb_set_mode[N_UAV];
 
 //ARMING the UAV with this topic
 mavros_msgs::CommandBool arm_cmd[N_UAV];
+
+//Service client to trigger takeoff
+mavros_msgs::CommandTOL srv_takeoff[N_UAV];
 
 //Topic to check last request time
 ros::Time last_request[N_UAV];

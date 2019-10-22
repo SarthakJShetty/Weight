@@ -98,26 +98,6 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
-        ros::ServiceClient takeoff_cl = nh.serviceClient<mavros_msgs::CommandTOL>("uav0/mavros/cmd/takeoff");
-        mavros_msgs::CommandTOL srv_takeoff;
-        srv_takeoff.request.altitude = 100;
-        srv_takeoff.request.latitude = 0;
-        srv_takeoff.request.longitude = 0;
-        srv_takeoff.request.min_pitch = 0;
-        srv_takeoff.request.yaw = 0;
-        if (takeoff_cl.call(srv_takeoff))
-        {
-            ROS_ERROR("srv_takeoff send ok %d", srv_takeoff.response.success);
-        }
-        else
-        {
-            ROS_ERROR("Failed Takeoff");
-        }
-    }
-
-    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
-    {
-        global_pointer = UAV_COUNTER;
         cout << "PRESENTING POSE OF UAV: " << UAV_COUNTER << endl;
         cout << "X: " << pose[UAV_COUNTER].pose.position.x << endl;
         cout << "Y: " << pose[UAV_COUNTER].pose.position.y << endl;
@@ -156,6 +136,33 @@ int main(int argc, char **argv)
             ros::spinOnce();
             rate.sleep();
             cout << endl;
+        }
+    }
+
+    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    {
+        //Triggeringg takeoff manevours here
+        global_pointer = UAV_COUNTER;
+        stringstream post_UAV_COUNTER;
+        post_UAV_COUNTER << UAV_COUNTER;
+
+        string take_off_string;
+        take_off_string = "/uav" + post_UAV_COUNTER.str() + "/mavros/cmd/takeoff";
+        takeoff_client[UAV_COUNTER] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
+
+        srv_takeoff[UAV_COUNTER].request.altitude = 100;
+        srv_takeoff[UAV_COUNTER].request.latitude = 0;
+        srv_takeoff[UAV_COUNTER].request.longitude = 0;
+        srv_takeoff[UAV_COUNTER].request.min_pitch = 0;
+        srv_takeoff[UAV_COUNTER].request.yaw = 0;
+
+        if (takeoff_client[UAV_COUNTER].call(srv_takeoff[UAV_COUNTER]))
+        {
+            ROS_ERROR("srv_takeoff send ok %d", srv_takeoff[UAV_COUNTER].response.success);
+        }
+        else
+        {
+            ROS_ERROR("Failed Takeoff");
         }
     }
 
