@@ -54,39 +54,39 @@ int main(int argc, char **argv)
 
         //Subscribes declared here
         string cv_node_subsciber_string;
-        cv_node_subsciber_string = "/cv_node";
+        cv_node_subsciber_string = "/uav" + pub_sub_initializer.str() +  "/cv_node";
         cout << "cv_node_subscriber_string: " << cv_node_subsciber_string << endl;
         cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int8>(cv_node_subsciber_string, 10, cv_sub);
 
         string position_subscriber_string;
-        position_subscriber_string = "/mavros/global_position/local";
+        position_subscriber_string = "/uav" + pub_sub_initializer.str() +  "/mavros/global_position/local";
         cout << "position_subscriber_string: " << position_subscriber_string << endl;
         position_subscriber[pre_pub_sub_initializer] = nh.subscribe<nav_msgs::Odometry>(position_subscriber_string, 10, pose_sub);
 
         string state_sub_string;
-        state_sub_string = "/mavros/state";
+        state_sub_string = "/uav" + pub_sub_initializer.str() +  "/mavros/state";
         cout << "state_sub_string: " << state_sub_string << endl;
         state_sub[pre_pub_sub_initializer] = nh.subscribe<mavros_msgs::State>(state_sub_string, 10, state_cb);
 
         //Publishers declared here
         string local_pos_pub_string;
-        local_pos_pub_string = "/mavros/setpoint_position/local";
+        local_pos_pub_string = "/uav" + pub_sub_initializer.str() +  "/mavros/setpoint_position/local";
         cout << "local_pos_pub_string: " << local_pos_pub_string << endl;
         local_pos_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(local_pos_pub_string, 10);
 
         //Service clients to trigger modes
         string arming_client_string;
-        arming_client_string = "/mavros/cmd/arming";
+        arming_client_string = "/uav" + pub_sub_initializer.str() +  "/mavros/cmd/arming";
         cout << "arming_client_string: " << arming_client_string << endl;
         arming_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandBool>(arming_client_string);
 
         string set_mode_client_string;
-        set_mode_client_string = "/mavros/set_mode";
+        set_mode_client_string = "/uav" + pub_sub_initializer.str() +  "/mavros/set_mode";
         cout << "set_mode_client_string: " << set_mode_client_string << endl;
         set_mode_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::SetMode>(set_mode_client_string);
 
         string take_off_string;
-        take_off_string = "/mavros/cmd/takeoff";
+        take_off_string = "/uav" + pub_sub_initializer.str() +  "/mavros/cmd/takeoff";
         takeoff_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
 
         cout << endl;
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
     {
         global_pointer = UAV_COUNTER;
         cout << "OFFBOARD TRIGGER" << endl;
-        offb_set_mode[UAV_COUNTER].request.custom_mode = "GUIDED";
+        offb_set_mode[UAV_COUNTER].request.custom_mode = "OFFBOARD";
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
@@ -262,7 +262,7 @@ int main(int argc, char **argv)
                     }
                 }
             }
-            if (current_state[UAV_COUNTER].mode != "GUIDED" &&
+            if (current_state[UAV_COUNTER].mode != "OFFBOARD" &&
                 (ros::Time::now() - last_request[UAV_COUNTER] > ros::Duration(5.0)))
             {
                 if (set_mode_client[UAV_COUNTER].call(offb_set_mode[UAV_COUNTER]) &&
