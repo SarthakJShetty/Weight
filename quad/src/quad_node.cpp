@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <nav_msgs/Odometry.h>
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/CommandTOL.h>
 #include <mavros_msgs/SetMode.h>
@@ -19,17 +20,17 @@ void cv_sub(const std_msgs::Int8 msg)
     cv_msgs[global_pointer] = msg;
 }
 
-void pose_sub(const geometry_msgs::PoseStamped msg)
+void pose_sub(const nav_msgs::Odometry msg)
 {
     //Subscribing to the current position of the UAV
-    current_position_x[global_pointer] = msg.pose.position.x;
-    current_position_y[global_pointer] = msg.pose.position.y;
-    current_position_z[global_pointer] = msg.pose.position.z;
+    current_position_x[global_pointer] = msg.pose.pose.position.x;
+    current_position_y[global_pointer] = msg.pose.pose.position.y;
+    current_position_z[global_pointer] = msg.pose.pose.position.z;
 }
 
 int main(int argc, char **argv)
 {
-    //Generates the waypoints for the UAV to followw
+    //Generates the waypoints for the UAV to follow
     weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, map_priority, element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
 
     //Initializing the node to handle all the process associated with the code
@@ -47,46 +48,50 @@ int main(int argc, char **argv)
 
     for (int pre_pub_sub_initializer = 0; pre_pub_sub_initializer < N_UAV; pre_pub_sub_initializer++)
     {
-        //New subscriber to be declared here that subscribes to the topic published by the computer
         global_pointer = pre_pub_sub_initializer;
         stringstream pub_sub_initializer;
         pub_sub_initializer << pre_pub_sub_initializer;
 
-        //Highly experimental, integrating the CV subscriber here
+        //Subscribes declared here
         string cv_node_subsciber_string;
-        cv_node_subsciber_string = "/uav" + pub_sub_initializer.str() + "/cv_node";
+        cv_node_subsciber_string = "/cv_node";
         cout << "cv_node_subscriber_string: " << cv_node_subsciber_string << endl;
         cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int8>(cv_node_subsciber_string, 10, cv_sub);
 
         string position_subscriber_string;
-        position_subscriber_string = "/uav" + pub_sub_initializer.str() + "/mavros/local_position/pose";
+        position_subscriber_string = "/mavros/global_position/local";
         cout << "position_subscriber_string: " << position_subscriber_string << endl;
-        position_subscriber[pre_pub_sub_initializer] = nh.subscribe<geometry_msgs::PoseStamped>(position_subscriber_string, 10, pose_sub);
+        position_subscriber[pre_pub_sub_initializer] = nh.subscribe<nav_msgs::Odometry>(position_subscriber_string, 10, pose_sub);
 
         string state_sub_string;
-        state_sub_string = "/uav" + pub_sub_initializer.str() + "/mavros/state";
+        state_sub_string = "/mavros/state";
         cout << "state_sub_string: " << state_sub_string << endl;
         state_sub[pre_pub_sub_initializer] = nh.subscribe<mavros_msgs::State>(state_sub_string, 10, state_cb);
 
+        //Publishers declared here
         string local_pos_pub_string;
-        local_pos_pub_string = "/uav" + pub_sub_initializer.str() + "/mavros/setpoint_position/local";
+        local_pos_pub_string = "/mavros/setpoint_position/local";
         cout << "local_pos_pub_string: " << local_pos_pub_string << endl;
         local_pos_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(local_pos_pub_string, 10);
 
+        //Service clients to trigger modes
         string arming_client_string;
-        arming_client_string = "/uav" + pub_sub_initializer.str() + "/mavros/cmd/arming";
+        arming_client_string = "/mavros/cmd/arming";
         cout << "arming_client_string: " << arming_client_string << endl;
         arming_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandBool>(arming_client_string);
 
         string set_mode_client_string;
-        set_mode_client_string = "/uav" + pub_sub_initializer.str() + "/mavros/set_mode";
+        set_mode_client_string = "/mavros/set_mode";
         cout << "set_mode_client_string: " << set_mode_client_string << endl;
         set_mode_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::SetMode>(set_mode_client_string);
+
+        string take_off_string;
+        take_off_string = "/mavros/cmd/takeoff";
+        takeoff_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
 
         cout << endl;
     }
 
-    //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
@@ -106,25 +111,25 @@ int main(int argc, char **argv)
 
     int connected_state_counter;
 
-    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
-    {
-        global_pointer = UAV_COUNTER;
-        if (!current_state[UAV_COUNTER].connected)
-        {
-            cout << "CURRENT_STATE" << endl;
-            connected_state_counter += 1;
-        }
-    }
+    // for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    // {
+    //     global_pointer = UAV_COUNTER;
+    //     if (!current_state[UAV_COUNTER].connected)
+    //     {
+    //         cout << "CURRENT_STATE" << endl;
+    //         connected_state_counter += 1;
+    //     }
+    // }
 
-    // wait for FCU connection
-    while (ros::ok() && (connected_state_counter == N_UAV))
-    {
-        cout << "CURRENT_STATE FCU NOT TRIGGERED" << endl;
-        ros::spinOnce();
-        rate.sleep();
-    }
+    // // wait for FCU connection
+    // while (ros::ok() && (connected_state_counter == N_UAV))
+    // {
+    //     cout << "CURRENT_STATE FCU NOT TRIGGERED" << endl;
+    //     ros::spinOnce();
+    //     rate.sleep();
+    // }
 
-    //send a few setpoints before starting
+    //Send a few setpoints before starting
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
@@ -141,36 +146,9 @@ int main(int argc, char **argv)
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        //Triggeringg takeoff manevours here
-        global_pointer = UAV_COUNTER;
-        stringstream post_UAV_COUNTER;
-        post_UAV_COUNTER << UAV_COUNTER;
-
-        string take_off_string;
-        take_off_string = "/uav" + post_UAV_COUNTER.str() + "/mavros/cmd/takeoff";
-        takeoff_client[UAV_COUNTER] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
-
-        srv_takeoff[UAV_COUNTER].request.altitude = 100;
-        srv_takeoff[UAV_COUNTER].request.latitude = 0;
-        srv_takeoff[UAV_COUNTER].request.longitude = 0;
-        srv_takeoff[UAV_COUNTER].request.min_pitch = 0;
-        srv_takeoff[UAV_COUNTER].request.yaw = 0;
-
-        if (takeoff_client[UAV_COUNTER].call(srv_takeoff[UAV_COUNTER]))
-        {
-            ROS_ERROR("srv_takeoff send ok %d", srv_takeoff[UAV_COUNTER].response.success);
-        }
-        else
-        {
-            ROS_ERROR("Failed Takeoff");
-        }
-    }
-
-    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
-    {
         global_pointer = UAV_COUNTER;
         cout << "OFFBOARD TRIGGER" << endl;
-        offb_set_mode[UAV_COUNTER].request.custom_mode = "OFFBOARD";
+        offb_set_mode[UAV_COUNTER].request.custom_mode = "GUIDED";
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
@@ -190,6 +168,29 @@ int main(int argc, char **argv)
     {
         global_pointer = UAV_COUNTER;
         cv_msgs[UAV_COUNTER].data = 0;
+    }
+
+    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    {
+        //Triggeringg takeoff manevours here
+        global_pointer = UAV_COUNTER;
+        stringstream post_UAV_COUNTER;
+        post_UAV_COUNTER << UAV_COUNTER;
+
+        srv_takeoff[UAV_COUNTER].request.altitude = 100;
+        srv_takeoff[UAV_COUNTER].request.latitude = 0;
+        srv_takeoff[UAV_COUNTER].request.longitude = 0;
+        srv_takeoff[UAV_COUNTER].request.min_pitch = 0;
+        srv_takeoff[UAV_COUNTER].request.yaw = 0;
+
+        if (takeoff_client[UAV_COUNTER].call(srv_takeoff[UAV_COUNTER]))
+        {
+            ROS_ERROR("srv_takeoff send ok %d", srv_takeoff[UAV_COUNTER].response.success);
+        }
+        else
+        {
+            ROS_ERROR("Failed Takeoff");
+        }
     }
 
     while (ros::ok())
@@ -217,6 +218,8 @@ int main(int argc, char **argv)
                      << "Current X Position: " << current_position_y[UAV_COUNTER] << endl;
                 cout << "UAV_COUNTER: " << UAV_COUNTER << " "
                      << "Current Y Position: " << current_position_x[UAV_COUNTER] << endl;
+                cout << "UAV_COUNTER: " << UAV_COUNTER << " "
+                     << "Current Z Position: " << current_position_z[UAV_COUNTER] << endl;
 
                 //Printing the waypoint that the UAV has to reach
                 cout << "UAV_COUNTER: " << UAV_COUNTER << " "
@@ -259,7 +262,7 @@ int main(int argc, char **argv)
                     }
                 }
             }
-            if (current_state[UAV_COUNTER].mode != "OFFBOARD" &&
+            if (current_state[UAV_COUNTER].mode != "GUIDED" &&
                 (ros::Time::now() - last_request[UAV_COUNTER] > ros::Duration(5.0)))
             {
                 if (set_mode_client[UAV_COUNTER].call(offb_set_mode[UAV_COUNTER]) &&
