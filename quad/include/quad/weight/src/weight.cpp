@@ -79,8 +79,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 2;
 				}
-				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				// cout << endl;
+				locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				cout << endl;
 			}
 		}
 		x_corner_coordinate_1 -= 1;
@@ -109,8 +109,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 1;
 				}
-				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				// cout << endl;
+				locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				cout << endl;
 			}
 		}
 		x_corner_coordinate_2 += 1;
@@ -139,8 +139,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 2;
 				}
-				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				// cout << endl;
+				locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				cout << endl;
 			}
 		}
 		x_corner_coordinate_3 += 1;
@@ -169,8 +169,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 100;
 				}
-				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				// cout << endl;
+				locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				cout << endl;
 			}
 		}
 		x_corner_coordinate_4 -= 1;
@@ -216,8 +216,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 			}
 		}
 		maximum_value = 0;
-		// locator(map, x_max, y_max, uav_x_position, uav_y_position);
-		// cout << endl;
+		locator(map, x_max, y_max, uav_x_position, uav_y_position);
+		cout << endl;
 	}
 
 	for (int i = 0; i < (y_max * x_max); i++)
