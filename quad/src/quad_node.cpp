@@ -226,6 +226,8 @@ int main(int argc, char **argv)
                      << "Current X Waypoint: " << pose[UAV_COUNTER].pose.position.y << endl;
                 cout << "UAV_COUNTER: " << UAV_COUNTER << " "
                      << "Current Y Waypoint: " << pose[UAV_COUNTER].pose.position.x << endl;
+                cout << "UAV_COUNTER: " << UAV_COUNTER << " "
+                     << "Current Z Waypoint: " << pose[UAV_COUNTER].pose.position.z << endl;
 
                 if (dist < dist_threshold)
                 {
