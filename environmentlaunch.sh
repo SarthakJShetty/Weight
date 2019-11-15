@@ -3,12 +3,13 @@
 #2. mavros_node 
 #3. /mavros/state
 
-#CD'ing anywhere from where the code is invoked
+#CD'ing to the catkin workspace from where the code is invoked
 cd ~/catkin_ws/
 #Souring the work environment here
 source devel/setup.bash
 #Initializing the roscore here for the MAVROS node to connect to
 gnome-terminal -e "bash -c \"roscore; exec bash\""
+#Sleeps the code for 10 seconds, mainly when hardware testing on laptop.
 sleep 10
 #Triggering the mavros_node here, connecting to the USB port where the transmitter here
 gnome-terminal -e "bash -c \"rosrun mavros mavros_node _fcu_url:=/dev/ttyUSB0; exec bash\""
