@@ -86,12 +86,22 @@ int y_corner_coordinate_3 = y_max;
 int x_corner_coordinate_4 = x_max;
 int y_corner_coordinate_4 = y_max;
 
+//Holds the maximum value that the code has come across in the map
 int maximum_value = 0;
 
-int element_cycler = 0;
+//Cycles through the elements of the weight map generated
+int weight_element_cycler = 0;
+int lawn_mower_element_cycler = 0;
 
 int map_priority[y_max][x_max];
 
 //Creating lists to iterate through waypoints. Hypothesis is that sharing of vectors is causing seg faults.
 int list_maximum_value_x_indices[y_max * x_max];
 int list_maximum_value_y_indices[y_max * x_max];
+
+//Creating a list of waypointss for conveying the lawnmower waypoints
+int pre_list_lawn_mower_x_indices[y_max * x_max];
+int pre_list_lawn_mower_y_indices[y_max * x_max];
+
+int list_lawn_mower_x_indices[y_max * x_max];
+int list_lawn_mower_y_indices[y_max * x_max];
