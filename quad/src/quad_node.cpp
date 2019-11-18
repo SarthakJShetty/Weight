@@ -8,6 +8,7 @@
 #include <std_msgs/Int8.h>
 #include <math.h>
 #include "weight.hpp"
+#include "lawnmower.hpp"
 #include "variables.hpp"
 
 void state_cb(const mavros_msgs::State::ConstPtr &msg)
@@ -31,7 +32,8 @@ void pose_sub(const nav_msgs::Odometry msg)
 int main(int argc, char **argv)
 {
     //Generates the waypoints for the UAV to follow
-    weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, map_priority, element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
+    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_lawn_mower_x_indices, list_lawn_mower_y_indices, list_maximum_value_x_indices, list_maximum_value_y_indices, lawn_mower_element_cycler);
+    //weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, map_priority, element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
 
     //Initializing the node to handle all the process associated with the code
     ros::init(argc, argv, "offb_node");
@@ -54,39 +56,39 @@ int main(int argc, char **argv)
 
         //Subscribes declared here
         string cv_node_subsciber_string;
-        cv_node_subsciber_string = "/uav" + pub_sub_initializer.str() +  "/cv_node";
+        cv_node_subsciber_string = "/uav" + pub_sub_initializer.str() + "/cv_node";
         cout << "cv_node_subscriber_string: " << cv_node_subsciber_string << endl;
         cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int8>(cv_node_subsciber_string, 10, cv_sub);
 
         string position_subscriber_string;
-        position_subscriber_string = "/uav" + pub_sub_initializer.str() +  "/mavros/global_position/local";
+        position_subscriber_string = "/uav" + pub_sub_initializer.str() + "/mavros/global_position/local";
         cout << "position_subscriber_string: " << position_subscriber_string << endl;
         position_subscriber[pre_pub_sub_initializer] = nh.subscribe<nav_msgs::Odometry>(position_subscriber_string, 10, pose_sub);
 
         string state_sub_string;
-        state_sub_string = "/uav" + pub_sub_initializer.str() +  "/mavros/state";
+        state_sub_string = "/uav" + pub_sub_initializer.str() + "/mavros/state";
         cout << "state_sub_string: " << state_sub_string << endl;
         state_sub[pre_pub_sub_initializer] = nh.subscribe<mavros_msgs::State>(state_sub_string, 10, state_cb);
 
         //Publishers declared here
         string local_pos_pub_string;
-        local_pos_pub_string = "/uav" + pub_sub_initializer.str() +  "/mavros/setpoint_position/local";
+        local_pos_pub_string = "/uav" + pub_sub_initializer.str() + "/mavros/setpoint_position/local";
         cout << "local_pos_pub_string: " << local_pos_pub_string << endl;
         local_pos_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(local_pos_pub_string, 10);
 
         //Service clients to trigger modes
         string arming_client_string;
-        arming_client_string = "/uav" + pub_sub_initializer.str() +  "/mavros/cmd/arming";
+        arming_client_string = "/uav" + pub_sub_initializer.str() + "/mavros/cmd/arming";
         cout << "arming_client_string: " << arming_client_string << endl;
         arming_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandBool>(arming_client_string);
 
         string set_mode_client_string;
-        set_mode_client_string = "/uav" + pub_sub_initializer.str() +  "/mavros/set_mode";
+        set_mode_client_string = "/uav" + pub_sub_initializer.str() + "/mavros/set_mode";
         cout << "set_mode_client_string: " << set_mode_client_string << endl;
         set_mode_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::SetMode>(set_mode_client_string);
 
         string take_off_string;
-        take_off_string = "/uav" + pub_sub_initializer.str() +  "/mavros/cmd/takeoff";
+        take_off_string = "/uav" + pub_sub_initializer.str() + "/mavros/cmd/takeoff";
         takeoff_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
 
         cout << endl;
