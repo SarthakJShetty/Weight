@@ -47,7 +47,7 @@ int locator(weighted_map map[y_max][x_max], int x_max, int y_max, int uav_x_posi
 	return 0;
 }
 
-int weight_generator_function(int uav_x_position, int uav_y_position, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int map_priority[y_max][x_max], int weight_element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
+int weight_generator_function(int uav_x_position, int uav_y_position, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int map_priority[y_max][x_max], int element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
 {
 	weighted_map map[y_max][x_max];
 	weight_generator(map, x_max, y_max);
@@ -79,8 +79,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 2;
 				}
-				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				// cout << endl;
+				locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				cout << endl;
 			}
 		}
 		x_corner_coordinate_1 -= 1;
@@ -109,8 +109,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 1;
 				}
-				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				// cout << endl;
+				locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				cout << endl;
 			}
 		}
 		x_corner_coordinate_2 += 1;
@@ -139,8 +139,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 2;
 				}
-				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				// cout << endl;
+				locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				cout << endl;
 			}
 		}
 		x_corner_coordinate_3 += 1;
@@ -169,8 +169,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				{
 					map[j][i].weight += 100;
 				}
-				// locator(map, x_max, y_max, uav_x_position, uav_y_position);
-				// cout << endl;
+				locator(map, x_max, y_max, uav_x_position, uav_y_position);
+				cout << endl;
 			}
 		}
 		x_corner_coordinate_4 -= 1;
@@ -184,7 +184,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
     4. Check the maximum value and remove it each row
     5. Iterate through map again*/
 
-	while (weight_element_cycler <= (y_max * x_max))
+	while (element_cycler <= (y_max * x_max))
 	{
 		for (int row_iterator = 0; row_iterator < y_max; row_iterator++)
 		{
@@ -204,20 +204,20 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				if ((map[row_iterator_2][column_iterator_2].weight == maximum_value))
 				{
 					map[row_iterator_2][column_iterator_2].weight = 0;
-					weight_element_cycler += 1;
+					element_cycler += 1;
 
 					if (maximum_value != 0)
 					{
-						map_priority[row_iterator_2][column_iterator_2] = weight_element_cycler;
-						list_maximum_value_x_indices[weight_element_cycler] = (column_iterator_2);
-						list_maximum_value_y_indices[weight_element_cycler] = (row_iterator_2);
+						map_priority[row_iterator_2][column_iterator_2] = element_cycler;
+						list_maximum_value_x_indices[element_cycler - 1] = (column_iterator_2);
+						list_maximum_value_y_indices[element_cycler - 1] = (row_iterator_2);
 					}
 				}
 			}
 		}
 		maximum_value = 0;
-		// locator(map, x_max, y_max, uav_x_position, uav_y_position);
-		// cout << endl;
+		locator(map, x_max, y_max, uav_x_position, uav_y_position);
+		cout << endl;
 	}
 
 	for (int i = 0; i < (y_max * x_max); i++)
