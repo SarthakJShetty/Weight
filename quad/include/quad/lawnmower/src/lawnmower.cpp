@@ -34,14 +34,14 @@ int lawn_mower_generator_function(int y_max, int x_max, int uav_x_position, int 
     {
         if (lawn_mower_element_cycler != ((y_max * x_max) - 1))
         {
-            cout << "Entering the loop: "
-                 << "Element Cycler: " << lawn_mower_element_cycler << endl;
+            /* cout << "Entering the loop: "
+                  << "Element Cycler: " << lawn_mower_element_cycler << endl;*/
             if (pre_list_lawn_mower_y_indices[lawn_mower_element_cycler] == y_max)
             {
-                cout << "Encoutered the edge of a row" << endl;
+                //cout << "Encoutered the edge of a row" << endl;
                 if ((pre_list_lawn_mower_x_indices[lawn_mower_element_cycler] % 2) != 0)
                 {
-                    cout << "Edge of the row which is at a turning point as well" << endl;
+                    //cout << "Edge of the row which is at a turning point as well" << endl;
                     list_lawn_mower_x_indices[lawn_mower_element_cycler] = pre_list_lawn_mower_x_indices[lawn_mower_element_cycler];
                     list_lawn_mower_y_indices[lawn_mower_element_cycler] = pre_list_lawn_mower_y_indices[lawn_mower_element_cycler];
                     /*cout << "Here 1: " << list_lawn_mower_x_indices[lawn_mower_element_cycler] << ", " << list_lawn_mower_y_indices[lawn_mower_element_cycler] << ", NEXT:" << pre_list_lawn_mower_x_indices[lawn_mower_element_cycler] << ", " << pre_list_lawn_mower_y_indices[lawn_mower_element_cycler] << endl;*/
@@ -49,10 +49,10 @@ int lawn_mower_generator_function(int y_max, int x_max, int uav_x_position, int 
                     int lawn_lawn_mower_element_cycler = lawn_mower_element_cycler;
                     for (int row_iterator = 0; row_iterator < y_max; row_iterator++)
                     {
-                        cout << "Looping through the mini-array that we are trying to reverse" << endl;
+                        //cout << "Looping through the mini-array that we are trying to reverse" << endl;
                         list_lawn_mower_x_indices[lawn_lawn_mower_element_cycler] = pre_list_lawn_mower_x_indices[lawn_mower_element_cycler + (y_max - 1) - row_iterator];
                         list_lawn_mower_y_indices[lawn_lawn_mower_element_cycler] = pre_list_lawn_mower_y_indices[lawn_mower_element_cycler + (y_max - 1) - row_iterator];
-                        cout << "Here 2: " << list_lawn_mower_x_indices[lawn_lawn_mower_element_cycler] << ", " << list_lawn_mower_y_indices[lawn_lawn_mower_element_cycler] << endl;
+                        /*cout << "Here 2: " << list_lawn_mower_x_indices[lawn_lawn_mower_element_cycler] << ", " << list_lawn_mower_y_indices[lawn_lawn_mower_element_cycler] << endl;*/
                         lawn_lawn_mower_element_cycler += 1;
                     }
                     lawn_mower_element_cycler += y_max;
@@ -82,6 +82,7 @@ int lawn_mower_generator_function(int y_max, int x_max, int uav_x_position, int 
     }
 
     lawn_mower_element_cycler = 0;
+    cout << "NON-PRIORITIZED COORDINATES" << endl;
     while (lawn_mower_element_cycler < (x_max * y_max))
     {
         cout << pre_list_lawn_mower_x_indices[lawn_mower_element_cycler] << ", " << pre_list_lawn_mower_y_indices[lawn_mower_element_cycler];
