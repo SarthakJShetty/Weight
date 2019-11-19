@@ -209,8 +209,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 					if (maximum_value != 0)
 					{
 						map_priority[row_iterator_2][column_iterator_2] = element_cycler;
-						list_maximum_value_x_indices[element_cycler] = (column_iterator_2);
-						list_maximum_value_y_indices[element_cycler] = (row_iterator_2);
+						list_maximum_value_x_indices[element_cycler - 1] = (column_iterator_2);
+						list_maximum_value_y_indices[element_cycler - 1] = (row_iterator_2);
 					}
 				}
 			}
