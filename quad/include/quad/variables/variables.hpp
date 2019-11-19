@@ -30,8 +30,13 @@ ros::ServiceClient takeoff_client[N_UAV];
 //Declaring the CV node here, which subscribes to the computer vision node subscribes to
 ros::Subscriber cv_node[N_UAV];
 
+//Declaring the switch node here which switches the agent from lawnmower exploration to weight-based exploration
+ros::Subscriber switch_node[N_UAV];
+
 //Generating an integer to store the binary value sent over by the CV node
 std_msgs::Int8 cv_msgs[N_UAV];
+//This variable keeps track of which search pattern is being triggered
+std_msgs::Int8 switch_msgs[N_UAV];
 
 //Declaring the pose here for both UAVs
 geometry_msgs::PoseStamped pose[N_UAV];
@@ -70,8 +75,8 @@ int survivor_y_coordinate = 2;
 int survivor_direction = 4;
 
 //UAVs current position
-int uav_y_position = 3;
-int uav_x_position = 3;
+int uav_y_position = 5;
+int uav_x_position = 5;
 
 //Corner coordinates of each of the quadrants of exploration
 int x_corner_coordinate_1 = x_max;
@@ -103,5 +108,8 @@ int list_maximum_value_y_indices[y_max * x_max];
 int pre_list_lawn_mower_x_indices[y_max * x_max];
 int pre_list_lawn_mower_y_indices[y_max * x_max];
 
-int list_lawn_mower_x_indices[y_max * x_max];
-int list_lawn_mower_y_indices[y_max * x_max];
+//This variable makes sure that each UAV generates the lawnmower code only once
+int lawn_mower_trigger_check[N_UAV];
+
+//This variable makes sure that each UAV generates the weighted map only once
+int weight_trigger_check[N_UAV];
