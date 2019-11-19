@@ -122,23 +122,23 @@ int main(int argc, char **argv)
 
     int connected_state_counter;
 
-    // for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
-    // {
-    //     global_pointer = UAV_COUNTER;
-    //     if (!current_state[UAV_COUNTER].connected)
-    //     {
-    //         cout << "CURRENT_STATE" << endl;
-    //         connected_state_counter += 1;
-    //     }
-    // }
+    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    {
+        global_pointer = UAV_COUNTER;
+        if (!current_state[UAV_COUNTER].connected)
+        {
+            cout << "CURRENT_STATE" << endl;
+            connected_state_counter += 1;
+        }
+    }
 
-    // // wait for FCU connection
-    // while (ros::ok() && (connected_state_counter == N_UAV))
-    // {
-    //     cout << "CURRENT_STATE FCU NOT TRIGGERED" << endl;
-    //     ros::spinOnce();
-    //     rate.sleep();
-    // }
+    // wait for FCU connection
+    while (ros::ok() && (connected_state_counter == N_UAV))
+    {
+        cout << "CURRENT_STATE FCU NOT TRIGGERED" << endl;
+        ros::spinOnce();
+        rate.sleep();
+    }
 
     //Send a few setpoints before starting
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
@@ -158,14 +158,14 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
-        cout << "OFFBOARD TRIGGER" << endl;
+        cout << "OFFBOARD TRIGGER 1" << endl;
         offb_set_mode[UAV_COUNTER].request.custom_mode = "OFFBOARD";
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
-        cout << "ARMING" << endl;
+        cout << "ARMING 1" << endl;
         arm_cmd[UAV_COUNTER].request.value = true;
     }
 
@@ -191,29 +191,6 @@ int main(int argc, char **argv)
     {
         global_pointer = UAV_COUNTER;
         cv_msgs[UAV_COUNTER].data = 0;
-    }
-
-    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
-    {
-        //Triggeringg takeoff manevours here
-        global_pointer = UAV_COUNTER;
-        stringstream post_UAV_COUNTER;
-        post_UAV_COUNTER << UAV_COUNTER;
-
-        srv_takeoff[UAV_COUNTER].request.altitude = 100;
-        srv_takeoff[UAV_COUNTER].request.latitude = 0;
-        srv_takeoff[UAV_COUNTER].request.longitude = 0;
-        srv_takeoff[UAV_COUNTER].request.min_pitch = 0;
-        srv_takeoff[UAV_COUNTER].request.yaw = 0;
-
-        if (takeoff_client[UAV_COUNTER].call(srv_takeoff[UAV_COUNTER]))
-        {
-            ROS_ERROR("srv_takeoff send ok %d", srv_takeoff[UAV_COUNTER].response.success);
-        }
-        else
-        {
-            ROS_ERROR("Failed Takeoff");
-        }
     }
 
     while (ros::ok())
@@ -312,27 +289,21 @@ int main(int argc, char **argv)
                     }
                 }
             }
-            if (current_state[UAV_COUNTER].mode != "OFFBOARD" &&
-                (ros::Time::now() - last_request[UAV_COUNTER] > ros::Duration(5.0)))
+            if (current_state[UAV_COUNTER].mode != "OFFBOARD" && (ros::Time::now() - last_request[UAV_COUNTER] > ros::Duration(5.0)))
             {
-                if (set_mode_client[UAV_COUNTER].call(offb_set_mode[UAV_COUNTER]) &&
-                    offb_set_mode[UAV_COUNTER].response.mode_sent)
+                if (set_mode_client[UAV_COUNTER].call(offb_set_mode[UAV_COUNTER]) && offb_set_mode[UAV_COUNTER].response.mode_sent)
                 {
-                    cout << "UAV COUNTER: " << UAV_COUNTER << " "
-                         << "Offboard enabled" << endl;
+                    cout << "UAV COUNTER: " << UAV_COUNTER << " Offboard enabled 2" << endl;
                 }
                 last_request[UAV_COUNTER] = ros::Time::now();
             }
             else
             {
-                if (!current_state[UAV_COUNTER].armed &&
-                    (ros::Time::now() - last_request[UAV_COUNTER] > ros::Duration(5.0)))
+                if (!current_state[UAV_COUNTER].armed && (ros::Time::now() - last_request[UAV_COUNTER] > ros::Duration(5.0)))
                 {
-                    if (arming_client[UAV_COUNTER].call(arm_cmd[UAV_COUNTER]) &&
-                        arm_cmd[UAV_COUNTER].response.success)
+                    if (arming_client[UAV_COUNTER].call(arm_cmd[UAV_COUNTER]) && arm_cmd[UAV_COUNTER].response.success)
                     {
-                        cout << "UAV COUNTER: " << UAV_COUNTER << " "
-                             << "Vehicle armed" << endl;
+                        cout << "UAV COUNTER: " << UAV_COUNTER << " Vehicle armed 2" << endl;
                     }
                     last_request[UAV_COUNTER] = ros::Time::now();
                 }
