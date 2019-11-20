@@ -8,7 +8,10 @@ using namespace std;
 int global_pointer;
 
 //Threshld to switch to next waypoint
-float dist_threshold = 0.3;
+float waypoint_dist_threshold = 0.3;
+
+//This variable is a threshold to check whether or not the UAV has reached the survivor's position or not
+float survivor_dist_threshold = 0.5;
 
 //Declaring the number of UAVs being used here
 const int N_UAV = 1;
@@ -65,11 +68,24 @@ float current_position_z[N_UAV];
 int counter[N_UAV];
 
 //Distance keeps track of initial position and desired positon
-float dist;
+float waypoint_dist;
+
+//This variable keeps track of distance between UAV's position and the survivor's position. Then compared to survivor_dist_threshold
+float survivor_dist;
 
 //This is the survivor's x, y coordinate & direction
-int survivor_x_coordinate = 2;
-int survivor_y_coordinate = 2;
+float survivor_x_coordinate = 5.0;
+float survivor_y_coordinate = 5.0;
+float velocity = 0.3;
+float time_step = 1.0;
+
+//Experimental. Figuring this out still.
+float next_survivor_x_coordinate;
+float next_survivor_y_coordinate;
+
+//Incorporating time variables to keep track of how often the coordinates of the survivor are sent to quad_node
+int current_second = 0;
+int previous_second = 0;
 
 //Survivor's direction 1-> ++, 2-> -+, 3-> --, 4-> +-
 int survivor_direction = 4;

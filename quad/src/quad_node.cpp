@@ -7,8 +7,10 @@
 #include <mavros_msgs/State.h>
 #include <std_msgs/Int8.h>
 #include <math.h>
+#include <iomanip>
 #include "weight.hpp"
 #include "lawnmower.hpp"
+#include "survivor.hpp"
 #include "variables.hpp"
 
 void state_cb(const mavros_msgs::State::ConstPtr &msg)
@@ -197,6 +199,27 @@ int main(int argc, char **argv)
     {
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
         {
+            global_pointer = UAV_COUNTER;
+            if (weight_trigger_check[UAV_COUNTER] == 1)
+            {
+                cout << "SURVIVOR -> X: " << survivor_x_coordinate << endl;
+                cout << "SURVIVOR -> Y: " << survivor_y_coordinate << endl;
+                survivor_model(x_max, y_max, survivor_direction, current_second, previous_second, survivor_x_coordinate, survivor_y_coordinate, velocity, time_step);
+                survivor_dist = sqrt(pow((survivor_x_coordinate - current_position_x[UAV_COUNTER]), 2) + pow((survivor_y_coordinate - current_position_y[UAV_COUNTER]), 2));
+                if (survivor_dist < survivor_dist_threshold)
+                {
+                    cout << "Distance < " << survivor_dist_threshold << endl;
+                    if (counter[UAV_COUNTER] < (y_max * x_max))
+                    {
+                        cout << "Human Detected by: " << UAV_COUNTER << " UAV" << endl;
+                        cout << "LOWERING" << endl;
+                        counter[UAV_COUNTER] = (y_max * x_max);
+                    }
+                }
+            }
+        }
+        for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+        {
             //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
             global_pointer = UAV_COUNTER;
             if (switch_msgs[UAV_COUNTER].data == 0)
@@ -234,7 +257,7 @@ int main(int argc, char **argv)
             else
             {
                 //Difference between the current position and the next waypoint (x, y)
-                dist = sqrt(pow((pose[UAV_COUNTER].pose.position.x - current_position_x[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.y - current_position_y[UAV_COUNTER]), 2));
+                waypoint_dist = sqrt(pow((pose[UAV_COUNTER].pose.position.x - current_position_x[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.y - current_position_y[UAV_COUNTER]), 2));
 
                 //From hereon out, we switch the X and Y coordinates to match that of the map
 
@@ -254,9 +277,9 @@ int main(int argc, char **argv)
                 cout << "UAV_COUNTER: " << UAV_COUNTER << " "
                      << "Current Z Waypoint: " << pose[UAV_COUNTER].pose.position.z << endl;
 
-                if (dist < dist_threshold)
+                if (waypoint_dist < waypoint_dist_threshold)
                 {
-                    cout << "Distance < " << dist_threshold << endl;
+                    cout << "Distance < " << waypoint_dist_threshold << endl;
                     if (counter[UAV_COUNTER] < (y_max * x_max))
                     {
                         if (cv_msgs[UAV_COUNTER].data == 1)
@@ -265,10 +288,9 @@ int main(int argc, char **argv)
                             cout << "RTL" << endl;
                             pose[UAV_COUNTER].pose.position.x = 1;
                             pose[UAV_COUNTER].pose.position.y = 1;
-                            pose[UAV_COUNTER].pose.position.z = 1;
+                            pose[UAV_COUNTER].pose.position.z = 2;
                             counter[UAV_COUNTER] = (y_max * x_max);
                         }
-
                         cout << "Counter: " << counter[UAV_COUNTER] << endl;
                         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
                              << "Maximum_Value_X_Indices: " << counter[UAV_COUNTER] << " " << list_maximum_value_x_indices[counter[UAV_COUNTER]] << endl;
@@ -285,7 +307,7 @@ int main(int argc, char **argv)
                              << "RTL" << endl;
                         pose[UAV_COUNTER].pose.position.x = 1;
                         pose[UAV_COUNTER].pose.position.y = 1;
-                        pose[UAV_COUNTER].pose.position.z = 1;
+                        pose[UAV_COUNTER].pose.position.z = 2;
                     }
                 }
             }
