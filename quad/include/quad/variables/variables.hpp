@@ -74,14 +74,10 @@ float waypoint_dist;
 float survivor_dist;
 
 //This is the survivor's x, y coordinate & direction
-float survivor_x_coordinate = 5.0;
-float survivor_y_coordinate = 5.0;
+// float survivor_x_coordinate = 5.00;
+// float survivor_y_coordinate = 5.00;
 float velocity = 0.3;
 float time_step = 1.0;
-
-//Experimental. Figuring this out still.
-float next_survivor_x_coordinate;
-float next_survivor_y_coordinate;
 
 //Incorporating time variables to keep track of how often the coordinates of the survivor are sent to quad_node
 int current_second = 0;
