@@ -83,6 +83,9 @@ float time_step = 1.0;
 int current_second = 0;
 int previous_second = 0;
 
+float survivor_x_coordinate = 5.00;
+float survivor_y_coordinate = 5.00;
+
 //Survivor's direction 1-> ++, 2-> -+, 3-> --, 4-> +-
 int survivor_direction = 4;
 

@@ -40,9 +40,6 @@ void pose_sub(const nav_msgs::Odometry msg)
 
 int main(int argc, char **argv)
 {
-    float survivor_x_coordinate = 5.00;
-    float survivor_y_coordinate = 5.00;
-
     //Initializing the node to handle all the process associated with the code
     ros::init(argc, argv, "offb_node");
 
