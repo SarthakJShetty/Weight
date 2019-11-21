@@ -38,7 +38,7 @@ void pose_sub(const nav_msgs::Odometry msg)
 
 int main(int argc, char **argv)
 {
-
+    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler);
     //Initializing the node to handle all the process associated with the code
     ros::init(argc, argv, "offb_node");
 
@@ -195,31 +195,31 @@ int main(int argc, char **argv)
 
     while (ros::ok())
     {
-        for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
-        {
-            //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
-            global_pointer = UAV_COUNTER;
-            if (switch_msgs[UAV_COUNTER].data == 0)
-            {
-                if (lawn_mower_trigger_check[UAV_COUNTER] != 1)
-                {
-                    //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
-                    lawn_mower_trigger_check[UAV_COUNTER] = 1;
-                    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler);
-                }
-            }
-            else
-            {
-                if (weight_trigger_check[UAV_COUNTER] != 1)
-                {
-                    //This counter is refreshed so that the exploration can begin again.
-                    counter[UAV_COUNTER] = 0;
-                    //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
-                    weight_trigger_check[UAV_COUNTER] = 1;
-                    weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, map_priority, weight_element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
-                }
-            }
-        }
+        // for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+        // {
+        //     //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
+        //     global_pointer = UAV_COUNTER;
+        //     if (switch_msgs[UAV_COUNTER].data == 0)
+        //     {
+        //         if (lawn_mower_trigger_check[UAV_COUNTER] != 1)
+        //         {
+        //             //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
+        //             lawn_mower_trigger_check[UAV_COUNTER] = 1;
+        //             lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler);
+        //         }
+        //     }
+        //     else
+        //     {
+        //         if (weight_trigger_check[UAV_COUNTER] != 1)
+        //         {
+        //             //This counter is refreshed so that the exploration can begin again.
+        //             counter[UAV_COUNTER] = 0;
+        //             //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
+        //             weight_trigger_check[UAV_COUNTER] = 1;
+        //             weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, map_priority, weight_element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
+        //         }
+        //     }
+        // }
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
         {
             global_pointer = UAV_COUNTER;
