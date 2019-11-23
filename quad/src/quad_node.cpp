@@ -7,7 +7,6 @@
 #include <mavros_msgs/State.h>
 #include <std_msgs/Int8.h>
 #include <math.h>
-#include <iomanip>
 #include "weight.hpp"
 #include "lawnmower.hpp"
 #include "survivor.hpp"
@@ -201,8 +200,6 @@ int main(int argc, char **argv)
             global_pointer = UAV_COUNTER;
             if (weight_trigger_check[UAV_COUNTER] == 1)
             {
-                cout << "SURVIVOR -> X: " << setprecision(4) << *survivor_x_coordinate << endl;
-                cout << "SURVIVOR -> Y: " << setprecision(4) << *survivor_y_coordinate << endl;
                 /*What needs to be implemented here?
                 1. A variable type that can be transacted across varibales, quad_node and survivor
                 2. Implement a pointer here which points to the memory location of survivor_x_coordinate & survivor_y_coordinate.
