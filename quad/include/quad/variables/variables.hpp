@@ -74,8 +74,8 @@ float waypoint_dist;
 float survivor_dist;
 
 //This is the survivor's x, y coordinate & direction. We use pointers to ensure consistancy across the files.
-float start_survivor_x_coordinate = 5.00;
-float start_survivor_y_coordinate = 5.00;
+float start_survivor_x_coordinate = 10.0;
+float start_survivor_y_coordinate = 10.0;
 float *survivor_x_coordinate = &start_survivor_x_coordinate;
 float *survivor_y_coordinate = &start_survivor_y_coordinate;
 
@@ -92,8 +92,8 @@ int *previous_second = &start_previous_second;
 int survivor_direction = 4;
 
 //UAVs current position
-int uav_y_position = 5;
-int uav_x_position = 5;
+int uav_y_position = start_survivor_x_coordinate;
+int uav_x_position = start_survivor_y_coordinate;
 
 //Corner coordinates of each of the quadrants of exploration
 int x_corner_coordinate_1 = x_max;
