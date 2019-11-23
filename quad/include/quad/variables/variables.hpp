@@ -73,18 +73,20 @@ float waypoint_dist;
 //This variable keeps track of distance between UAV's position and the survivor's position. Then compared to survivor_dist_threshold
 float survivor_dist;
 
-//This is the survivor's x, y coordinate & direction
-// float survivor_x_coordinate = 5.00;
-// float survivor_y_coordinate = 5.00;
+//This is the survivor's x, y coordinate & direction. We use pointers to ensure consistancy across the files.
+float start_survivor_x_coordinate = 5.00;
+float start_survivor_y_coordinate = 5.00;
+float *survivor_x_coordinate = &start_survivor_x_coordinate;
+float *survivor_y_coordinate = &start_survivor_y_coordinate;
+
 float velocity = 0.3;
 float time_step = 1.0;
 
 //Incorporating time variables to keep track of how often the coordinates of the survivor are sent to quad_node
 int current_second = 0;
-int previous_second = 0;
-
-float survivor_x_coordinate = 5.00;
-float survivor_y_coordinate = 5.00;
+//The start_previous_second is used to initialize the previous second pointer
+int start_previous_second = 0;
+int *previous_second = &start_previous_second;
 
 //Survivor's direction 1-> ++, 2-> -+, 3-> --, 4-> +-
 int survivor_direction = 4;
@@ -111,7 +113,9 @@ int maximum_value = 0;
 
 //Cycles through the elements of the weight map generated
 int weight_element_cycler = 0;
+//This element mowes through the pre-ordered list and interacts with the lawn_mower array
 int lawn_mower_element_cycler = 0;
+int lawn_lawn_mower_element_cycler = 0;
 
 int map_priority[y_max][x_max];
 
