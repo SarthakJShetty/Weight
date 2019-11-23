@@ -43,7 +43,6 @@ int main(int argc, char **argv)
     //Initializing the node to handle all the process associated with the code
     ros::init(argc, argv, "offb_node");
 
-    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler);
     ros::NodeHandle nh;
 
     /*
@@ -202,10 +201,14 @@ int main(int argc, char **argv)
             global_pointer = UAV_COUNTER;
             if (weight_trigger_check[UAV_COUNTER] == 1)
             {
-                cout << "SURVIVOR -> X: " << setprecision(2) << survivor_x_coordinate << endl;
-                cout << "SURVIVOR -> Y: " << setprecision(2) << survivor_y_coordinate << endl;
+                cout << "SURVIVOR -> X: " << setprecision(2) << *survivor_x_coordinate << endl;
+                cout << "SURVIVOR -> Y: " << setprecision(2) << *survivor_y_coordinate << endl;
+                /*What needs to be implemented here?
+                1. A variable type that can be transacted across varibales, quad_node and survivor
+                2. Implement a pointer here which points to the memory location of survivor_x_coordinate & survivor_y_coordinate.
+                3. The memory location is then shared across the files as oppossed to passing solely by reference*/
                 survivor_model(x_max, y_max, survivor_direction, current_second, previous_second, survivor_x_coordinate, survivor_y_coordinate, velocity, time_step);
-                survivor_dist = sqrt(pow((survivor_x_coordinate - current_position_x[UAV_COUNTER]), 2) + pow((survivor_y_coordinate - current_position_y[UAV_COUNTER]), 2));
+                survivor_dist = sqrt(pow((*survivor_x_coordinate - current_position_x[UAV_COUNTER]), 2) + pow((*survivor_y_coordinate - current_position_y[UAV_COUNTER]), 2));
                 if (survivor_dist < survivor_dist_threshold)
                 {
                     cout << "Distance < " << survivor_dist_threshold << endl;
@@ -228,7 +231,7 @@ int main(int argc, char **argv)
                 {
                     //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
                     lawn_mower_trigger_check[UAV_COUNTER] = 1;
-                    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler);
+                    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler);
                 }
             }
             else
