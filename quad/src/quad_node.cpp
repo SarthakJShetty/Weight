@@ -201,8 +201,8 @@ int main(int argc, char **argv)
             global_pointer = UAV_COUNTER;
             if (weight_trigger_check[UAV_COUNTER] == 1)
             {
-                cout << "SURVIVOR -> X: " << setprecision(2) << *survivor_x_coordinate << endl;
-                cout << "SURVIVOR -> Y: " << setprecision(2) << *survivor_y_coordinate << endl;
+                cout << "SURVIVOR -> X: " << setprecision(4) << *survivor_x_coordinate << endl;
+                cout << "SURVIVOR -> Y: " << setprecision(4) << *survivor_y_coordinate << endl;
                 /*What needs to be implemented here?
                 1. A variable type that can be transacted across varibales, quad_node and survivor
                 2. Implement a pointer here which points to the memory location of survivor_x_coordinate & survivor_y_coordinate.
@@ -215,7 +215,6 @@ int main(int argc, char **argv)
                     if (counter[UAV_COUNTER] < (y_max * x_max))
                     {
                         cout << "Human Detected by: " << UAV_COUNTER << " UAV" << endl;
-                        cout << "LOWERING" << endl;
                         counter[UAV_COUNTER] = (y_max * x_max);
                     }
                 }
