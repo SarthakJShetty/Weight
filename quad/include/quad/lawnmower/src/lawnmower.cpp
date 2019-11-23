@@ -23,7 +23,7 @@ int lawn_mower_initializer_function(int y_max, int x_max, int pre_list_lawn_mowe
     }
 }
 
-int lawn_mower_generator_function(int y_max, int x_max, int uav_x_position, int uav_y_position, int list_lawn_mower_x_indices[], int list_lawn_mower_y_indices[], int pre_list_lawn_mower_x_indices[], int pre_list_lawn_mower_y_indices[], int lawn_mower_element_cycler)
+int lawn_mower_generator_function(int y_max, int x_max, int uav_x_position, int uav_y_position, int list_lawn_mower_x_indices[], int list_lawn_mower_y_indices[], int pre_list_lawn_mower_x_indices[], int pre_list_lawn_mower_y_indices[], int lawn_mower_element_cycler, int lawn_lawn_mower_element_cycler)
 {
     lawn_mower_initializer_function(y_max, x_max, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler);
     /*This function manipulates the pre_list to give the distinct lawn-mower pattern*/
@@ -46,7 +46,7 @@ int lawn_mower_generator_function(int y_max, int x_max, int uav_x_position, int 
                     list_lawn_mower_y_indices[lawn_mower_element_cycler] = pre_list_lawn_mower_y_indices[lawn_mower_element_cycler];
                     /*cout << "Here 1: " << list_lawn_mower_x_indices[lawn_mower_element_cycler] << ", " << list_lawn_mower_y_indices[lawn_mower_element_cycler] << ", NEXT:" << pre_list_lawn_mower_x_indices[lawn_mower_element_cycler] << ", " << pre_list_lawn_mower_y_indices[lawn_mower_element_cycler] << endl;*/
                     lawn_mower_element_cycler += 1;
-                    int lawn_lawn_mower_element_cycler = lawn_mower_element_cycler;
+                    lawn_lawn_mower_element_cycler = lawn_mower_element_cycler;
                     for (int row_iterator = 0; row_iterator < y_max; row_iterator++)
                     {
                         //cout << "Looping through the mini-array that we are trying to reverse" << endl;
