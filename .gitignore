@@ -4,3 +4,5 @@ quad/Quad.code-workspace
 quad/.vscode/c_cpp_properties.json
 Quad.code-workspace
 *.vscode
+quad/include/quad/survivor/src/hello.cpp
+quad/include/quad/survivor/src/a.out
