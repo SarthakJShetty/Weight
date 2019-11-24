@@ -48,7 +48,7 @@ add_library(variables ${VARIABLES_DIR}/variables.hpp)
 set_target_properties(variables PROPERTIES LINKER_LANGUAGE CXX)
 
 add_executable(${PROJECT_NAME}_node src/quad_node.cpp ${WEIGHT_SRC_DIR}/weight.cpp ${LAWNMOWER_SRC_DIR}/lawnmower.cpp ${SURVIVOR_SRC_DIR}/survivor.cpp)
-add_executable(${PROJECT_NAME}_observer_node src/observer_node.cpp)
+add_executable(${PROJECT_NAME}_observer_node src/observer.cpp)
 
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_observer_node ${catkin_LIBRARIES})
