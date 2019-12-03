@@ -8,10 +8,12 @@ using namespace std;
 int global_pointer;
 
 //Threshld to switch to next waypoint
-float waypoint_dist_threshold = 0.3;
+float waypoint_dist_threshold = 0.5;
 
 //This variable is a threshold to check whether or not the UAV has reached the survivor's position or not
-float survivor_dist_threshold = 0.5;
+//This value has been obtained by calculating the FOV assuming a 45° observer angle and a 2m height
+//In the future, we'll design a model that dynamically adapts this value to the height of the UAV
+float survivor_dist_threshold = 4;
 
 //Declaring the number of UAVs being used here
 const int N_UAV = 1;
