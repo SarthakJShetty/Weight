@@ -206,10 +206,15 @@ int main(int argc, char **argv)
                 3. The memory location is then shared across the files as oppossed to passing solely by reference*/
                 survivor_model(x_max, y_max, survivor_direction, current_second, previous_second, survivor_x_coordinate, survivor_y_coordinate, velocity, time_step);
                 survivor_dist = sqrt(pow((*survivor_x_coordinate - current_position_x[UAV_COUNTER]), 2) + pow((*survivor_y_coordinate - current_position_y[UAV_COUNTER]), 2));
+
+                cout << "Survivor X: " << setprecision(4) << *survivor_x_coordinate << ", "
+                     << "Survivor Y: " << setprecision(4) << *survivor_y_coordinate << ", "
+                     << "Survivor Distance: " << survivor_dist << endl;
+
                 if (survivor_dist < survivor_dist_threshold)
                 {
                     cout << "Distance < " << survivor_dist_threshold << endl;
-                    if (counter[UAV_COUNTER] < (y_max * x_max))
+                    if (counter[UAV_COUNTER] < (y_max * x_max - 1))
                     {
                         cout << "Human Detected by: " << UAV_COUNTER << " UAV" << endl;
                         counter[UAV_COUNTER] = (y_max * x_max);
