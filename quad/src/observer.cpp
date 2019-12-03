@@ -37,9 +37,9 @@ int main(int argc, char **argv)
             msg.data = 1;
             chatter_pub.publish(msg);
             count += 1;
+            ros::spinOnce();
+            loop_rate.sleep();
         }
-        ros::spinOnce();
-        loop_rate.sleep();
     }
     return 0;
 }
