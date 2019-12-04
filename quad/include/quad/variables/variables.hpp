@@ -26,6 +26,7 @@ extern const int y_max;
 ros::Subscriber position_subscriber[N_UAV];
 ros::Subscriber state_sub[N_UAV];
 ros::Publisher local_pos_pub[N_UAV];
+ros::Publisher survivor_position_pub[N_UAV];
 
 //Service clients to handle ROS services
 ros::ServiceClient arming_client[N_UAV];
@@ -45,6 +46,9 @@ std_msgs::Int8 switch_msgs[N_UAV];
 
 //Declaring the pose here for both UAVs
 geometry_msgs::PoseStamped pose[N_UAV];
+
+//Declaring the pose here for both UAVs
+geometry_msgs::PoseStamped survivor_pose[N_UAV];
 
 //State of the UAVs connected/non-connected
 mavros_msgs::State current_state[N_UAV];
@@ -134,3 +138,6 @@ int lawn_mower_trigger_check[N_UAV];
 
 //This variable makes sure that each UAV generates the weighted map only once
 int weight_trigger_check[N_UAV];
+
+//This variable checks whether each of the UAVs have found the survivor or not. If triggered to one, implies that that particular UAV has found the survivor
+int survivor_detection_check[N_UAV];
