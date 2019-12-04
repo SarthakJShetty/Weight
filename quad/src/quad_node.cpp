@@ -85,6 +85,11 @@ int main(int argc, char **argv)
         cout << "local_pos_pub_string: " << local_pos_pub_string << endl;
         local_pos_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(local_pos_pub_string, 10);
 
+        string survivor_position_pub_string;
+        survivor_position_pub_string = "/uav" + pub_sub_initializer.str() + "/survivor_position";
+        cout << "survivor_position_pub_string: " << survivor_position_pub_string << endl;
+        survivor_position_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(survivor_position_pub_string, 10);
+
         //Service clients to trigger modes
         string arming_client_string;
         arming_client_string = "/uav" + pub_sub_initializer.str() + "/mavros/cmd/arming";
@@ -190,6 +195,12 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
+        survivor_detection_check[UAV_COUNTER] = 0;
+    }
+
+    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    {
+        global_pointer = UAV_COUNTER;
         cv_msgs[UAV_COUNTER].data = 0;
     }
 
@@ -203,9 +214,21 @@ int main(int argc, char **argv)
                 /*What needs to be implemented here?
                 1. A variable type that can be transacted across varibales, quad_node and survivor
                 2. Implement a pointer here which points to the memory location of survivor_x_coordinate & survivor_y_coordinate.
-                3. The memory location is then shared across the files as oppossed to passing solely by reference*/
-                survivor_model(x_max, y_max, survivor_direction, current_second, previous_second, survivor_x_coordinate, survivor_y_coordinate, velocity, time_step);
+                3. The memory location is then shared across the files as oppossed to passing solely by reference.*/
+
+                if (survivor_detection_check[UAV_COUNTER] != 1)
+                {
+                    //This condition makes sure that the survivor's model updates the coordinates in the heading reported only if the survivor has not been encountered by the UAV.
+                    survivor_model(x_max, y_max, survivor_direction, current_second, previous_second, survivor_x_coordinate, survivor_y_coordinate, velocity, time_step);
+                }
+                //Calculating the distance between the survivor's coordinates and the UAV's current position.
                 survivor_dist = sqrt(pow((*survivor_x_coordinate - current_position_x[UAV_COUNTER]), 2) + pow((*survivor_y_coordinate - current_position_y[UAV_COUNTER]), 2));
+
+                //Publishing the survivor's coordinates using the survivor_position_pub publisher for plotting and echoing.
+                survivor_pose[UAV_COUNTER].pose.position.x = *survivor_x_coordinate;
+                survivor_pose[UAV_COUNTER].pose.position.y = *survivor_y_coordinate;
+                survivor_pose[UAV_COUNTER].pose.position.z = 0;
+                survivor_position_pub[UAV_COUNTER].publish(survivor_pose[UAV_COUNTER]);
 
                 cout << "Survivor X: " << setprecision(4) << *survivor_x_coordinate << ", "
                      << "Survivor Y: " << setprecision(4) << *survivor_y_coordinate << ", "
@@ -214,10 +237,12 @@ int main(int argc, char **argv)
                 if (survivor_dist < survivor_dist_threshold)
                 {
                     cout << "Distance < " << survivor_dist_threshold << endl;
-                    if (counter[UAV_COUNTER] < (y_max * x_max - 1))
+                    if (counter[UAV_COUNTER] < (y_max * x_max))
                     {
                         cout << "Human Detected by: " << UAV_COUNTER << " UAV" << endl;
                         counter[UAV_COUNTER] = (y_max * x_max);
+                        //This check makes sure that the survivor's model does not update the survivor's location after it has been detected.
+                        survivor_detection_check[UAV_COUNTER] = 1;
                     }
                 }
             }
