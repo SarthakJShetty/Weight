@@ -22,13 +22,13 @@ def file_reader(position_file_txt, plotting_parameter):
 			x_points.append(round(float(file_elements[file_elements.index(line)+1][:-1]), 2))
 			y_points.append(round(float(file_elements[file_elements.index(line)+2][:-1]), 2))
 			z_points.append(round(float(file_elements[file_elements.index(line)+3][:-1]), 2))
-			print(round(float(file_elements[file_elements.index(line)+1][:-1]), 2), round(float(file_elements[file_elements.index(line)+2][:-1]), 2), round(float(file_elements[file_elements.index(line)+3][:-1]), 2))
+			#print(round(float(file_elements[file_elements.index(line)+1][:-1]), 2), round(float(file_elements[file_elements.index(line)+2][:-1]), 2), round(float(file_elements[file_elements.index(line)+3][:-1]), 2))
 			old_second = current_second
 		elif((current_second!=old_second) and ((plotting_parameter=='vel') or (plotting_parameter=='acc'))):
 			x_points.append(abs(round(float(file_elements[file_elements.index(line)+1][:-1]), 2)))
 			y_points.append(abs(round(float(file_elements[file_elements.index(line)+2][:-1]), 2)))
 			z_points.append(abs(round(float(file_elements[file_elements.index(line)+3][:-1]), 2)))
-			print(round(float(file_elements[file_elements.index(line)+1][:-1]), 2), round(float(file_elements[file_elements.index(line)+2][:-1]), 2), round(float(file_elements[file_elements.index(line)+3][:-1]), 2))
+			#print(round(float(file_elements[file_elements.index(line)+1][:-1]), 2), round(float(file_elements[file_elements.index(line)+2][:-1]), 2), round(float(file_elements[file_elements.index(line)+3][:-1]), 2))
 			old_second = current_second
 		else:
 			pass
