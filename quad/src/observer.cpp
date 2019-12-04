@@ -27,19 +27,13 @@ int main(int argc, char **argv)
     ros::Rate loop_rate(10);
     std_msgs::Int8 msg;
 
-    int count = 0;
-
     while (ros::ok())
     {
-        while (count < 10)
-        {
-            cout << "The observer has been triggered!" << endl;
-            msg.data = 1;
-            chatter_pub.publish(msg);
-            count += 1;
-            ros::spinOnce();
-            loop_rate.sleep();
-        }
+        cout << "The observer has been triggered!" << endl;
+        msg.data = 1;
+        chatter_pub.publish(msg);
+        ros::spinOnce();
+        loop_rate.sleep();
     }
     return 0;
 }
