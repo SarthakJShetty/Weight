@@ -10,12 +10,34 @@ There are 3 parts here:
 
 3. Stuff to work on tomorrow (_Not anymore - 23/11/2019_)
 
+## 4.0 Date: 05/12/2019
+
+**Note:** _Step function rather of an update._
+
+### 4.1 Completed:
++ Designed a model for the [survivor](https://github.com/SarthakJShetty/Weight/tree/master/quad/include/quad/survivor)! The velocity is set at 0.3 m/s, and can be varied in the [variables.hpp](https://github.com/SarthakJShetty/Weight/blob/master/quad/include/quad/variables/variables.hpp). Will be running more tests to check the robustness.
+
++ Designed new scripts to [subscribe](https://github.com/SarthakJShetty/Weight/tree/master/quad/include/quad/plotter/subber.py) to the survivor(s)'s & UAV(s)'s position and [generate](https://github.com/SarthakJShetty/Weight/tree/master/quad/include/quad/plotter/grapher.py) beautiful ```matplotlib``` [plots](https://github.com/SarthakJShetty/Weight/tree/master/assets).
+
++ The ```survivor_dist_threshold``` variable has been set to 4m, based on the assumption that the UAV has a FOV of 45°, and flies at a height of 2m. Based on this, the UAV is able to track the survivor pretty well.
+
+### 4.2 Remaining:
++ Test the survivor model by running it along different directions, with variable velocities as well.
+
++ Test out the integrated model on the UAV.
+
++ Import a TurtleBot into the environment and publish the survivor's for a more accurate description.
+
++ Figure out multi-UAV operation on a common set of coordinates.
+
++ (*Very beta*): [OctoMap](https://github.com/OctoMap) sharing between multiple agents.
+
 ## 3.0 Date: 23/11/2019
 
 **Note:** _Step function rather of an update._
 
 ### 3.1 Completed:
-+ Designed a lawn-mower planning algorithm from [scratch](https://github.com/SarthakJShetty/Weight/blob/master/quad/include/quad/lawnmower/src/lawnmower.cpp) ! It works really well! Agnostic to the dimensions of the space and symmetry of the encironment.
++ Designed a lawn-mower planning algorithm from [scratch](https://github.com/SarthakJShetty/Weight/blob/master/quad/include/quad/lawnmower/src/lawnmower.cpp) ! It works really well! Agnostic to the dimensions of the space and symmetry of the environment.
 
 + Integrated the weight-based search pattern and the lawn-mower model! It works, will be uploaded screen grabs of each implementation.
 
