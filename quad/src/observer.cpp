@@ -27,13 +27,19 @@ int main(int argc, char **argv)
     ros::Rate loop_rate(10);
     std_msgs::Int8 msg;
 
+    //This variable makes sure that the cout statement prints only 10 times once the node has been triggered.
+    int print_counter = 0;
     while (ros::ok())
     {
-        cout << "The observer has been triggered!" << endl;
-        msg.data = 1;
-        chatter_pub.publish(msg);
-        ros::spinOnce();
-        loop_rate.sleep();
+        while (print_counter < 10)
+        {
+            cout << "The observer has been triggered!" << endl;
+            msg.data = 1;
+            chatter_pub.publish(msg);
+            print_counter += 1;
+            ros::spinOnce();
+            loop_rate.sleep();
+        }
     }
     return 0;
 }
