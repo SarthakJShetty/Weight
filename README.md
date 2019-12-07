@@ -13,19 +13,19 @@ Probabilistic path planning for heterogenous UAV swarms.
 
 ## 2.0 Simulations:
 
-1. Trigger the ```ENVIRONMENT```. This launches ```mavros```, ```mavlink``` & the prototyping environment:
+2.1. Trigger the ```ENVIRONMENT```. This launches ```mavros```, ```mavlink``` & the prototyping environment:
 
         sarthak@Cipher:~/catkin_ws/src$ ./environmentlaunch.sh
 
 This triggers the ```mavros``` node to control the UAV, the ```quad_node``` which enables ```OFFBOARD``` control for autonomous navigation, and also ```sources``` the ```catkin``` environment.
 
-2. Trigger the survivor model by invoking the ```quad_observer_node``` . 
+2.2. Trigger the survivor model by invoking the ```quad_observer_node``` . 
 
         sarthak@Cipher:~/catkin_ws/src$ rosrun quad quad_observer_node
 `
 Currently, the velocity of the survivor has been set in [variables.hpp](https://github.com/SarthakJShetty/Weight/blob/master/quad/include/quad/variables/variables.hpp) to 0.3 m/s. 
 
-3. A [```subber.py```](https://github.com/SarthakJShetty/Weight/blob/master/quad/include/quad/plotter/subber.py) script has been created to subscribe to the UAV's and the survivor's position, which are described as ROS topics.
+2.3. A [```subber.py```](https://github.com/SarthakJShetty/Weight/blob/master/quad/include/quad/plotter/subber.py) script has been created to subscribe to the UAV's and the survivor's position, which are described as ROS topics.
 
         sarthak@Cipher:~/catkin_ws/src/quad/include/quad/plotter$ python subber.py
 
@@ -35,7 +35,7 @@ Right now, the script subscribes to 2 topics for plotting, ```/uavX/mavros/globa
 
 ## 3.0 Results:
 
-+ ***Note:*** *These are preliminary results being posted here. We expect more to be added here soon.*
+***Note:*** *These are preliminary results being posted here. We expect more to be added here soon.*
 
 ### 3.1 Lawn-mower search pattern:
 
