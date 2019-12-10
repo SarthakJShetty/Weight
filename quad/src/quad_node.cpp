@@ -230,16 +230,19 @@ int main(int argc, char **argv)
                 survivor_pose[UAV_COUNTER].pose.position.z = 0;
                 survivor_position_pub[UAV_COUNTER].publish(survivor_pose[UAV_COUNTER]);
 
-                cout << "Survivor X: " << setprecision(4) << *survivor_x_coordinate << ", "
+                cout << "UAV COUNTER: " << UAV_COUNTER << " "
+                     << "Survivor X: " << setprecision(4) << *survivor_x_coordinate << ", "
                      << "Survivor Y: " << setprecision(4) << *survivor_y_coordinate << ", "
                      << "Survivor Distance: " << survivor_dist << endl;
 
                 if (survivor_dist < survivor_dist_threshold)
                 {
-                    cout << "Distance < " << survivor_dist_threshold << endl;
+                    cout << "UAV COUNTER: " << UAV_COUNTER << " "
+                         << "Distance < " << survivor_dist_threshold << endl;
                     if (counter[UAV_COUNTER] < (y_max * x_max))
                     {
-                        cout << "Human Detected by: " << UAV_COUNTER << " UAV" << endl;
+                        cout << "UAV COUNTER: " << UAV_COUNTER << " "
+                             << "Human Detected" << endl;
                         counter[UAV_COUNTER] = (y_max * x_max);
                         //This check makes sure that the survivor's model does not update the survivor's location after it has been detected.
                         survivor_detection_check[UAV_COUNTER] = 1;
