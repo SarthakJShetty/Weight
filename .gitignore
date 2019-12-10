@@ -3,5 +3,3 @@
 quad/.vscode/c_cpp_properties.json
 Quad.code-workspace
 *.vscode
-quad/include/quad/plotter/uav1_pos.txt
-quad/include/quad/plotter/uav2_pos.txt
