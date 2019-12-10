@@ -41,12 +41,12 @@ Right now, the script subscribes to 2 topics for plotting, ```/uavX/mavros/globa
 
 Here, the UAV attempts to find the survivor using just the novel lawn-mower algorithm that we designed.
 
-![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/Lawn_Mower.png "Lawn Mower Pattern")
+![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/Lawn_Mower_0.3.png "Lawn Mower Pattern")
 
 ### 3.2 Probabilistic search + lawn-mower:
 
 The UAV starts out following the lawn-mower pattern, then follows the probabilistic pattern upon receiving a stream of messages from the ```quad_observer_node```, which broadcasts the survivor's last known coordinates and heading.
 
-![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/Probabilistic_Lawn_Mower.png "Probabilistic + Lawn Mower")
+![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/Probabilistic_Lawn_Mower_0.3.png "Probabilistic + Lawn Mower")
 
 ***Note:*** *We'll be adding more results here, including with variable velocities and different headings with varying trajectories.*
