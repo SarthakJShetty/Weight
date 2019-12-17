@@ -224,12 +224,6 @@ int main(int argc, char **argv)
                 //Calculating the distance between the survivor's coordinates and the UAV's current position.
                 survivor_dist = sqrt(pow((*survivor_x_coordinate - current_position_x[UAV_COUNTER]), 2) + pow((*survivor_y_coordinate - current_position_y[UAV_COUNTER]), 2));
 
-                //Publishing the survivor's coordinates using the survivor_position_pub publisher for plotting and echoing.
-                survivor_pose[UAV_COUNTER].pose.position.x = *survivor_x_coordinate;
-                survivor_pose[UAV_COUNTER].pose.position.y = *survivor_y_coordinate;
-                survivor_pose[UAV_COUNTER].pose.position.z = 0;
-                survivor_position_pub[UAV_COUNTER].publish(survivor_pose[UAV_COUNTER]);
-
                 cout << "UAV COUNTER: " << UAV_COUNTER << " "
                      << "Survivor X: " << setprecision(4) << *survivor_x_coordinate << ", "
                      << "Survivor Y: " << setprecision(4) << *survivor_y_coordinate << ", "
@@ -249,6 +243,12 @@ int main(int argc, char **argv)
                     }
                 }
             }
+            /* This else statement is opened to ensure that the survivor's coordinates are published regardless of whether or not the 
+            observer node has been triggered or not*/
+            survivor_pose[UAV_COUNTER].pose.position.x = *survivor_x_coordinate;
+            survivor_pose[UAV_COUNTER].pose.position.y = *survivor_y_coordinate;
+            survivor_pose[UAV_COUNTER].pose.position.z = 0;
+            survivor_position_pub[UAV_COUNTER].publish(survivor_pose[UAV_COUNTER]);
         }
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
         {
