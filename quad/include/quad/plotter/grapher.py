@@ -114,7 +114,7 @@ ax.plot([x_points_1[len(x_points_1)-1]], [y_points_1[len(x_points_1)-1]], [z_poi
 
 '''Plotting the entire trajectory of the survivors in the environment'''
 ax.plot(x_points_2, y_points_2, z_points_2,
-        label='Survivor\'s Trajectory', color='b')
+        label='Survivor\'s Trajectory', color='y')
 
 '''Plotting only the start point of the survivors trajectory'''
 ax.plot([x_points_2[0]], [y_points_2[0]], [z_points_2[0]],
