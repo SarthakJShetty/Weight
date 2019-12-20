@@ -8,7 +8,7 @@ import time
 
 
 def position_writer_1(data):
-    ''''Writing 1st position, i.e. UAV 1's position data.''''
+    '''Writing 1st position, i.e. UAV 1's position data.'''
     data_file = 'uav1_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
@@ -51,11 +51,11 @@ def plot():
     '''Plotting all the data here'''
     rospy.init_node('plott', anonymous=True)
     while not rospy.is_shutdown():
-    '''More subscribers can be added here'''
-    rospy.Subscriber("/uav0/mavros/global_position/local", Odometry, pos1)
-    rospy.Subscriber("/uav0/survivor_position", PoseStamped, pos2)
-    time.sleep(1)
-    rospy.spin()
+        '''More subscribers can be added here'''
+        rospy.Subscriber("/uav0/mavros/global_position/local", Odometry, pos1)
+        rospy.Subscriber("/uav0/survivor_position", PoseStamped, pos2)
+        time.sleep(1)
+        rospy.spin()
 
 
 if __name__ == '__main__':
