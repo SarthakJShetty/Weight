@@ -47,13 +47,33 @@ int locator(weighted_map map[y_max][x_max], int x_max, int y_max, int uav_x_posi
 	return 0;
 }
 
+int weight_dumper(weighted_map map[y_max][x_max], int x_max, int y_max)
+{
+	//This function takes the weightage map, runs two for loops and dumps the corresponding weight map to the disc, as a csv file.
+	//We then plot these weights as a density map, to check the weightage of the waypoints even if we cannot plot them using the grapher.py function
+	
+	//The CSV of the map generated is located at within the plotter package so that all entitities to be plotted are located in the same directory.
+	ofstream weightMapCSV("/home/sarthak/catkin_ws/src/quad/include/quad/plotter/weightMap.csv");
+	for (int i = 0; i < y_max; i++)
+	{
+		for (int j = 0; j < x_max; j++)
+		{
+			weightMapCSV << map[j][i].weight << "\t";
+		}
+		weightMapCSV << "\n";
+	}
+	weightMapCSV.close();
+}
+
 int weight_generator_function(int uav_x_position, int uav_y_position, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int map_priority[y_max][x_max], int element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
 {
 	weighted_map map[y_max][x_max];
 	weight_generator(map, x_max, y_max);
 	exploration_generator(map, x_max, y_max);
-
-	map[uav_y_position][uav_x_position].weight = 1000;
+	
+	//Note to the user who will be modifying this: As your environment gets bigger you need to manually increase this value to a larger value, other wise with larger iterations 
+	//the maximum value will be undermined by greater number of iterations.
+	map[uav_y_position][uav_x_position].weight = 300;
 
 	//Visualizing the for loops as vectors helps. Y direction as vertical movement, X as horizontal movement
 	while ((x_corner_coordinate_1 != uav_x_position))
@@ -65,7 +85,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 
 				if (survivor_direction == 1)
 				{
-					map[j][i].weight += 100;
+					map[j][i].weight += 20;
 				}
 				else if (survivor_direction == 2)
 				{
@@ -99,7 +119,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				}
 				else if (survivor_direction == 2)
 				{
-					map[j][i].weight += 100;
+					map[j][i].weight += 20;
 				}
 				else if (survivor_direction == 3)
 				{
@@ -133,7 +153,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				}
 				else if (survivor_direction == 3)
 				{
-					map[j][i].weight += 100;
+					map[j][i].weight += 20;
 				}
 				else if (survivor_direction == 4)
 				{
@@ -167,7 +187,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				}
 				else if (survivor_direction == 4)
 				{
-					map[j][i].weight += 100;
+					map[j][i].weight += 20;
 				}
 				locator(map, x_max, y_max, uav_x_position, uav_y_position);
 				cout << endl;
@@ -176,6 +196,11 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 		x_corner_coordinate_4 -= 1;
 		y_corner_coordinate_4 -= 1;
 	}
+	
+	//Extremely experimental, trying to dump the entire weightage map to a .csv file to plot it
+	//We are not including it at the end of the functions since we nullify all weights after the map population, to ensure
+	//that all weights have been prioritized and added to the list of exploration waypoints.
+	weight_dumper(map, x_max, y_max);
 
 	/*Finding the maximum element in the map
     1. Cycle through each row and find maximum
