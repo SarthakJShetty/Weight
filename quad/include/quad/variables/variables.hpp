@@ -85,7 +85,7 @@ float start_survivor_y_coordinate = 10.0;
 float *survivor_x_coordinate = &start_survivor_x_coordinate;
 float *survivor_y_coordinate = &start_survivor_y_coordinate;
 
-float velocity = 0.6;
+float velocity = 0.3;
 float time_step = 1.0;
 
 //Incorporating time variables to keep track of how often the coordinates of the survivor are sent to quad_node
