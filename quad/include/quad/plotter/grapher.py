@@ -72,7 +72,7 @@ def file_reader(position_file_txt, plotting_parameter):
 x_points_1, y_points_1, z_points_1, x_time_1, y_time_1, z_time_1, start_second_1, end_second_1 = file_reader(
     'uav1_pos.txt', 'pos')
 x_points_2, y_points_2, z_points_2, x_time_2, y_time_2, z_time_2, start_second_1, end_second_2 = file_reader(
-    'uav2_pos.txt', 'pos')
+    'survivor_pos.txt', 'pos')
 
 plt.plot(x_time_1, x_points_1)
 plt.plot(y_time_1, y_points_1)
