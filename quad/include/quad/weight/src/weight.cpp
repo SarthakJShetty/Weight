@@ -58,7 +58,7 @@ int weight_dumper(weighted_map map[y_max][x_max], int x_max, int y_max)
 	{
 		for (int j = 0; j < x_max; j++)
 		{
-			weightMapCSV << map[j][i].weight << "\t";
+			weightMapCSV << map[i][j].weight << "\t";
 		}
 		weightMapCSV << "\n";
 	}
