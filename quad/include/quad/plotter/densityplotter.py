@@ -39,7 +39,7 @@ with open(weight_file) as csv_file:
             start_row += 1
 
 '''Generating a numpy array to hold the density read from the .csv file.'''
-density = np.zeros([row, column])
+density = np.zeros([column, row])
 
 '''Using numpy arrays here for rows and columns, because colormesh takes input in these forms.'''
 column_array = np.arange(0, column)
