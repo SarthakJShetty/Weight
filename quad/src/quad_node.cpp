@@ -256,6 +256,7 @@ int main(int argc, char **argv)
             global_pointer = UAV_COUNTER;
             if (switch_msgs[UAV_COUNTER].data == 0)
             {
+                //Enter this condition if weight based is not triggered
                 if (lawn_mower_trigger_check[UAV_COUNTER] != 1)
                 {
                     //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
@@ -265,9 +266,10 @@ int main(int argc, char **argv)
             }
             else
             {
+                //Weighted exploration has been triggered here
                 if (weight_trigger_check[UAV_COUNTER] != 1)
                 {
-                    //This counter is refreshed so that the exploration can begin again.
+                    //This counter is refreshed so that the exploration can begin again. Only for that specific UAV.
                     counter[UAV_COUNTER] = 0;
                     //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
                     weight_trigger_check[UAV_COUNTER] = 1;
@@ -311,11 +313,14 @@ int main(int argc, char **argv)
 
                 if (waypoint_dist < waypoint_dist_threshold)
                 {
-                    cout << "Distance < " << waypoint_dist_threshold << endl;
+                    //Check if the UAV within the threshold distance to switch to the next waypoint
+                    cout << "UAV_COUNTER: " << UAV_COUNTER << "Distance < " << waypoint_dist_threshold << endl;
                     if (counter[UAV_COUNTER] < (y_max * x_max))
                     {
+                        //If the waypoint is within range, and counter hasn't run through all waypoint check these conditions
                         if (cv_msgs[UAV_COUNTER].data == 1)
                         {
+                            //If the waypoint can be switched, check for the presence of a survivor from the cv_msgs topic
                             cout << "Human Detected by: " << UAV_COUNTER << " UAV" << endl;
                             cout << "RTL" << endl;
                             pose[UAV_COUNTER].pose.position.x = 1;
@@ -323,6 +328,7 @@ int main(int argc, char **argv)
                             pose[UAV_COUNTER].pose.position.z = 2;
                             counter[UAV_COUNTER] = (y_max * x_max);
                         }
+                        //If UAV within switching threshold but no human detected switch the waypoint
                         cout << "Counter: " << counter[UAV_COUNTER] << endl;
                         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
                              << "Maximum_Value_X_Indices: " << counter[UAV_COUNTER] << " " << list_maximum_value_x_indices[counter[UAV_COUNTER]] << endl;
@@ -335,10 +341,11 @@ int main(int argc, char **argv)
                     }
                     else
                     {
+                        //This condition implies that the UAV has explored all the waypoints head back home.
                         cout << "UAV COUNTER: " << UAV_COUNTER << " "
                              << "RTL" << endl;
-                        pose[UAV_COUNTER].pose.position.x = 1;
-                        pose[UAV_COUNTER].pose.position.y = 1;
+                        pose[UAV_COUNTER].pose.position.x = 0;
+                        pose[UAV_COUNTER].pose.position.y = 0;
                         pose[UAV_COUNTER].pose.position.z = 2;
                     }
                 }
