@@ -4,3 +4,9 @@ quad/.vscode/c_cpp_properties.json
 quad/build
 Quad.code-workspace
 *.vscode
+quad/include/quad/plotter/SurvivorCoordinates.png
+quad/include/quad/plotter/Trajectories.png
+quad/include/quad/plotter/UAV1Coordinates.png
+quad/include/quad/plotter/UAV2Coordinates.png
+quad/include/quad/plotter/weightMap.png
+quad/include/quad/plotter/weightMap.csv
