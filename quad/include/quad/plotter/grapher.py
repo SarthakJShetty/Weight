@@ -72,6 +72,8 @@ def file_reader(position_file_txt, plotting_parameter):
 x_points_1, y_points_1, z_points_1, x_time_1, y_time_1, z_time_1, start_second_1, end_second_1 = file_reader(
     'uav1_pos.txt', 'pos')
 x_points_2, y_points_2, z_points_2, x_time_2, y_time_2, z_time_2, start_second_1, end_second_2 = file_reader(
+    'uav2_pos.txt', 'pos')
+x_points_3, y_points_3, z_points_3, x_time_3, y_time_3, z_time_3, start_second_3, end_second_3 = file_reader(
     'survivor_pos.txt', 'pos')
 
 plt.plot(x_time_1, x_points_1)
@@ -81,15 +83,27 @@ plt.title('UAV 1 Coordinates vs Time')
 plt.xlabel("Seconds (s)")
 plt.ylabel("X/Y/Z Position")
 plt.legend(['X Position', 'Y Position', 'Z Position'])
+plt.savefig('UAV1Coordinates.png')
 plt.show()
 
 plt.plot(x_time_2, x_points_2)
 plt.plot(y_time_2, y_points_2)
 plt.plot(z_time_2, z_points_2)
+plt.title('UAV 2 Coordinates vs Time')
+plt.xlabel("Seconds (s)")
+plt.ylabel("X/Y/Z Position")
+plt.legend(['X Position', 'Y Position', 'Z Position'])
+plt.savefig('UAV2Coordinates.png')
+plt.show()
+
+plt.plot(x_time_3, x_points_3)
+plt.plot(y_time_3, y_points_3)
+plt.plot(z_time_3, z_points_3)
 plt.title('Survivor\'s Coordinates vs Time')
 plt.xlabel("Seconds (s)")
 plt.ylabel("X/Y/Z Position")
 plt.legend(['X Position', 'Y Position', 'Z Position'])
+plt.savefig('SurvivorCoordinates.png')
 plt.show()
 
 '''These points are required to plot the boundaries of the environment in the 3D plot'''
@@ -100,28 +114,40 @@ z_points_4 = [0, 0, 0, 0, 0]
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-'''Plotting the entire trajectory of the UAV in the environment'''
+'''Plotting the entire trajectory of UAV 1 in the environment'''
 ax.plot(x_points_1, y_points_1, z_points_1,
         label='UAV 1 Trajectory', color='r')
 
-'''Plotting only the start point of the UAV trajectory'''
+'''Plotting only the start point of UAV 1 trajectory'''
 ax.plot([x_points_1[0]], [y_points_1[0]], [z_points_1[0]],
-        label='UAV 1 Start Point', color='g', marker='o')
+        label='UAV 1 Start Point', color='g', marker='x')
 
-'''Plotting only the end point of the UAV trajectory'''
+'''Plotting only the end point of UAV 1 trajectory'''
 ax.plot([x_points_1[len(x_points_1)-1]], [y_points_1[len(x_points_1)-1]], [z_points_1[len(x_points_1)-1]],
-        label='UAV 1 End Point', color='r', marker='o')
+        label='UAV 1 End Point', color='r', marker='x')
+
+'''Plotting the entire trajectory of UAV 2 in the environment'''
+ax.plot(x_points_2, y_points_2, z_points_2,
+        label='UAV 2 Trajectory', color='b')
+
+'''Plotting only the start point of UAV 2 trajectory'''
+ax.plot([x_points_2[0]], [y_points_2[0]], [z_points_2[0]],
+        label='UAV 2 Start Point', color='g', marker='o')
+
+'''Plotting only the end point of UAV 2 trajectory'''
+ax.plot([x_points_2[len(x_points_2)-1]], [y_points_2[len(x_points_2)-1]], [z_points_2[len(x_points_2)-1]],
+        label='UAV 2 End Point', color='r', marker='o')
 
 '''Plotting the entire trajectory of the survivors in the environment'''
-ax.plot(x_points_2, y_points_2, z_points_2,
+ax.plot(x_points_3, y_points_3, z_points_3,
         label='Survivor\'s Trajectory', color='y')
 
 '''Plotting only the start point of the survivors trajectory'''
-ax.plot([x_points_2[0]], [y_points_2[0]], [z_points_2[0]],
+ax.plot([x_points_3[0]], [y_points_3[0]], [z_points_3[0]],
         label='Survivor\'s Start Point', color='g', marker='D')
 
 '''Plotting only the end point of the survivors trajectory'''
-ax.plot([x_points_2[len(x_points_2)-1]], [y_points_2[len(x_points_2)-1]], [z_points_2[len(x_points_2)-1]],
+ax.plot([x_points_3[len(x_points_3)-1]], [y_points_3[len(x_points_3)-1]], [z_points_3[len(x_points_3)-1]],
         label='Survivor\'s End Point', color='r', marker='D')
 
 '''Plotting the environment boundary'''
@@ -139,5 +165,5 @@ ax.set_xlabel('Y Axis')
 ax.set_ylabel('X Axis')
 ax.set_zlabel('Z Axis')
 ax.legend(loc='best', title='Trajectories', numpoints=1)
-
+plt.savefig('Trajectories.png')
 plt.show()
