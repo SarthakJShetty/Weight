@@ -47,7 +47,7 @@ def pos1(data):
 
 def pos2(data):
     '''Subscribes to the 1st position, i.e. UAV 2's position data.'''
-    print("Subscribing to UAV 1 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
+    print("Subscribing to UAV 2 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
         data.pose.pose.position.y), str(data.pose.pose.position.x), (str(data.pose.pose.position.z))))
     position_writer_2(str(data.pose.pose.position.x))
     position_writer_2(str(data.pose.pose.position.y))
