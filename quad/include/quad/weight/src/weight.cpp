@@ -54,15 +54,33 @@ int weight_dumper(weighted_map map[y_max][x_max], int x_max, int y_max)
 	
 	//The CSV of the map generated is located at within the plotter package so that all entitities to be plotted are located in the same directory.
 	ofstream weightMapCSV("/home/sarthak/catkin_ws/src/quad/include/quad/plotter/weightMap.csv");
-	for (int i = 0; i < y_max; i++)
+	for (int j = 0; j < y_max; j++)
 	{
-		for (int j = 0; j < x_max; j++)
+		for (int i = 0; i < x_max; i++)
 		{
-			weightMapCSV << map[i][j].weight << "\t";
+			weightMapCSV << map[j][i].weight << "\t";
 		}
 		weightMapCSV << "\n";
 	}
 	weightMapCSV.close();
+}
+
+int priority_dumper(int map_priority[y_max][x_max], int x_max, int y_max)
+{
+	//This function takes the weightage map, runs two for loops and dumps the corresponding weight map to the disc, as a csv file.
+	//We then plot these weights as a density map, to check the weightage of the waypoints even if we cannot plot them using the grapher.py function
+	
+	//The CSV of the map generated is located at within the plotter package so that all entitities to be plotted are located in the same directory.
+	ofstream priorityMapCSV("/home/sarthak/catkin_ws/src/quad/include/quad/plotter/priorityMap.csv");
+	for (int j = 0; j < y_max; j++)
+	{
+		for (int i = 0; i < x_max; i++)
+		{
+			priorityMapCSV << map_priority[j][i] << "\t";
+		}
+		priorityMapCSV << "\n";
+	}
+	priorityMapCSV.close();
 }
 
 int weight_generator_function(int uav_x_position, int uav_y_position, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int map_priority[y_max][x_max], int element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
@@ -82,10 +100,9 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 		{
 			for (int i = (uav_x_position + 1); i < x_corner_coordinate_1; i++)
 			{
-
 				if (survivor_direction == 1)
 				{
-					map[j][i].weight += 20;
+					map[j][i].weight += 50;
 				}
 				else if (survivor_direction == 2)
 				{
@@ -119,7 +136,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				}
 				else if (survivor_direction == 2)
 				{
-					map[j][i].weight += 20;
+					map[j][i].weight += 50;
 				}
 				else if (survivor_direction == 3)
 				{
@@ -153,7 +170,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				}
 				else if (survivor_direction == 3)
 				{
-					map[j][i].weight += 20;
+					map[j][i].weight += 50;
 				}
 				else if (survivor_direction == 4)
 				{
@@ -187,7 +204,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				}
 				else if (survivor_direction == 4)
 				{
-					map[j][i].weight += 20;
+					map[j][i].weight += 50;
 				}
 				locator(map, x_max, y_max, uav_x_position, uav_y_position);
 				cout << endl;
@@ -259,5 +276,6 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 		}
 		cout << endl;
 	}
+	priority_dumper(map_priority, x_max, y_max);
 	return 0;
 }
