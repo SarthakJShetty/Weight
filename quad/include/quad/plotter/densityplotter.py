@@ -45,7 +45,7 @@ density = np.zeros([column, row])
 column_array = np.arange(0, column)
 row_array = np.arange(0, row)
 
-with open('weightMap.csv') as csv_file:
+with open(weight_file) as csv_file:
     read_file = csv.reader(csv_file, delimiter='\t')
     for (y_element, element) in zip(column_array, read_file):
         for (x_element, by_element) in zip(row_array, element):
