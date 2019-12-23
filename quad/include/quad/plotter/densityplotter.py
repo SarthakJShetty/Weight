@@ -53,7 +53,7 @@ with open(weight_file) as csv_file:
                 density[y_element, x_element] = by_element
 
 '''Plotting the weights here using matplotlib's colormesh functionality. Setting the colormap to 'jet' to ensure better contrast between smaller magnitudes.'''
-plt.pcolormesh(density, cmap = plt.viridis())
+plt.pcolormesh(density, cmap = plt.jet())
 
 '''Adding a colorbar to understand the value of the different weights & their intensity.'''
 cb = plt.colorbar()
