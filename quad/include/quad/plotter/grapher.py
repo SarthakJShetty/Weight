@@ -76,8 +76,8 @@ x_points_2, y_points_2, z_points_2, x_time_2, y_time_2, z_time_2, start_second_1
 x_points_3, y_points_3, z_points_3, x_time_3, y_time_3, z_time_3, start_second_3, end_second_3 = file_reader(
     'survivor_pos.txt', 'pos')
 
-plt.plot(x_time_1, x_points_1)
 plt.plot(y_time_1, y_points_1)
+plt.plot(x_time_1, x_points_1)
 plt.plot(z_time_1, z_points_1)
 plt.title('UAV 1 Coordinates vs Time')
 plt.xlabel("Seconds (s)")
@@ -86,8 +86,8 @@ plt.legend(['X Position', 'Y Position', 'Z Position'])
 plt.savefig('UAV1Coordinates.png')
 plt.show()
 
-plt.plot(x_time_2, x_points_2)
 plt.plot(y_time_2, y_points_2)
+plt.plot(x_time_2, x_points_2)
 plt.plot(z_time_2, z_points_2)
 plt.title('UAV 2 Coordinates vs Time')
 plt.xlabel("Seconds (s)")
@@ -96,8 +96,8 @@ plt.legend(['X Position', 'Y Position', 'Z Position'])
 plt.savefig('UAV2Coordinates.png')
 plt.show()
 
-plt.plot(x_time_3, x_points_3)
 plt.plot(y_time_3, y_points_3)
+plt.plot(x_time_3, x_points_3)
 plt.plot(z_time_3, z_points_3)
 plt.title('Survivor\'s Coordinates vs Time')
 plt.xlabel("Seconds (s)")
@@ -128,7 +128,7 @@ ax.plot([x_points_1[len(x_points_1)-1]], [y_points_1[len(x_points_1)-1]], [z_poi
 
 '''Plotting the entire trajectory of UAV 2 in the environment'''
 ax.plot(x_points_2, y_points_2, z_points_2,
-        label='UAV 2 Trajectory', color='b')
+        label='UAV 2 Trajectory', color='c')
 
 '''Plotting only the start point of UAV 2 trajectory'''
 ax.plot([x_points_2[0]], [y_points_2[0]], [z_points_2[0]],
