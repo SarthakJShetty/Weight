@@ -79,13 +79,16 @@ float waypoint_dist;
 //This variable keeps track of distance between UAV's position and the survivor's position. Then compared to survivor_dist_threshold
 float survivor_dist;
 
-//This is the survivor's x, y coordinate & direction. We use pointers to ensure consistancy across the files.
+//This is the survivor's x, y coordinate & direction. We use pointers to ensure consistancy across the files
 float start_survivor_x_coordinate = 10.0;
 float start_survivor_y_coordinate = 10.0;
+//Survivor coordinate is continuously updated from the start_survivor_coordinate
 float *survivor_x_coordinate = &start_survivor_x_coordinate;
 float *survivor_y_coordinate = &start_survivor_y_coordinate;
 
+//Velocity of the survivor
 float velocity = 0.6;
+//Time step to calculate the next set of survivor coordinates from the previous velocity
 float time_step = 1.0;
 
 //Incorporating time variables to keep track of how often the coordinates of the survivor are sent to quad_node
