@@ -87,7 +87,7 @@ float *survivor_x_coordinate = &start_survivor_x_coordinate;
 float *survivor_y_coordinate = &start_survivor_y_coordinate;
 
 //Velocity of the survivor
-float velocity = 0.6;
+float velocity = 0.3;
 //Time step to calculate the next set of survivor coordinates from the previous velocity
 float time_step = 1.0;
 
