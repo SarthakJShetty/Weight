@@ -77,7 +77,7 @@ int counter[N_UAV];
 float waypoint_dist;
 
 //This variable keeps track of distance between UAV's position and the survivor's position. Then compared to survivor_dist_threshold
-float survivor_dist;
+float survivor_dist[N_UAV];
 
 //This is the survivor's x, y coordinate & direction. We use pointers to ensure consistancy across the files
 float start_survivor_x_coordinate = 10.0;

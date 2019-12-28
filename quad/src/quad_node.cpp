@@ -59,21 +59,26 @@ int main(int argc, char **argv)
         pub_sub_initializer << pre_pub_sub_initializer;
 
         //Subscribes declared here
-        string cv_node_subsciber_string;
-        cv_node_subsciber_string = "/uav" + pub_sub_initializer.str() + "/cv_node";
-        cout << "cv_node_subscriber_string: " << cv_node_subsciber_string << endl;
-        cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int8>(cv_node_subsciber_string, 10, cv_sub);
 
-        string switch_node_subsciber_string;
-        switch_node_subsciber_string = "/uav" + pub_sub_initializer.str() + "/switch_node";
-        cout << "switch_node_subscriber_string: " << switch_node_subsciber_string << endl;
-        switch_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int8>(switch_node_subsciber_string, 10, switch_sub);
+        //Subscriber which states if the CV system has detected the survivor or not
+        string cv_node_subscriber_string;
+        cv_node_subscriber_string = "/uav" + pub_sub_initializer.str() + "/cv_node";
+        cout << "cv_node_subscriber_string: " << cv_node_subscriber_string << endl;
+        cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int8>(cv_node_subscriber_string, 10, cv_sub);
 
+        //This topic is what the observer publishes to when it notices a survivor in its vicinity
+        string switch_node_subscriber_string;
+        switch_node_subscriber_string = "/uav" + pub_sub_initializer.str() + "/switch_node";
+        cout << "switch_node_subscriber_string: " << switch_node_subscriber_string << endl;
+        switch_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int8>(switch_node_subscriber_string, 10, switch_sub);
+
+        //Subscribes to the local position of the UAVs
         string position_subscriber_string;
         position_subscriber_string = "/uav" + pub_sub_initializer.str() + "/mavros/global_position/local";
         cout << "position_subscriber_string: " << position_subscriber_string << endl;
         position_subscriber[pre_pub_sub_initializer] = nh.subscribe<nav_msgs::Odometry>(position_subscriber_string, 10, pose_sub);
 
+        //Subscribes to the state of the UAV, such as armed, offboard etc
         string state_sub_string;
         state_sub_string = "/uav" + pub_sub_initializer.str() + "/mavros/state";
         cout << "state_sub_string: " << state_sub_string << endl;
@@ -119,7 +124,8 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
-        cout << "PRESENTING POSE OF UAV: " << UAV_COUNTER << endl;
+        cout << "UAV COUNTER: " << UAV_COUNTER << " "
+             << "PRESENTING POSE OF UAV: " << UAV_COUNTER << endl;
         cout << "X: " << pose[UAV_COUNTER].pose.position.x << endl;
         cout << "Y: " << pose[UAV_COUNTER].pose.position.y << endl;
         cout << "Z: " << pose[UAV_COUNTER].pose.position.z << endl;
@@ -132,7 +138,8 @@ int main(int argc, char **argv)
         global_pointer = UAV_COUNTER;
         if (!current_state[UAV_COUNTER].connected)
         {
-            cout << "CURRENT_STATE" << endl;
+            cout << "UAV COUNTER: " << UAV_COUNTER << " "
+                 << "CURRENT_STATE" << endl;
             connected_state_counter += 1;
         }
     }
@@ -163,14 +170,16 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
-        cout << "OFFBOARD TRIGGER 1" << endl;
+        cout << "UAV_COUNTER: " << UAV_COUNTER << " "
+             << "OFFBOARD TRIGGER 1" << endl;
         offb_set_mode[UAV_COUNTER].request.custom_mode = "OFFBOARD";
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
-        cout << "ARMING 1" << endl;
+        cout << "UAV_COUNTER: " << UAV_COUNTER << " "
+             << "ARMING 1" << endl;
         arm_cmd[UAV_COUNTER].request.value = true;
     }
 
@@ -221,20 +230,22 @@ int main(int argc, char **argv)
                     //This condition makes sure that the survivor's model updates the coordinates in the heading reported only if the survivor has not been encountered by the UAV.
                     survivor_model(x_max, y_max, survivor_direction, current_second, previous_second, survivor_x_coordinate, survivor_y_coordinate, velocity, time_step);
                 }
-                //Calculating the distance between the survivor's coordinates and the UAV's current position.
-                survivor_dist = sqrt(pow((*survivor_x_coordinate - current_position_x[UAV_COUNTER]), 2) + pow((*survivor_y_coordinate - current_position_y[UAV_COUNTER]), 2));
+                //Calculating the distance between the survivor's coordinates and the UAV's current position, once the weight based search has been triggered.
+                survivor_dist[UAV_COUNTER] = sqrt(pow((*survivor_x_coordinate - current_position_x[UAV_COUNTER]), 2) + pow((*survivor_y_coordinate - current_position_y[UAV_COUNTER]), 2));
 
                 cout << "UAV COUNTER: " << UAV_COUNTER << " "
                      << "Survivor X: " << setprecision(4) << *survivor_x_coordinate << ", "
                      << "Survivor Y: " << setprecision(4) << *survivor_y_coordinate << ", "
-                     << "Survivor Distance: " << survivor_dist << endl;
+                     << "Survivor Distance: " << survivor_dist[UAV_COUNTER] << endl;
 
-                if (survivor_dist < survivor_dist_threshold)
+                if (survivor_dist[UAV_COUNTER] < survivor_dist_threshold)
                 {
+                    //If survivor position is within the calculated threshold
                     cout << "UAV COUNTER: " << UAV_COUNTER << " "
                          << "Distance < " << survivor_dist_threshold << endl;
                     if (counter[UAV_COUNTER] < (y_max * x_max))
                     {
+                        //If survivor within the calulcated threshold and counter hasn't been set to (y_max * x_max), send a detected message to the CL and set counter to (y_max * x_max)
                         cout << "UAV COUNTER: " << UAV_COUNTER << " "
                              << "Human Detected" << endl;
                         counter[UAV_COUNTER] = (y_max * x_max);
@@ -293,7 +304,7 @@ int main(int argc, char **argv)
                 //Difference between the current position and the next waypoint (x, y)
                 waypoint_dist = sqrt(pow((pose[UAV_COUNTER].pose.position.x - current_position_x[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.y - current_position_y[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.z - current_position_z[UAV_COUNTER]), 2));
 
-                //From hereon out, we switch the X and Y coordinates to match that of the map
+                //From hereon out, we transform the coordinate system to match the prototyping environment.
 
                 //Printing the current position of the UAV
                 cout << "UAV_COUNTER: " << UAV_COUNTER << " "
@@ -311,6 +322,7 @@ int main(int argc, char **argv)
                 cout << "UAV_COUNTER: " << UAV_COUNTER << " "
                      << "Current Z Waypoint: " << pose[UAV_COUNTER].pose.position.z << endl;
 
+                //This is the computer vision block. Looks just like the survivor model bit
                 if (waypoint_dist < waypoint_dist_threshold)
                 {
                     //Check if the UAV within the threshold distance to switch to the next waypoint
