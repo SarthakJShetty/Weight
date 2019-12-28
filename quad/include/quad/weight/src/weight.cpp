@@ -92,7 +92,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 
 	//Note to the user who will be modifying this: As your environment gets bigger you need to manually increase this value to a larger value, other wise with larger iterations
 	//the maximum value will be undermined by greater number of iterations.
-	map[uav_y_position][uav_x_position].weight = 1000;
+	map[uav_y_position][uav_x_position].weight = 5000;
 
 	//Visualizing the for loops as vectors helps. Y direction as vertical movement, X as horizontal movement
 	while ((x_corner_coordinate_1 != uav_x_position))
@@ -103,11 +103,11 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 			{
 				if (survivor_direction == 1)
 				{
-					map[j][i].weight += 100;
+					map[j][i].weight += 200;
 				}
 				else if (survivor_direction == 2)
 				{
-					map[j][i].weight += 5;
+					map[j][i].weight += 11;
 				}
 				else if (survivor_direction == 3)
 				{
@@ -115,7 +115,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				}
 				else if (survivor_direction == 4)
 				{
-					map[j][i].weight += 5;
+					map[j][i].weight += 11;
 				}
 				locator(map, x_max, y_max, uav_x_position, uav_y_position);
 				std::cout << endl;
@@ -133,15 +133,15 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 			{
 				if (survivor_direction == 1)
 				{
-					map[j][i].weight += 5;
+					map[j][i].weight += 11;
 				}
 				else if (survivor_direction == 2)
 				{
-					map[j][i].weight += 100;
+					map[j][i].weight += 200;
 				}
 				else if (survivor_direction == 3)
 				{
-					map[j][i].weight += 5;
+					map[j][i].weight += 11;
 				}
 				else if (survivor_direction == 4)
 				{
@@ -167,15 +167,15 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				}
 				else if (survivor_direction == 2)
 				{
-					map[j][i].weight += 5;
+					map[j][i].weight += 11;
 				}
 				else if (survivor_direction == 3)
 				{
-					map[j][i].weight += 100;
+					map[j][i].weight += 200;
 				}
 				else if (survivor_direction == 4)
 				{
-					map[j][i].weight += 5;
+					map[j][i].weight += 11;
 				}
 				locator(map, x_max, y_max, uav_x_position, uav_y_position);
 				std::cout << endl;
@@ -193,7 +193,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 			{
 				if (survivor_direction == 1)
 				{
-					map[j][i].weight += 5;
+					map[j][i].weight += 11;
 				}
 				else if (survivor_direction == 2)
 				{
@@ -201,11 +201,11 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 				}
 				else if (survivor_direction == 3)
 				{
-					map[j][i].weight += 5;
+					map[j][i].weight += 11;
 				}
 				else if (survivor_direction == 4)
 				{
-					map[j][i].weight += 100;
+					map[j][i].weight += 200;
 				}
 				locator(map, x_max, y_max, uav_x_position, uav_y_position);
 				std::cout << endl;
