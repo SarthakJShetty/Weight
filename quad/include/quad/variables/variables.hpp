@@ -27,6 +27,7 @@ ros::Subscriber position_subscriber[N_UAV];
 ros::Subscriber state_sub[N_UAV];
 ros::Publisher local_pos_pub[N_UAV];
 ros::Publisher survivor_position_pub[N_UAV];
+ros::Publisher counter_pub[N_UAV];
 
 //Service clients to handle ROS services
 ros::ServiceClient arming_client[N_UAV];
@@ -43,6 +44,8 @@ ros::Subscriber switch_node[N_UAV];
 std_msgs::Int8 cv_msgs[N_UAV];
 //This variable keeps track of which search pattern is being triggered
 std_msgs::Int8 switch_msgs[N_UAV];
+//This counter is used to publish the counter value for diagnostics primarily
+std_msgs::Int8 counter_msgs[N_UAV];
 
 //Declaring the pose here for both UAVs
 geometry_msgs::PoseStamped pose[N_UAV];
@@ -70,11 +73,11 @@ float current_position_x[N_UAV];
 float current_position_y[N_UAV];
 float current_position_z[N_UAV];
 
-//This keeps track of the waypoint currently conveyed to the UAV. If = 100 stops
+//This keeps track of the waypoint currently conveyed to the UAV. If counter[N_UAV] = n*m stops
 int counter[N_UAV];
 
 //Distance keeps track of initial position and desired positon
-float waypoint_dist;
+float waypoint_dist[N_UAV];
 
 //This variable keeps track of distance between UAV's position and the survivor's position. Then compared to survivor_dist_threshold
 float survivor_dist[N_UAV];
