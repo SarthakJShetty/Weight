@@ -17,16 +17,16 @@ void state_cb(const mavros_msgs::State::ConstPtr &msg)
     current_state[global_pointer] = *msg;
 }
 
-void cv_sub(const std_msgs::Int8 msg)
+void cv_sub(const std_msgs::Int8::ConstPtr &msg)
 {
     //This callback function subscribes to the computer-vision code node and checks if a survivor has been found in the field-of-view of the UAVs camera
-    cv_msgs[global_pointer] = msg;
+    cv_msgs[global_pointer] = *msg;
 }
 
-void switch_sub(const std_msgs::Int8 msg)
+void switch_sub(const std_msgs::Int8::ConstPtr &msg)
 {
     //This callback function interacts with the observer node. If a non-zero value is received the topic triggers a switch to the weight-based trajectory planning
-    switch_msgs[global_pointer] = msg;
+    switch_msgs[global_pointer] = *msg;
 }
 
 void pose_sub(const nav_msgs::Odometry msg)
@@ -90,10 +90,16 @@ int main(int argc, char **argv)
         cout << "local_pos_pub_string: " << local_pos_pub_string << endl;
         local_pos_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(local_pos_pub_string, 10);
 
+        //The observer publishes to this topic when it notices a survivor in their vicinity
         string survivor_position_pub_string;
         survivor_position_pub_string = "/uav" + pub_sub_initializer.str() + "/survivor_position";
         cout << "survivor_position_pub_string: " << survivor_position_pub_string << endl;
         survivor_position_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(survivor_position_pub_string, 10);
+
+        string counter_pub_string;
+        counter_pub_string = "/uav" + pub_sub_initializer.str() + "/waypoint_counter_element";
+        cout << "counter_pub_string: " << counter_pub_string << endl;
+        counter_pub[pre_pub_sub_initializer] = nh.advertise<std_msgs::Int8>(counter_pub_string, 10);
 
         //Service clients to trigger modes
         string arming_client_string;
@@ -118,7 +124,7 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
-        counter[UAV_COUNTER] = -1;
+        counter[UAV_COUNTER] = 0;
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
@@ -136,12 +142,14 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
-        if (!current_state[UAV_COUNTER].connected)
+        if (current_state[UAV_COUNTER].connected)
         {
             cout << "UAV COUNTER: " << UAV_COUNTER << " "
                  << "CURRENT_STATE" << endl;
             connected_state_counter += 1;
         }
+        ros::spinOnce();
+        rate.sleep();
     }
 
     // wait for FCU connection
@@ -211,6 +219,18 @@ int main(int argc, char **argv)
     {
         global_pointer = UAV_COUNTER;
         cv_msgs[UAV_COUNTER].data = 0;
+    }
+    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    {
+        global_pointer = UAV_COUNTER;
+        counter[UAV_COUNTER] = 0;
+    }
+    
+    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    {
+        global_pointer = UAV_COUNTER;
+        counter_msgs[UAV_COUNTER].data = counter[UAV_COUNTER];
+        counter_pub[UAV_COUNTER].publish(counter_msgs[UAV_COUNTER]);
     }
 
     while (ros::ok())
@@ -291,18 +311,18 @@ int main(int argc, char **argv)
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
         {
             global_pointer = UAV_COUNTER;
-            if (counter[UAV_COUNTER] == -1)
+            if (counter[UAV_COUNTER] == 0)
             {
-                counter[UAV_COUNTER] += 1;
                 //Initial set of coordinates being published to the position topic of the UAV
                 pose[UAV_COUNTER].pose.position.x = list_maximum_value_y_indices[counter[UAV_COUNTER]];
                 pose[UAV_COUNTER].pose.position.y = list_maximum_value_x_indices[counter[UAV_COUNTER]];
                 pose[UAV_COUNTER].pose.position.z = 2;
+                counter[UAV_COUNTER] += 1;
             }
             else
             {
                 //Difference between the current position and the next waypoint (x, y)
-                waypoint_dist = sqrt(pow((pose[UAV_COUNTER].pose.position.x - current_position_x[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.y - current_position_y[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.z - current_position_z[UAV_COUNTER]), 2));
+                waypoint_dist[UAV_COUNTER] = sqrt(pow((pose[UAV_COUNTER].pose.position.x - current_position_x[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.y - current_position_y[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.z - current_position_z[UAV_COUNTER]), 2));
 
                 //From hereon out, we transform the coordinate system to match the prototyping environment.
 
@@ -323,7 +343,7 @@ int main(int argc, char **argv)
                      << "Current Z Waypoint: " << pose[UAV_COUNTER].pose.position.z << endl;
 
                 //This is the computer vision block. Looks just like the survivor model bit
-                if (waypoint_dist < waypoint_dist_threshold)
+                if (waypoint_dist[UAV_COUNTER] < waypoint_dist_threshold)
                 {
                     //Check if the UAV within the threshold distance to switch to the next waypoint
                     cout << "UAV_COUNTER: " << UAV_COUNTER << "Distance < " << waypoint_dist_threshold << endl;
@@ -340,21 +360,26 @@ int main(int argc, char **argv)
                             pose[UAV_COUNTER].pose.position.z = 2;
                             counter[UAV_COUNTER] = (y_max * x_max);
                         }
-                        //If UAV within switching threshold but no human detected switch the waypoint
-                        cout << "Counter: " << counter[UAV_COUNTER] << endl;
-                        cout << "UAV_COUNTER: " << UAV_COUNTER << " "
-                             << "Maximum_Value_X_Indices: " << counter[UAV_COUNTER] << " " << list_maximum_value_x_indices[counter[UAV_COUNTER]] << endl;
-                        cout << "UAV_COUNTER: " << UAV_COUNTER << " "
-                             << "Maximum_Value_Y_Indices: " << counter[UAV_COUNTER] << " " << list_maximum_value_y_indices[counter[UAV_COUNTER]] << endl;
-                        pose[UAV_COUNTER].pose.position.x = list_maximum_value_y_indices[counter[UAV_COUNTER]];
-                        pose[UAV_COUNTER].pose.position.y = list_maximum_value_x_indices[counter[UAV_COUNTER]];
-                        pose[UAV_COUNTER].pose.position.z = 2;
-                        counter[UAV_COUNTER] += 1;
+                        else
+                        {
+                            //If UAV within switching threshold but no human detected switch the waypoint
+                            cout << "Counter: " << counter[UAV_COUNTER] << endl;
+                            cout << "UAV_COUNTER: " << UAV_COUNTER << " "
+                                 << "Maximum_Value_X_Indices: " << counter[UAV_COUNTER] << " " << list_maximum_value_x_indices[counter[UAV_COUNTER]] << endl;
+                            cout << "UAV_COUNTER: " << UAV_COUNTER << " "
+                                 << "Maximum_Value_Y_Indices: " << counter[UAV_COUNTER] << " " << list_maximum_value_y_indices[counter[UAV_COUNTER]] << endl;
+                            pose[UAV_COUNTER].pose.position.x = list_maximum_value_y_indices[counter[UAV_COUNTER]];
+                            pose[UAV_COUNTER].pose.position.y = list_maximum_value_x_indices[counter[UAV_COUNTER]];
+                            pose[UAV_COUNTER].pose.position.z = 2;
+                            counter[UAV_COUNTER] += 1;
+                        }
                     }
                     else
                     {
                         //This condition implies that the UAV has explored all the waypoints head back home.
                         cout << "UAV COUNTER: " << UAV_COUNTER << " "
+                             << "No Survivor Found"
+                             << " "
                              << "RTL" << endl;
                         pose[UAV_COUNTER].pose.position.x = 0;
                         pose[UAV_COUNTER].pose.position.y = 0;
@@ -366,7 +391,7 @@ int main(int argc, char **argv)
             {
                 if (set_mode_client[UAV_COUNTER].call(offb_set_mode[UAV_COUNTER]) && offb_set_mode[UAV_COUNTER].response.mode_sent)
                 {
-                    cout << "UAV COUNTER: " << UAV_COUNTER << " Offboard enabled 2" << endl;
+                    cout << "UAV COUNTER: " << UAV_COUNTER << " Offboard Enabled 2" << endl;
                 }
                 last_request[UAV_COUNTER] = ros::Time::now();
             }
@@ -376,13 +401,16 @@ int main(int argc, char **argv)
                 {
                     if (arming_client[UAV_COUNTER].call(arm_cmd[UAV_COUNTER]) && arm_cmd[UAV_COUNTER].response.success)
                     {
-                        cout << "UAV COUNTER: " << UAV_COUNTER << " Vehicle armed 2" << endl;
+                        cout << "UAV COUNTER: " << UAV_COUNTER << " Vehicle Armed 2" << endl;
                     }
                     last_request[UAV_COUNTER] = ros::Time::now();
                 }
             }
-
+            global_pointer = UAV_COUNTER;
             local_pos_pub[UAV_COUNTER].publish(pose[UAV_COUNTER]);
+
+            counter_msgs[UAV_COUNTER].data = counter[UAV_COUNTER];
+            counter_pub[UAV_COUNTER].publish(counter_msgs[UAV_COUNTER]);
 
             ros::spinOnce();
             rate.sleep();
