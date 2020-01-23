@@ -246,11 +246,11 @@ int main(int argc, char **argv)
     {
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
         {
-            //Here, the survivor coordinate's point to the respective element of the survivor coordinate array.
-            //This variable is refreshed each time we run the loop, and the value overwritten by the respective element of the coordinate array.
+            global_pointer = UAV_COUNTER;
+            /*Here, the survivor coordinate's point to the respective element of the survivor coordinate array.
+            This variable is refreshed each time we run the loop, and the value overwritten by the respective element of the coordinate array.*/
             *survivor_x_coordinate = survivor_x_coordinate_array[UAV_COUNTER];
             *survivor_y_coordinate = survivor_y_coordinate_array[UAV_COUNTER];
-            global_pointer = UAV_COUNTER;
             if (weight_trigger_check[UAV_COUNTER] == 1)
             {
                 /*What needs to be implemented here?
@@ -303,17 +303,7 @@ int main(int argc, char **argv)
         {
             //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
             global_pointer = UAV_COUNTER;
-            if (switch_msgs[UAV_COUNTER].data == 0)
-            {
-                //Enter this condition if weight based is not triggered
-                if (lawn_mower_trigger_check[UAV_COUNTER] != 1)
-                {
-                    //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
-                    lawn_mower_trigger_check[UAV_COUNTER] = 1;
-                    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler);
-                }
-            }
-            else
+            if (switch_msgs[UAV_COUNTER].data == 1)
             {
                 //Weighted exploration has been triggered here
                 if (weight_trigger_check[UAV_COUNTER] != 1)
@@ -323,6 +313,16 @@ int main(int argc, char **argv)
                     //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
                     weight_trigger_check[UAV_COUNTER] = 1;
                     weight_generator_function(uav_x_position, uav_y_position, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, map_priority, weight_element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
+                }
+                //Enter this condition if weight based is not triggered
+            }
+            else if (switch_msgs[UAV_COUNTER].data == 0)
+            {
+                if (lawn_mower_trigger_check[UAV_COUNTER] != 1)
+                {
+                    //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
+                    lawn_mower_trigger_check[UAV_COUNTER] = 1;
+                    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler);
                 }
             }
         }
@@ -337,7 +337,7 @@ int main(int argc, char **argv)
                 pose[UAV_COUNTER].pose.position.z = 2;
                 counter[UAV_COUNTER] += 1;
             }
-            else
+            else if (counter[UAV_COUNTER] > 0)
             {
                 //Difference between the current position and the next waypoint (x, y)
                 waypoint_dist[UAV_COUNTER] = sqrt(pow((pose[UAV_COUNTER].pose.position.x - current_position_x[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.y - current_position_y[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.z - current_position_z[UAV_COUNTER]), 2));
