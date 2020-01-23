@@ -12,8 +12,8 @@
 using namespace std;
 
 //Boundaries of the flood environment
-const int x_max = 20;
-const int y_max = 20;
+const int x_max = 18;
+const int y_max = 18;
 
 //Creating a structure which contains the weights assigned to each coordinate and an exploration status
 struct weighted_map
