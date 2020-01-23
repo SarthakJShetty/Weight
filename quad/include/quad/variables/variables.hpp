@@ -85,9 +85,14 @@ float survivor_dist[N_UAV];
 //This is the survivor's x, y coordinate & direction. We use pointers to ensure consistancy across the files
 float start_survivor_x_coordinate = 10.0;
 float start_survivor_y_coordinate = 10.0;
+
 //Survivor coordinate is continuously updated from the start_survivor_coordinate
 float *survivor_x_coordinate = &start_survivor_x_coordinate;
 float *survivor_y_coordinate = &start_survivor_y_coordinate;
+
+//Experimental! Introducing survivor coordinates as arrays so that coordinates are truly seperate for UAV 1 and UAV N
+float survivor_x_coordinate_array[N_UAV];
+float survivor_y_coordinate_array[N_UAV];
 
 //Velocity of the survivor
 float velocity = 0.3;

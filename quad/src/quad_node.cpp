@@ -225,7 +225,7 @@ int main(int argc, char **argv)
         global_pointer = UAV_COUNTER;
         counter[UAV_COUNTER] = 0;
     }
-    
+
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = UAV_COUNTER;
@@ -233,10 +233,23 @@ int main(int argc, char **argv)
         counter_pub[UAV_COUNTER].publish(counter_msgs[UAV_COUNTER]);
     }
 
+    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    {
+        /*Here, we initialize the N-Dimensioned array to the default start point of the survivor.
+        We do this to ensure that different survivor positions are ported to the respective publishers of the UAVs.*/
+        global_pointer = UAV_COUNTER;
+        survivor_x_coordinate_array[UAV_COUNTER] = start_survivor_x_coordinate;
+        survivor_y_coordinate_array[UAV_COUNTER] = start_survivor_y_coordinate;
+    }
+
     while (ros::ok())
     {
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
         {
+            //Here, the survivor coordinate's point to the respective element of the survivor coordinate array.
+            //This variable is refreshed each time we run the loop, and the value overwritten by the respective element of the coordinate array.
+            *survivor_x_coordinate = survivor_x_coordinate_array[UAV_COUNTER];
+            *survivor_y_coordinate = survivor_y_coordinate_array[UAV_COUNTER];
             global_pointer = UAV_COUNTER;
             if (weight_trigger_check[UAV_COUNTER] == 1)
             {
@@ -274,10 +287,15 @@ int main(int argc, char **argv)
                     }
                 }
             }
+
+            //Refreshing the survivor coordinate arrays with the newly updated survivor coordinate pointers
+            survivor_x_coordinate_array[UAV_COUNTER] = *survivor_x_coordinate;
+            survivor_y_coordinate_array[UAV_COUNTER] = *survivor_y_coordinate;
+
             /* This else statement is opened to ensure that the survivor's coordinates are published regardless of whether or not the 
             observer node has been triggered or not*/
-            survivor_pose[UAV_COUNTER].pose.position.x = *survivor_x_coordinate;
-            survivor_pose[UAV_COUNTER].pose.position.y = *survivor_y_coordinate;
+            survivor_pose[UAV_COUNTER].pose.position.x = survivor_x_coordinate_array[UAV_COUNTER];
+            survivor_pose[UAV_COUNTER].pose.position.y = survivor_y_coordinate_array[UAV_COUNTER];
             survivor_pose[UAV_COUNTER].pose.position.z = 0;
             survivor_position_pub[UAV_COUNTER].publish(survivor_pose[UAV_COUNTER]);
         }
