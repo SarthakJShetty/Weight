@@ -79,5 +79,5 @@ for weight_file in weight_files:
         plt.title('Priority of Waypoints')
 
     '''Splitting the filename at the extension, extracting only the first part and appending a png to it to save it to disc.'''
-    plt.savefig(weight_file.split('.')[0]+'.png')
+    plt.savefig('/home/sarthak/catkin_ws/src/assets/'+weight_file.split('.')[0]+'.png')
     plt.show()
