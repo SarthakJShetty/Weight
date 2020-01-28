@@ -46,7 +46,7 @@ std_msgs::Int8 cv_msgs[N_UAV];
 //This variable keeps track of which search pattern is being triggered
 std_msgs::Int8 switch_msgs[N_UAV];
 //This counter is used to publish the counter value for diagnostics primarily
-std_msgs::Int8 counter_msgs[N_UAV];
+std_msgs::Int32 counter_msgs[N_UAV];
 
 //Declaring the pose here for both UAVs
 geometry_msgs::PoseStamped pose[N_UAV];

@@ -6,6 +6,7 @@
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
 #include <std_msgs/Int8.h>
+#include <std_msgs/Int32.h>
 #include <math.h>
 #include "weight.hpp"
 #include "lawnmower.hpp"
@@ -99,7 +100,7 @@ int main(int argc, char **argv)
         string counter_pub_string;
         counter_pub_string = "/uav" + pub_sub_initializer.str() + "/waypoint_counter_element";
         cout << "counter_pub_string: " << counter_pub_string << endl;
-        counter_pub[pre_pub_sub_initializer] = nh.advertise<std_msgs::Int8>(counter_pub_string, 10);
+        counter_pub[pre_pub_sub_initializer] = nh.advertise<std_msgs::Int32>(counter_pub_string, 10);
 
         //Service clients to trigger modes
         string arming_client_string;
