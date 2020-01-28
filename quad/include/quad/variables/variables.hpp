@@ -21,6 +21,7 @@ const int N_UAV = 2;
 //Boundaries of the flood environment
 extern const int x_max;
 extern const int y_max;
+extern const int grid_points;
 
 //Subscribers and publishers declared here
 ros::Subscriber position_subscriber[N_UAV];

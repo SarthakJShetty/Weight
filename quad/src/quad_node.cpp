@@ -276,12 +276,12 @@ int main(int argc, char **argv)
                     //If survivor position is within the calculated threshold
                     cout << "UAV COUNTER: " << UAV_COUNTER << " "
                          << "Distance < " << survivor_dist_threshold << endl;
-                    if (counter[UAV_COUNTER] < (y_max * x_max))
+                    if (counter[UAV_COUNTER] < (grid_points))
                     {
-                        //If survivor within the calulcated threshold and counter hasn't been set to (y_max * x_max), send a detected message to the CL and set counter to (y_max * x_max)
+                        //If survivor within the calulcated threshold and counter hasn't been set to (grid_points), send a detected message to the CL and set counter to (grid_points)
                         cout << "UAV COUNTER: " << UAV_COUNTER << " "
                              << "Human Detected" << endl;
-                        counter[UAV_COUNTER] = (y_max * x_max);
+                        counter[UAV_COUNTER] = (grid_points);
                         //This check makes sure that the survivor's model does not update the survivor's location after it has been detected.
                         survivor_detection_check[UAV_COUNTER] = 1;
                     }
@@ -365,7 +365,7 @@ int main(int argc, char **argv)
                 {
                     //Check if the UAV within the threshold distance to switch to the next waypoint
                     cout << "UAV_COUNTER: " << UAV_COUNTER << "Distance < " << waypoint_dist_threshold << endl;
-                    if (counter[UAV_COUNTER] < (y_max * x_max))
+                    if (counter[UAV_COUNTER] < (grid_points))
                     {
                         //If the waypoint is within range, and counter hasn't run through all waypoint check these conditions
                         if (cv_msgs[UAV_COUNTER].data == 1)
@@ -376,7 +376,7 @@ int main(int argc, char **argv)
                             pose[UAV_COUNTER].pose.position.x = 1;
                             pose[UAV_COUNTER].pose.position.y = 1;
                             pose[UAV_COUNTER].pose.position.z = 2;
-                            counter[UAV_COUNTER] = (y_max * x_max);
+                            counter[UAV_COUNTER] = (grid_points);
                         }
                         else
                         {
@@ -397,7 +397,7 @@ int main(int argc, char **argv)
                         //This condition implies that the UAV has explored all the waypoints head back home.
                         cout << "UAV COUNTER: " << UAV_COUNTER << " "
                              << "No Survivor Found"
-                             << " "
+                             << " " << counter[UAV_COUNTER] << " "
                              << "RTL" << endl;
                         pose[UAV_COUNTER].pose.position.x = 0;
                         pose[UAV_COUNTER].pose.position.y = 0;

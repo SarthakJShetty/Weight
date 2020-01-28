@@ -14,6 +14,7 @@ using namespace std;
 //Boundaries of the flood environment
 const int x_max = 18;
 const int y_max = 18;
+const int grid_points = y_max * x_max;
 
 //Creating a structure which contains the weights assigned to each coordinate and an exploration status
 struct weighted_map
