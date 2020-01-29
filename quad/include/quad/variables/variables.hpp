@@ -5,7 +5,7 @@
 using namespace std;
 
 //Testing a theory here. Experimental!
-int global_pointer;
+int *global_pointer;
 
 //Threshld to switch to next waypoint
 float waypoint_dist_threshold = 0.5;
@@ -42,9 +42,9 @@ ros::Subscriber cv_node[N_UAV];
 ros::Subscriber switch_node[N_UAV];
 
 //Generating an integer to store the binary value sent over by the CV node
-std_msgs::Int8 cv_msgs[N_UAV];
+std_msgs::Int32 cv_msgs[N_UAV];
 //This variable keeps track of which search pattern is being triggered
-std_msgs::Int8 switch_msgs[N_UAV];
+std_msgs::Int32 switch_msgs[N_UAV];
 //This counter is used to publish the counter value for diagnostics primarily
 std_msgs::Int32 counter_msgs[N_UAV];
 
