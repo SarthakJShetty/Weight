@@ -54,7 +54,7 @@ for weight_file in weight_files:
                     density[y_element, x_element] = by_element
 
     '''Importing a colormap here (Jet!) and reversing it to better infer the priority of the waypoints.'''
-    colormap = plt.cm.get_cmap('jet_r')
+    colormap = plt.cm.get_cmap('viridis')
 
     '''Plotting the weights here using matplotlib's colormesh functionality. Setting the colormap to 'jet' to ensure better contrast between smaller magnitudes.'''
     plt.pcolormesh(density, cmap= colormap)
