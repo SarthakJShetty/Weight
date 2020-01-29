@@ -5,7 +5,6 @@
 #include <mavros_msgs/CommandTOL.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
-#include <std_msgs/Int8.h>
 #include <std_msgs/Int32.h>
 #include <math.h>
 #include "weight.hpp"
@@ -13,29 +12,29 @@
 #include "survivor.hpp"
 #include "variables.hpp"
 
-void state_cb(const mavros_msgs::State::ConstPtr &msg)
+void state_cb(const mavros_msgs::State::ConstPtr &state_msg)
 {
-    current_state[global_pointer] = *msg;
+    current_state[*global_pointer] = *state_msg;
 }
 
-void cv_sub(const std_msgs::Int8::ConstPtr &msg)
+void cv_sub(const std_msgs::Int32::ConstPtr &cv_msg)
 {
     //This callback function subscribes to the computer-vision code node and checks if a survivor has been found in the field-of-view of the UAVs camera
-    cv_msgs[global_pointer] = *msg;
+    cv_msgs[*global_pointer] = *cv_msg;
 }
 
-void switch_sub(const std_msgs::Int8::ConstPtr &msg)
+void switch_sub(const std_msgs::Int32::ConstPtr &switch_msg)
 {
     //This callback function interacts with the observer node. If a non-zero value is received the topic triggers a switch to the weight-based trajectory planning
-    switch_msgs[global_pointer] = *msg;
+    switch_msgs[*global_pointer] = *switch_msg;
 }
 
-void pose_sub(const nav_msgs::Odometry msg)
+void pose_sub(const nav_msgs::Odometry odom_msg)
 {
     //Subscribing to the current position of the UAV
-    current_position_x[global_pointer] = msg.pose.pose.position.x;
-    current_position_y[global_pointer] = msg.pose.pose.position.y;
-    current_position_z[global_pointer] = msg.pose.pose.position.z;
+    current_position_x[*global_pointer] = odom_msg.pose.pose.position.x;
+    current_position_y[*global_pointer] = odom_msg.pose.pose.position.y;
+    current_position_z[*global_pointer] = odom_msg.pose.pose.position.z;
 }
 
 int main(int argc, char **argv)
@@ -55,7 +54,7 @@ int main(int argc, char **argv)
 
     for (int pre_pub_sub_initializer = 0; pre_pub_sub_initializer < N_UAV; pre_pub_sub_initializer++)
     {
-        global_pointer = pre_pub_sub_initializer;
+        global_pointer = &pre_pub_sub_initializer;
         stringstream pub_sub_initializer;
         pub_sub_initializer << pre_pub_sub_initializer;
 
@@ -64,73 +63,72 @@ int main(int argc, char **argv)
         //Subscriber which states if the CV system has detected the survivor or not
         string cv_node_subscriber_string;
         cv_node_subscriber_string = "/uav" + pub_sub_initializer.str() + "/cv_node";
-        cout << "cv_node_subscriber_string: " << cv_node_subscriber_string << endl;
-        cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int8>(cv_node_subscriber_string, 10, cv_sub);
+        //cout << "cv_node_subscriber_string: " << cv_node_subscriber_string << endl;
+        cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int32>(cv_node_subscriber_string, 10, cv_sub);
 
         //This topic is what the observer publishes to when it notices a survivor in its vicinity
         string switch_node_subscriber_string;
         switch_node_subscriber_string = "/uav" + pub_sub_initializer.str() + "/switch_node";
-        cout << "switch_node_subscriber_string: " << switch_node_subscriber_string << endl;
-        switch_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int8>(switch_node_subscriber_string, 10, switch_sub);
+        //cout << "switch_node_subscriber_string: " << switch_node_subscriber_string << endl;
+        switch_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int32>(switch_node_subscriber_string, 10, switch_sub);
 
         //Subscribes to the local position of the UAVs
         string position_subscriber_string;
         position_subscriber_string = "/uav" + pub_sub_initializer.str() + "/mavros/global_position/local";
-        cout << "position_subscriber_string: " << position_subscriber_string << endl;
+        //cout << "position_subscriber_string: " << position_subscriber_string << endl;
         position_subscriber[pre_pub_sub_initializer] = nh.subscribe<nav_msgs::Odometry>(position_subscriber_string, 10, pose_sub);
 
         //Subscribes to the state of the UAV, such as armed, offboard etc
         string state_sub_string;
         state_sub_string = "/uav" + pub_sub_initializer.str() + "/mavros/state";
-        cout << "state_sub_string: " << state_sub_string << endl;
+        //cout << "state_sub_string: " << state_sub_string << endl;
         state_sub[pre_pub_sub_initializer] = nh.subscribe<mavros_msgs::State>(state_sub_string, 10, state_cb);
 
         //Publishers declared here
         string local_pos_pub_string;
         local_pos_pub_string = "/uav" + pub_sub_initializer.str() + "/mavros/setpoint_position/local";
-        cout << "local_pos_pub_string: " << local_pos_pub_string << endl;
+        //cout << "local_pos_pub_string: " << local_pos_pub_string << endl;
         local_pos_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(local_pos_pub_string, 10);
 
         //The observer publishes to this topic when it notices a survivor in their vicinity
         string survivor_position_pub_string;
         survivor_position_pub_string = "/uav" + pub_sub_initializer.str() + "/survivor_position";
-        cout << "survivor_position_pub_string: " << survivor_position_pub_string << endl;
+        //cout << "survivor_position_pub_string: " << survivor_position_pub_string << endl;
         survivor_position_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(survivor_position_pub_string, 10);
 
         string counter_pub_string;
         counter_pub_string = "/uav" + pub_sub_initializer.str() + "/waypoint_counter_element";
-        cout << "counter_pub_string: " << counter_pub_string << endl;
+        //cout << "counter_pub_string: " << counter_pub_string << endl;
         counter_pub[pre_pub_sub_initializer] = nh.advertise<std_msgs::Int32>(counter_pub_string, 10);
 
         //Service clients to trigger modes
         string arming_client_string;
         arming_client_string = "/uav" + pub_sub_initializer.str() + "/mavros/cmd/arming";
-        cout << "arming_client_string: " << arming_client_string << endl;
+        //cout << "arming_client_string: " << arming_client_string << endl;
         arming_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandBool>(arming_client_string);
 
         string set_mode_client_string;
         set_mode_client_string = "/uav" + pub_sub_initializer.str() + "/mavros/set_mode";
-        cout << "set_mode_client_string: " << set_mode_client_string << endl;
+        //cout << "set_mode_client_string: " << set_mode_client_string << endl;
         set_mode_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::SetMode>(set_mode_client_string);
 
         string take_off_string;
         take_off_string = "/uav" + pub_sub_initializer.str() + "/mavros/cmd/takeoff";
+        //cout << "take_off_string: " << take_off_string << endl;
         takeoff_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
-
-        cout << endl;
     }
 
     ros::Rate rate(20.0);
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         counter[UAV_COUNTER] = 0;
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         cout << "UAV COUNTER: " << UAV_COUNTER << " "
              << "PRESENTING POSE OF UAV: " << UAV_COUNTER << endl;
         cout << "X: " << pose[UAV_COUNTER].pose.position.x << endl;
@@ -142,7 +140,7 @@ int main(int argc, char **argv)
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         if (current_state[UAV_COUNTER].connected)
         {
             cout << "UAV COUNTER: " << UAV_COUNTER << " "
@@ -164,7 +162,7 @@ int main(int argc, char **argv)
     //Send a few setpoints before starting
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         for (int i = 100; ros::ok() && i > 0; --i)
         {
             cout << "UAV_COUNTER: " << UAV_COUNTER << " "
@@ -178,7 +176,7 @@ int main(int argc, char **argv)
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
              << "OFFBOARD TRIGGER 1" << endl;
         offb_set_mode[UAV_COUNTER].request.custom_mode = "OFFBOARD";
@@ -186,7 +184,7 @@ int main(int argc, char **argv)
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
              << "ARMING 1" << endl;
         arm_cmd[UAV_COUNTER].request.value = true;
@@ -194,42 +192,42 @@ int main(int argc, char **argv)
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         last_request[UAV_COUNTER] = ros::Time::now();
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         lawn_mower_trigger_check[UAV_COUNTER] = 0;
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         weight_trigger_check[UAV_COUNTER] = 0;
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         survivor_detection_check[UAV_COUNTER] = 0;
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         cv_msgs[UAV_COUNTER].data = 0;
     }
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         counter[UAV_COUNTER] = 0;
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         counter_msgs[UAV_COUNTER].data = counter[UAV_COUNTER];
         counter_pub[UAV_COUNTER].publish(counter_msgs[UAV_COUNTER]);
     }
@@ -238,7 +236,7 @@ int main(int argc, char **argv)
     {
         /*Here, we initialize the N-Dimensioned array to the default start point of the survivor.
         We do this to ensure that different survivor positions are ported to the respective publishers of the UAVs.*/
-        global_pointer = UAV_COUNTER;
+        global_pointer = &UAV_COUNTER;
         survivor_x_coordinate_array[UAV_COUNTER] = start_survivor_x_coordinate;
         survivor_y_coordinate_array[UAV_COUNTER] = start_survivor_y_coordinate;
     }
@@ -247,7 +245,7 @@ int main(int argc, char **argv)
     {
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
         {
-            global_pointer = UAV_COUNTER;
+            global_pointer = &UAV_COUNTER;
             /*Here, the survivor coordinate's point to the respective element of the survivor coordinate array.
             This variable is refreshed each time we run the loop, and the value overwritten by the respective element of the coordinate array.*/
             *survivor_x_coordinate = survivor_x_coordinate_array[UAV_COUNTER];
@@ -303,7 +301,7 @@ int main(int argc, char **argv)
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
         {
             //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
-            global_pointer = UAV_COUNTER;
+            global_pointer = &UAV_COUNTER;
             if (switch_msgs[UAV_COUNTER].data == 1)
             {
                 //Weighted exploration has been triggered here
@@ -329,7 +327,7 @@ int main(int argc, char **argv)
         }
         for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
         {
-            global_pointer = UAV_COUNTER;
+            global_pointer = &UAV_COUNTER;
             if (counter[UAV_COUNTER] == 0)
             {
                 //Initial set of coordinates being published to the position topic of the UAV
@@ -378,6 +376,7 @@ int main(int argc, char **argv)
                             pose[UAV_COUNTER].pose.position.y = 1;
                             pose[UAV_COUNTER].pose.position.z = 2;
                             counter[UAV_COUNTER] = (grid_points);
+                            survivor_detection_check[UAV_COUNTER] = 1;
                         }
                         else
                         {
@@ -393,12 +392,24 @@ int main(int argc, char **argv)
                             counter[UAV_COUNTER] += 1;
                         }
                     }
-                    else
+                    else if (counter[UAV_COUNTER] == (grid_points) && survivor_detection_check[UAV_COUNTER] == 1)
                     {
-                        //This condition implies that the UAV has explored all the waypoints head back home.
+                        //This condition implies that the UAV has found the survivor, which has resulted in the counter being
+                        //assigned to grid_points and survivor_detection_check equating to 1.
                         cout << "UAV COUNTER: " << UAV_COUNTER << " "
-                             << "No Survivor Found"
-                             << " " << counter[UAV_COUNTER] << " "
+                             << "Survivor Status: " << survivor_detection_check[UAV_COUNTER]
+                             << " "
+                             << "RTL" << endl;
+                        pose[UAV_COUNTER].pose.position.x = 0;
+                        pose[UAV_COUNTER].pose.position.y = 0;
+                        pose[UAV_COUNTER].pose.position.z = 2;
+                    }
+                    else if (counter[UAV_COUNTER] == (grid_points) && survivor_detection_check[UAV_COUNTER] == 0)
+                    {
+                        //This condition implies that the UAV has not found the survivor and now needs to head back to the origin.
+                        cout << "UAV COUNTER: " << UAV_COUNTER << " "
+                             << "Survivor Status: " << survivor_detection_check[UAV_COUNTER]
+                             << " "
                              << "RTL" << endl;
                         pose[UAV_COUNTER].pose.position.x = 0;
                         pose[UAV_COUNTER].pose.position.y = 0;
@@ -425,7 +436,7 @@ int main(int argc, char **argv)
                     last_request[UAV_COUNTER] = ros::Time::now();
                 }
             }
-            global_pointer = UAV_COUNTER;
+            global_pointer = &UAV_COUNTER;
             local_pos_pub[UAV_COUNTER].publish(pose[UAV_COUNTER]);
 
             counter_msgs[UAV_COUNTER].data = counter[UAV_COUNTER];
