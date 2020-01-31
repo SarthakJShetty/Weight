@@ -6,6 +6,7 @@
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
 #include <std_msgs/Int32.h>
+#include <std_msgs/Bool.h>
 #include <math.h>
 #include "weight.hpp"
 #include "lawnmower.hpp"
@@ -23,7 +24,7 @@ void cv_sub(const std_msgs::Int32::ConstPtr &cv_msg)
     cv_msgs[*global_pointer] = *cv_msg;
 }
 
-void switch_sub(const std_msgs::Int32::ConstPtr &switch_msg)
+void switch_sub(const std_msgs::Bool::ConstPtr &switch_msg)
 {
     //This callback function interacts with the observer node. If a non-zero value is received the topic triggers a switch to the weight-based trajectory planning
     switch_msgs[*global_pointer] = *switch_msg;
@@ -70,7 +71,7 @@ int main(int argc, char **argv)
         string switch_node_subscriber_string;
         switch_node_subscriber_string = "/uav" + pub_sub_initializer.str() + "/switch_node";
         //cout << "switch_node_subscriber_string: " << switch_node_subscriber_string << endl;
-        switch_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int32>(switch_node_subscriber_string, 10, switch_sub);
+        switch_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Bool>(switch_node_subscriber_string, 10, switch_sub);
 
         //Subscribes to the local position of the UAVs
         string position_subscriber_string;
@@ -222,6 +223,12 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = &UAV_COUNTER;
+        switch_msgs[UAV_COUNTER].data = false;
+    }
+
+    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+    {
+        global_pointer = &UAV_COUNTER;
         counter[UAV_COUNTER] = 0;
     }
 
@@ -302,7 +309,7 @@ int main(int argc, char **argv)
         {
             //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
             global_pointer = &UAV_COUNTER;
-            if (switch_msgs[UAV_COUNTER].data == 1)
+            if (switch_msgs[UAV_COUNTER].data == true)
             {
                 //Weighted exploration has been triggered here
                 if (weight_trigger_check[UAV_COUNTER] != 1)
@@ -315,7 +322,7 @@ int main(int argc, char **argv)
                 }
                 //Enter this condition if weight based is not triggered
             }
-            else if (switch_msgs[UAV_COUNTER].data == 0)
+            else if (switch_msgs[UAV_COUNTER].data == false)
             {
                 if (lawn_mower_trigger_check[UAV_COUNTER] != 1)
                 {
