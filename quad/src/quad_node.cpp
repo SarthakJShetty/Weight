@@ -18,7 +18,7 @@ void state_cb(const mavros_msgs::State::ConstPtr &state_msg)
     current_state[*global_pointer] = *state_msg;
 }
 
-void cv_sub(const std_msgs::Int32::ConstPtr &cv_msg)
+void cv_sub(const std_msgs::Bool::ConstPtr &cv_msg)
 {
     //This callback function subscribes to the computer-vision code node and checks if a survivor has been found in the field-of-view of the UAVs camera
     cv_msgs[*global_pointer] = *cv_msg;
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
         string cv_node_subscriber_string;
         cv_node_subscriber_string = "/uav" + pub_sub_initializer.str() + "/cv_node";
         //cout << "cv_node_subscriber_string: " << cv_node_subscriber_string << endl;
-        cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int32>(cv_node_subscriber_string, 10, cv_sub);
+        cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Bool>(cv_node_subscriber_string, 10, cv_sub);
 
         //This topic is what the observer publishes to when it notices a survivor in its vicinity
         string switch_node_subscriber_string;
@@ -220,6 +220,7 @@ int main(int argc, char **argv)
         global_pointer = &UAV_COUNTER;
         cv_msgs[UAV_COUNTER].data = 0;
     }
+
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = &UAV_COUNTER;
