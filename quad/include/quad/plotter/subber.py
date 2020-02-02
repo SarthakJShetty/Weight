@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+'''This script subscribes to the position of the individual agents and also the survivor.
+The script is split into two bits, one set that saves the subscribed position and the subscribers. The data is dumped as a .txt file,
+and is then plotted by the grapher.py code that presents temporal variations in the position.
+
+-Sarthak
+(02/02/2020)'''
+
 import rospy
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry
@@ -41,7 +48,7 @@ def pos1(data):
     position_writer_1(str(data.pose.pose.position.x))
     position_writer_1(str(data.pose.pose.position.y))
     position_writer_1(str(data.pose.pose.position.z))
-    position_writer_1(("SECONDS:"+str(datetime.datetime.now().time().minute) +
+    position_writer_1(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
                        str(datetime.datetime.now().time().second)))
 
 
@@ -52,7 +59,7 @@ def pos2(data):
     position_writer_2(str(data.pose.pose.position.x))
     position_writer_2(str(data.pose.pose.position.y))
     position_writer_2(str(data.pose.pose.position.z))
-    position_writer_2(("SECONDS:"+str(datetime.datetime.now().time().minute) +
+    position_writer_2(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
                        str(datetime.datetime.now().time().second)))
 
 
@@ -63,7 +70,7 @@ def pos3(data):
     position_writer_3(str(data.pose.position.x))
     position_writer_3(str(data.pose.position.y))
     position_writer_3(str(data.pose.position.z))
-    position_writer_3(("SECONDS:"+str(datetime.datetime.now().time().minute) +
+    position_writer_3(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
                        str(datetime.datetime.now().time().second)))
 
 
