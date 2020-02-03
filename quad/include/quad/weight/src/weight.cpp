@@ -86,12 +86,17 @@ int priority_dumper(int map_priority[y_max][x_max], int x_max, int y_max)
 
 int weight_generator_function(int uav_x_position, int uav_y_position, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int map_priority[y_max][x_max], int element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
 {
+	/*NOTE: These weights are manually set after brief hand-calculations of the maximum possible weights in either quadrant. Depending on your environment
+	you have to set these values accordingly.
+	Next steps would be define the constraints as a Linear Programming Problem and assign weights for each quadrant.*/
+
 	weighted_map map[y_max][x_max];
 	weight_generator(map, x_max, y_max);
 	exploration_generator(map, x_max, y_max);
 
-	//Note to the user who will be modifying this: As your environment gets bigger you need to manually increase this value to a larger value, other wise with larger iterations
-	//the maximum value will be undermined by greater number of iterations.
+	/*NOTE: To the user who will be modifying this: As your environment gets bigger you need to manually increase this value to a larger value, other wise with larger iterations
+	the maximum value will be undermined by greater number of iterations.*/
+
 	map[uav_y_position][uav_x_position].weight = 5000;
 
 	//Visualizing the for loops as vectors helps. Y direction as vertical movement, X as horizontal movement
@@ -215,7 +220,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, int surviv
 		y_corner_coordinate_4 -= 1;
 	}
 
-	//Extremely experimental, trying to dump the entire weightage map to a .csv file to plot it
+	//Dumping the entire weightage map to a .csv file to plot it
 	//We are not including it at the end of the functions since we nullify all weights after the map population, to ensure
 	//that all weights have been prioritized and added to the list of exploration waypoints.
 	weight_dumper(map, x_max, y_max);

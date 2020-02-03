@@ -4,7 +4,7 @@
 
 using namespace std;
 
-//Testing a theory here. Experimental!
+//global_pointer points to the corresponding publisher/subscriber combination at the top of the ROS code while subscribing to the individual agent's parameters
 int *global_pointer;
 
 //Threshld to switch to next waypoint
@@ -91,7 +91,7 @@ float start_survivor_y_coordinate = 10.0;
 float *survivor_x_coordinate = &start_survivor_x_coordinate;
 float *survivor_y_coordinate = &start_survivor_y_coordinate;
 
-//Experimental! Introducing survivor coordinates as arrays so that coordinates are truly seperate for UAV 1 and UAV N
+//Introducing survivor coordinates as arrays so that coordinates are truly seperate for UAV i and UAV j ∀ i, j ∈ {0, N}
 float survivor_x_coordinate_array[N_UAV];
 float survivor_y_coordinate_array[N_UAV];
 
