@@ -65,7 +65,7 @@ int weight_dumper(weighted_map map[y_max][x_max], int x_max, int y_max)
 	weightMapCSV.close();
 }
 
-int priority_dumper(int map_priority[y_max][x_max], int x_max, int y_max)
+int priority_dumper(weighted_map map[y_max][x_max], int x_max, int y_max)
 {
 	//This function takes the weightage map, runs two for loops and dumps the corresponding weight map to the disc, as a csv file.
 	//We then plot the priority of the weights as a density map, to check the priority of the waypoints even if we cannot plot them using the grapher.py function from the locations of the UAV
@@ -77,7 +77,7 @@ int priority_dumper(int map_priority[y_max][x_max], int x_max, int y_max)
 	{
 		for (int i = 0; i < x_max; i++)
 		{
-			priorityMapCSV << map_priority[j][i] << "\t";
+			priorityMapCSV << map[j][i].priority << "\t";
 		}
 		priorityMapCSV << "\n";
 	}
@@ -111,7 +111,7 @@ int weighting_function(int uav_x_position, int uav_y_position, float &X_1, float
 	X_5 = (X_1 * n_set * 10);
 }
 
-int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1, float &X_2, float &X_3, float X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int map_priority[y_max][x_max], int weight_element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
+int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1, float &X_2, float &X_3, float X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int weight_element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
 {
 	weighted_map map[y_max][x_max];
 
@@ -282,7 +282,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 
 					if (maximum_value != 0)
 					{
-						map_priority[row_iterator_2][column_iterator_2] = weight_element_cycler;
+						map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
 						list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
 						list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
 					}
@@ -300,14 +300,14 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 		std::cout << "Maximum Value Y Index:" << list_maximum_value_y_indices[i] << endl;
 	}
 
-	for (int i = 0; i < y_max; i++)
+	for (int j = 0; j < y_max; j++)
 	{
-		for (int j = 0; j < x_max; j++)
+		for (int i = 0; i < x_max; i++)
 		{
-			std::cout << map_priority[i][j] << "\t";
+			std::cout << map[j][i].priority << "\t";
 		}
 		std::cout << endl;
 	}
-	priority_dumper(map_priority, x_max, y_max);
+	priority_dumper(map, x_max, y_max);
 	return 0;
 }

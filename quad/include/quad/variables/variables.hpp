@@ -126,16 +126,14 @@ int y_corner_coordinate_3 = y_max;
 int x_corner_coordinate_4 = x_max;
 int y_corner_coordinate_4 = y_max;
 
-//Experimental! Initializing the weight pointers that will be used to assign weights to the different quadrants by the weight.xpp function
-
+//Initializing the weight pointers that will be used to assign weights to the different quadrants by the weight.xpp function
 float X_1 = 1.0;
 float X_2 = 1.0;
 float X_3 = 1.0;
 float X_4 = 1.0;
 float X_5 = 1.0;
-//X_4 is the weight assigned in the opposite direction and is always assumed to be 1, as per the caluclations
 
-//Experimental! These variables compute the number of iterations required along the X and Y axes to hit the boundaries of the environment
+//These variables compute the number of iterations required along the X and Y axes to hit the boundaries of the environment
 int n_x_difference;
 int n_y_difference;
 int n_set;
@@ -148,8 +146,6 @@ int weight_element_cycler = 0;
 //This element mowes through the pre-ordered list and interacts with the lawn_mower array
 int lawn_mower_element_cycler = 0;
 int lawn_lawn_mower_element_cycler = 0;
-
-int map_priority[y_max][x_max];
 
 //Creating lists to iterate through waypoints. Hypothesis is that sharing of vectors is causing seg faults.
 int list_maximum_value_x_indices[y_max * x_max];
