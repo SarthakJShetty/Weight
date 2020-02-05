@@ -84,21 +84,15 @@ int priority_dumper(int map_priority[y_max][x_max], int x_max, int y_max)
 	priorityMapCSV.close();
 }
 
-int weighting_function(int uav_x_position, int uav_y_position, float *X_1, float *X_2, float *X_3, float X_4, float *X_5, int n_x_difference, int n_y_difference, int n_set, int x_max, int y_max)
+int weighting_function(int uav_x_position, int uav_y_position, float &X_1, float &X_2, float &X_3, float &X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int x_max, int y_max)
 {
-	/*Experimental!
-	We're creating a new function to decide the weights to be assigned to each of the quadrants while generating weights. 
+	/*We've creating a new function to decide the weights to be assigned to each of the quadrants while generating weights. 
 	This function solves 2 problems:
 	1. No need to guess and chalk out the weights through trial and error.
 	2. Agnostic to the dimensions of the prototyping environment.*/
 
-	/*What needs to be implemented here?
-	1. A calulcation of N(x, y), which is the maximum number of iterations that each weight will be subjected to.
-	2. Utilization of N to get X_1, X_2 and X_3, which are the weights in each quadrant.
-	3. Assumption that X_4 is always 1.
-	4. X_5 is the weight assigned to map[uav_y_position][uav_x_position].weight.*/
-
 	//uav_x/y_position is being subtracted from x/y_max since the boundary is the largest possible value of n_x/y_difference.
+
 	n_x_difference = x_max - uav_x_position;
 	n_y_difference = y_max - uav_y_position;
 
@@ -111,53 +105,25 @@ int weighting_function(int uav_x_position, int uav_y_position, float *X_1, float
 		n_set = n_y_difference;
 	}
 
-	X_4 = 1;
-	
-	float calc_X_1 = ((X_4 * pow(n_set, 3)) + pow(n_set, 1) + pow(n_set, 2) + pow(n_set, 3));
-	float calc_X_3 = ((calc_X_1 - pow(n_set, 1)) - pow(n_set, 2)) / pow(n_set, 2);
-	float calc_X_2 = (calc_X_1 - pow(n_set, 1)) / pow(n_set, 1);
-	float calc_X_5 = (calc_X_1 * n_set * 10);
-
-	X_3 = &calc_X_3;
-	X_2 = &calc_X_2;
-	X_1 = &calc_X_1;
-	X_5 = &calc_X_5;
-
-	for (int i = 0; i < 10000; i++)
-	{
-		cout << *X_1 << endl;
-		cout << *X_2 << endl;
-		cout << *X_3 << endl;
-		cout << X_4 << endl;
-		cout << *X_5 << endl;
-	}
+	X_1 = ((X_4 * pow(n_set, 3)) + pow(n_set, 1) + pow(n_set, 2) + pow(n_set, 3));
+	X_3 = ((X_1 - pow(n_set, 1)) - pow(n_set, 2)) / pow(n_set, 2);
+	X_2 = (X_1 - pow(n_set, 1)) / pow(n_set, 1);
+	X_5 = (X_1 * n_set * 10);
 }
 
-int weight_generator_function(int uav_x_position, int uav_y_position, float *X_1, float *X_2, float *X_3, float X_4, float *X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int map_priority[y_max][x_max], int element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
+int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1, float &X_2, float &X_3, float X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int map_priority[y_max][x_max], int weight_element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
 {
-	/*NOTE: These weights are manually set after brief hand-calculations of the maximum possible weights in either quadrant. Depending on your environment
-	you have to set these values accordingly.
-	Next steps would be define the constraints as a Linear Programming Problem and assign weights for each quadrant.*/
-
 	weighted_map map[y_max][x_max];
+
+	//Initializes the default weights in each of the coordinates, since unitialized maps tend to be filled with garbage values.
 	weight_initializer(map, x_max, y_max);
+	//Initializes the default exploration status of each, changing the default gibberish.
 	exploration_initializer(map, x_max, y_max);
 
-	/*NOTE: To the user who will be modifying this: As your environment gets bigger you need to manually increase this value to a larger value, other wise with larger iterations
-	the maximum value will be undermined by greater number of iterations.*/
-
+	//This function generates the weights that have to be assigned to each quadrant of the environment.
 	weighting_function(uav_x_position, uav_y_position, X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, x_max, y_max);
 
-	for (int i = 0; i < 1000000; i++)
-	{
-		cout <<"YEEET" << *X_2 << endl;
-		cout <<"YEEET" << *X_1 << endl;
-		cout <<"YEEET" << *X_3 << endl;
-		cout <<"YEEET" << X_4 << endl;
-		cout <<"YEEET" << *X_5 << endl;
-	}
-
-	map[uav_y_position][uav_x_position].weight = *X_5;
+	map[uav_y_position][uav_x_position].weight = X_5;
 
 	//Visualizing the for loops as vectors helps. Y direction as vertical movement, X as horizontal movement
 	while ((x_corner_coordinate_1 != uav_x_position))
@@ -168,11 +134,11 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float *X_1
 			{
 				if (survivor_direction == 1)
 				{
-					map[j][i].weight += *X_1;
+					map[j][i].weight += X_1;
 				}
 				else if (survivor_direction == 2)
 				{
-					map[j][i].weight += *X_2;
+					map[j][i].weight += X_2;
 				}
 				else if (survivor_direction == 3)
 				{
@@ -180,7 +146,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float *X_1
 				}
 				else if (survivor_direction == 4)
 				{
-					map[j][i].weight += *X_3;
+					map[j][i].weight += X_3;
 				}
 				//locator(map, x_max, y_max, uav_x_position, uav_y_position);
 				//std::cout << endl;
@@ -198,15 +164,15 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float *X_1
 			{
 				if (survivor_direction == 1)
 				{
-					map[j][i].weight += *X_3;
+					map[j][i].weight += X_3;
 				}
 				else if (survivor_direction == 2)
 				{
-					map[j][i].weight += *X_1;
+					map[j][i].weight += X_1;
 				}
 				else if (survivor_direction == 3)
 				{
-					map[j][i].weight += *X_2;
+					map[j][i].weight += X_2;
 				}
 				else if (survivor_direction == 4)
 				{
@@ -232,15 +198,15 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float *X_1
 				}
 				else if (survivor_direction == 2)
 				{
-					map[j][i].weight += *X_3;
+					map[j][i].weight += X_3;
 				}
 				else if (survivor_direction == 3)
 				{
-					map[j][i].weight += *X_1;
+					map[j][i].weight += X_1;
 				}
 				else if (survivor_direction == 4)
 				{
-					map[j][i].weight += *X_2;
+					map[j][i].weight += X_2;
 				}
 				//locator(map, x_max, y_max, uav_x_position, uav_y_position);
 				//std::cout << endl;
@@ -258,7 +224,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float *X_1
 			{
 				if (survivor_direction == 1)
 				{
-					map[j][i].weight += *X_3;
+					map[j][i].weight += X_3;
 				}
 				else if (survivor_direction == 2)
 				{
@@ -266,11 +232,11 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float *X_1
 				}
 				else if (survivor_direction == 3)
 				{
-					map[j][i].weight += *X_2;
+					map[j][i].weight += X_2;
 				}
 				else if (survivor_direction == 4)
 				{
-					map[j][i].weight += *X_1;
+					map[j][i].weight += X_1;
 				}
 				//locator(map, x_max, y_max, uav_x_position, uav_y_position);
 				//std::cout << endl;
@@ -292,7 +258,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float *X_1
     4. Check the maximum value and remove it each row
     5. Iterate through map again*/
 
-	while (element_cycler <= (y_max * x_max))
+	while (weight_element_cycler <= (y_max * x_max))
 	{
 		for (int row_iterator = 0; row_iterator < y_max; row_iterator++)
 		{
@@ -312,13 +278,13 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float *X_1
 				if ((map[row_iterator_2][column_iterator_2].weight == maximum_value))
 				{
 					map[row_iterator_2][column_iterator_2].weight = 0;
-					element_cycler += 1;
+					weight_element_cycler += 1;
 
 					if (maximum_value != 0)
 					{
-						map_priority[row_iterator_2][column_iterator_2] = element_cycler;
-						list_maximum_value_x_indices[element_cycler - 1] = (column_iterator_2);
-						list_maximum_value_y_indices[element_cycler - 1] = (row_iterator_2);
+						map_priority[row_iterator_2][column_iterator_2] = weight_element_cycler;
+						list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+						list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
 					}
 				}
 			}

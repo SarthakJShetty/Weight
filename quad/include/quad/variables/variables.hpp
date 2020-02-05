@@ -128,12 +128,12 @@ int y_corner_coordinate_4 = y_max;
 
 //Experimental! Initializing the weight pointers that will be used to assign weights to the different quadrants by the weight.xpp function
 
+float X_1 = 1.0;
+float X_2 = 1.0;
+float X_3 = 1.0;
 float X_4 = 1.0;
-float *X_1 = &X_4;
-float *X_2 = &X_4;
-float *X_3 = &X_4;
+float X_5 = 1.0;
 //X_4 is the weight assigned in the opposite direction and is always assumed to be 1, as per the caluclations
-float *X_5 = &X_4;
 
 //Experimental! These variables compute the number of iterations required along the X and Y axes to hit the boundaries of the environment
 int n_x_difference;
