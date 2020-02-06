@@ -22,6 +22,7 @@ const int N_UAV = 2;
 extern const int x_max;
 extern const int y_max;
 extern const int grid_points;
+weighted_map environment_map[y_max][x_max];
 
 //Subscribers and publishers declared here
 ros::Subscriber position_subscriber[N_UAV];
@@ -163,3 +164,6 @@ int weight_trigger_check[N_UAV];
 
 //This variable checks whether each of the UAVs have found the survivor or not. If triggered to one, implies that that particular UAV has found the survivor
 int survivor_detection_check[N_UAV];
+
+//This array makes sure whether or not the explorationDump has taken place or not for the respective UAV
+int exploration_dump_check[N_UAV];
