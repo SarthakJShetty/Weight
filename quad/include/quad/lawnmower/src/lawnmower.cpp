@@ -15,8 +15,8 @@ int lawn_mower_initializer_function(int y_max, int x_max, int pre_list_lawn_mowe
         {
             for (int j = 0; j < y_max; j++)
             {
-                pre_list_lawn_mower_x_indices[lawn_mower_element_cycler] = i + 1;
-                pre_list_lawn_mower_y_indices[lawn_mower_element_cycler] = j + 1;
+                pre_list_lawn_mower_x_indices[lawn_mower_element_cycler] = i;
+                pre_list_lawn_mower_y_indices[lawn_mower_element_cycler] = j;
                 lawn_mower_element_cycler += 1;
             }
         }
@@ -36,10 +36,10 @@ int lawn_mower_generator_function(int y_max, int x_max, int uav_x_position, int 
         {
             /* cout << "Entering the loop: "
                   << "Element Cycler: " << lawn_mower_element_cycler << endl;*/
-            if (pre_list_lawn_mower_y_indices[lawn_mower_element_cycler] == y_max)
+            if (pre_list_lawn_mower_y_indices[lawn_mower_element_cycler] == (y_max - 1))
             {
                 //cout << "Encoutered the edge of a row" << endl;
-                if ((pre_list_lawn_mower_x_indices[lawn_mower_element_cycler] % 2) != 0)
+                if ((pre_list_lawn_mower_x_indices[lawn_mower_element_cycler] % 2) == 0)
                 {
                     //cout << "Edge of the row which is at a turning point as well" << endl;
                     list_lawn_mower_x_indices[lawn_mower_element_cycler] = pre_list_lawn_mower_x_indices[lawn_mower_element_cycler];
