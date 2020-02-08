@@ -82,21 +82,21 @@ int lawn_mower_generator_function(int y_max, int x_max, int uav_x_position, int 
     }
 
     lawn_mower_element_cycler = 0;
-    cout << "NON-PRIORITIZED COORDINATES" << endl;
+    std::cout << "NON-PRIORITIZED COORDINATES" << endl;
 
     while (lawn_mower_element_cycler < (x_max * y_max))
     {
-        cout << pre_list_lawn_mower_x_indices[lawn_mower_element_cycler] << ", " << pre_list_lawn_mower_y_indices[lawn_mower_element_cycler];
-        cout << endl;
+        std::cout << pre_list_lawn_mower_x_indices[lawn_mower_element_cycler] << ", " << pre_list_lawn_mower_y_indices[lawn_mower_element_cycler];
+        std::cout << endl;
         lawn_mower_element_cycler += 1;
     }
 
     lawn_mower_element_cycler = 0;
-    cout << "LAWN MOWER COORDINATES" << endl;
+    std::cout << "LAWN MOWER COORDINATES" << endl;
     while (lawn_mower_element_cycler < (x_max * y_max))
     {
-        cout << list_lawn_mower_x_indices[lawn_mower_element_cycler] << ", " << list_lawn_mower_y_indices[lawn_mower_element_cycler];
-        cout << endl;
+        std::cout << list_lawn_mower_x_indices[lawn_mower_element_cycler] << ", " << list_lawn_mower_y_indices[lawn_mower_element_cycler];
+        std::cout << endl;
         lawn_mower_element_cycler += 1;
     }
 }
