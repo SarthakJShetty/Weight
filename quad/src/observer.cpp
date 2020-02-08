@@ -9,7 +9,7 @@ This is a temporary code, will replace it with a more robust solution for multip
 */
 
 #include "ros/ros.h"
-#include <std_msgs/Bool.h>
+#include <std_msgs/Int32.h>
 
 using namespace std;
 
@@ -23,10 +23,10 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "observer");
     ros::NodeHandle n;
-    ros::Publisher chatter_pub_1 = n.advertise<std_msgs::Bool>("/uav0/switch_node", 1000);
+    ros::Publisher chatter_pub_1 = n.advertise<std_msgs::Int32>("/uav0/switch_node", 1000);
     //ros::Publisher chatter_pub_2 = n.advertise<std_msgs::Int32>("/uav1/switch_node", 1000);
     ros::Rate loop_rate(10);
-    std_msgs::Bool msg_1;
+    std_msgs::Int32 msg_1;
     //std_msgs::Int32 msg_2;
 
     //This variable makes sure that the cout statement prints only 10 times once the node has been triggered.
