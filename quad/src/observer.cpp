@@ -36,24 +36,14 @@ int main(int argc, char **argv)
         while (print_counter < 100)
         {
             cout << "The observer has been triggered!" << endl;
-            msg_1.data = 0;
-            msg_2.data = 0;
-            chatter_pub_1.publish(msg_1);
-            chatter_pub_2.publish(msg_2);
-            print_counter += 1;
-        }
-        print_counter = 0;
-        while (print_counter < 100)
-        {
-            cout << "The observer has been triggered!" << endl;
             msg_1.data = 1;
-            msg_2.data = 0;
             chatter_pub_1.publish(msg_1);
-            chatter_pub_2.publish(msg_2);
+            //msg_2.data = 0;
+            //chatter_pub_2.publish(msg_2);
             print_counter += 1;
+            ros::spinOnce();
+            loop_rate.sleep();
         }
-        ros::spinOnce();
-        loop_rate.sleep();
     }
     return 0;
 }
