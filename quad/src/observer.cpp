@@ -24,38 +24,36 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "observer");
     ros::NodeHandle n;
     ros::Publisher chatter_pub_1 = n.advertise<std_msgs::Int32>("/uav0/switch_node", 1000);
-    //ros::Publisher chatter_pub_2 = n.advertise<std_msgs::Int32>("/uav1/switch_node", 1000);
+    ros::Publisher chatter_pub_2 = n.advertise<std_msgs::Int32>("/uav1/switch_node", 1000);
     ros::Rate loop_rate(10);
     std_msgs::Int32 msg_1;
-    //std_msgs::Int32 msg_2;
+    std_msgs::Int32 msg_2;
 
     //This variable makes sure that the cout statement prints only 10 times once the node has been triggered.
     int print_counter = 1;
     while (ros::ok())
     {
-        while (print_counter < 10)
+        while (print_counter < 100)
         {
             cout << "The observer has been triggered!" << endl;
-            msg_1.data = true;
-            //msg_2.data = 0;
+            msg_1.data = 0;
+            msg_2.data = 0;
             chatter_pub_1.publish(msg_1);
-            //chatter_pub_2.publish(msg_2);
+            chatter_pub_2.publish(msg_2);
             print_counter += 1;
-            ros::spinOnce();
-            loop_rate.sleep();
         }
         print_counter = 0;
-        while (print_counter < 10)
+        while (print_counter < 100)
         {
             cout << "The observer has been triggered!" << endl;
-            msg_1.data = true;
-            //msg_2.data = 0;
+            msg_1.data = 1;
+            msg_2.data = 0;
             chatter_pub_1.publish(msg_1);
-            //chatter_pub_2.publish(msg_2);
+            chatter_pub_2.publish(msg_2);
             print_counter += 1;
-            ros::spinOnce();
-            loop_rate.sleep();
         }
+        ros::spinOnce();
+        loop_rate.sleep();
     }
     return 0;
 }
