@@ -1,18 +1,19 @@
-'''This script is written to plot the weightage map created as a density color mesh.
-While running the code, the drone does not execute the entire weightmap. To ensure that the weights are being generated correctly, we've
-built this function to analyze the weightage map generated as a matplotlib colormesh.
+'''This script is written to plot the exploration map that's being generated in real-time by the agents exploring the environment. The 2D map being generated 
+is part of the weighted_map structure which has a int member called exploration which gets cycled and dumped to the disc using the exploration_dumper() function,
+part of the weight.xpp package.
 
-Similar to the rest of the modules written for this project, this densityplotter function is agnostic to the dimensions of the environment.
-Tests are due to substantiate this claim. Will be updating a section in the README of repository dedicated to this.
+This script is a fork of the densityPlotter.py, hence the similarity of the structure/comments.
 
 -Sarthak
-(20/12/2019)'''
+(09/02/2020)'''
 
 import matplotlib.pyplot as plt
 import csv
 import numpy as np
+from matplotlib import colors
+from matplotlib.patches import Patch
 
-'''Filename pointing to the weightMap csv file'''
+'''Filename pointing to the explorationMap csv file'''
 weight_files = ['explorationMap_0.csv', 'explorationMap_1.csv']
 
 for weight_file in weight_files:
@@ -53,13 +54,22 @@ for weight_file in weight_files:
                 if by_element is not '':
                     density[y_element, x_element] = by_element
 
+    '''Here, we create a custom legend to label the 3 types of cell in the colormap being plotted below.'''
+    legend_elements = [Patch(facecolor='red', edgecolor='r',
+                         label='Unexplored Cell'),
+                   Patch(facecolor='blue', edgecolor='b',
+                         label='Explored Cell'),
+                   Patch(facecolor='yellow', edgecolor='y',
+                         label='Survivor Cell')]
+
+    '''Generating the subplot to extract the ax and the fig elements of the plot.'''
     fig, ax = plt.subplots()
 
-    '''Importing a colormap here (Jet!) and reversing it to better infer the priority of the waypoints.'''
-    colormap = plt.cm.get_cmap('viridis')
+    '''Generating a custom colormap of 3 colors to plot the exploration status of the different cells.'''
+    cmap = colors.ListedColormap(['red', 'blue', 'yellow'])
 
     '''Plotting the weights here using matplotlib's colormesh functionality. Setting the colormap to 'jet' to ensure better contrast between smaller magnitudes.'''
-    plt.pcolormesh(density, cmap=colormap)
+    plt.pcolormesh(density, cmap = cmap)
 
     '''Flipping the coordinates here to ensure that ease of understanding between plots and the Gazebo environment.'''
     plt.ylim(column, 0)
@@ -67,12 +77,16 @@ for weight_file in weight_files:
     '''Adding a grid to improve readability of the map and anchors the colors generated as well.'''
     plt.grid(True)
 
+    ''''''
     if weight_file == 'explorationMap_0.csv' or 'explorationMap_1.csv':
-        plt.title('Exploration of Environment')
+        plt.title('Exploration of Environment by UAV ' + weight_file.split('_')[1][0])
 
     '''Adding labels to the X and the Y axis to improve the readability of the maps here'''
     plt.xticks(row_array)
     plt.yticks(column_array)
+    
+    ax.set_aspect('equal')
+    ax.legend(handles = legend_elements)
 
     '''Splitting the filename at the extension, extracting only the first part and appending a png to it to save it to disc.'''
     plt.savefig('/home/sarthak/catkin_ws/src/assets/' +
