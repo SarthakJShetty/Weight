@@ -52,12 +52,12 @@ for weight_file in weight_files:
             for (x_element, by_element) in zip(row_array, element):
                 if by_element is not '':
                     density[y_element, x_element] = by_element
-
+    fig, ax = plt.subplots()
     '''Importing a colormap here (Jet!) and reversing it to better infer the priority of the waypoints.'''
     colormap = plt.cm.get_cmap('viridis')
 
     '''Plotting the weights here using matplotlib's colormesh functionality. Setting the colormap to 'jet' to ensure better contrast between smaller magnitudes.'''
-    plt.pcolormesh(density, cmap= colormap)
+    plt.pcolormesh(density, cmap=colormap)
 
     '''Adding a colorbar to understand the value of the different weights & their intensity.'''
     cb = plt.colorbar()
@@ -77,7 +77,10 @@ for weight_file in weight_files:
         plt.title('Density of Weights')
     elif weight_file == 'priorityMap.csv':
         plt.title('Priority of Waypoints')
-
+    
+    ax.set_aspect('equal')
+    
     '''Splitting the filename at the extension, extracting only the first part and appending a png to it to save it to disc.'''
-    plt.savefig('/home/sarthak/catkin_ws/src/assets/'+weight_file.split('.')[0]+'.png')
+    plt.savefig('/home/sarthak/catkin_ws/src/assets/' +
+                weight_file.split('.')[0]+'.png')
     plt.show()
