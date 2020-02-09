@@ -155,8 +155,8 @@ plt.savefig('/home/sarthak/catkin_ws/src/assets/SurvivorCoordinates.png')
 plt.show()
 
 '''These points are required to plot the boundaries of the environment in the 3D plot'''
-x_points_4 = [0, 20.5, 20.5, 0, 0]
-y_points_4 = [0, 0, 20.5, 20.5, 0]
+x_points_4 = [0, 18.5, 18.5, 0, 0]
+y_points_4 = [0, 0, 18.5, 18.5, 0]
 z_points_4 = [0, 0, 0, 0, 0]
 
 fig = plt.figure()
