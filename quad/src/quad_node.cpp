@@ -418,7 +418,7 @@ int main(int argc, char **argv)
                              << "RTL" << endl;
                         pose[UAV_COUNTER].pose.position.x = 0;
                         pose[UAV_COUNTER].pose.position.y = 0;
-                        pose[UAV_COUNTER].pose.position.z = 2;
+                        pose[UAV_COUNTER].pose.position.z = 1;
                         if ((exploration_dump_check[UAV_COUNTER]) == 0)
                         {
                             //This condition is to make sure that the exploration map gets dumped only once to the disc
@@ -435,7 +435,7 @@ int main(int argc, char **argv)
                              << "RTL" << endl;
                         pose[UAV_COUNTER].pose.position.x = 0;
                         pose[UAV_COUNTER].pose.position.y = 0;
-                        pose[UAV_COUNTER].pose.position.z = 2;
+                        pose[UAV_COUNTER].pose.position.z = 1;
                         if ((exploration_dump_check[UAV_COUNTER]) == 0)
                         {
                             //This condition is to make sure that the exploration map gets dumped only once to the disc
