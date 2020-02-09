@@ -85,8 +85,8 @@ float waypoint_dist[N_UAV];
 float survivor_dist[N_UAV];
 
 //This is the survivor's x, y coordinate & direction. We use pointers to ensure consistancy across the files
-float start_survivor_x_coordinate = 10.0;
-float start_survivor_y_coordinate = 10.0;
+float start_survivor_x_coordinate = 9.0;
+float start_survivor_y_coordinate = 9.0;
 
 //Survivor coordinate is continuously updated from the start_survivor_coordinate
 float *survivor_x_coordinate = &start_survivor_x_coordinate;
