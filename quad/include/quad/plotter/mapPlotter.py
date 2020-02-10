@@ -78,7 +78,7 @@ for weight_file in weight_files:
     plt.grid(True)
 
     if weight_file == 'explorationMap_0.csv' or 'explorationMap_1.csv':
-        plt.title('Exploration of Environment by UAV ' + weight_file.split('_')[1][0])
+        plt.title('Exploration of Environment by UAV ' + weight_file.split('/')[-1])
 
     '''Adding labels to the X and the Y axis to improve the readability of the maps here'''
     plt.xticks(row_array)
@@ -89,5 +89,5 @@ for weight_file in weight_files:
 
     '''Splitting the filename at the extension, extracting only the first part and appending a png to it to save it to disc.'''
     plt.savefig('/home/sarthak/catkin_ws/src/assets/' +
-                weight_file.split('.')[0]+'.png')
+                (weight_file.split('/')[-1]).split('.')[0]+'.png')
     plt.show()
