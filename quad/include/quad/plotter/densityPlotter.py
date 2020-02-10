@@ -13,7 +13,7 @@ import csv
 import numpy as np
 
 '''Filename pointing to the weightMap csv file'''
-weight_files = ['weightMap.csv', 'priorityMap.csv']
+weight_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/weightMap.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/priorityMap.csv']
 
 for weight_file in weight_files:
     '''Start row makes sure that the row-elements are counted only once.'''
@@ -73,14 +73,14 @@ for weight_file in weight_files:
     '''Adding a grid to improve readability of the map and anchors the colors generated as well.'''
     plt.grid(True)
 
-    if weight_file == 'weightMap.csv':
+    if weight_file.split('/')[-1] == 'weightMap.csv':
         plt.title('Density of Weights')
-    elif weight_file == 'priorityMap.csv':
+    elif weight_file.split('/')[-1] == 'priorityMap.csv':
         plt.title('Priority of Waypoints')
     
     ax.set_aspect('equal')
     
     '''Splitting the filename at the extension, extracting only the first part and appending a png to it to save it to disc.'''
     plt.savefig('/home/sarthak/catkin_ws/src/assets/' +
-                weight_file.split('.')[0]+'.png')
+                (weight_file.split('/')[-1]).split('.')[0]+'.png')
     plt.show()

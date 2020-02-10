@@ -14,7 +14,7 @@ from matplotlib import colors
 from matplotlib.patches import Patch
 
 '''Filename pointing to the explorationMap csv file'''
-weight_files = ['explorationMap_0.csv', 'explorationMap_1.csv']
+weight_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/explorationMap_0.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/explorationMap_1.csv']
 
 for weight_file in weight_files:
     '''Start row makes sure that the row-elements are counted only once.'''
@@ -77,7 +77,6 @@ for weight_file in weight_files:
     '''Adding a grid to improve readability of the map and anchors the colors generated as well.'''
     plt.grid(True)
 
-    ''''''
     if weight_file == 'explorationMap_0.csv' or 'explorationMap_1.csv':
         plt.title('Exploration of Environment by UAV ' + weight_file.split('_')[1][0])
 

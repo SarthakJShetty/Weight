@@ -116,11 +116,11 @@ def file_reader(coordinates_file_txt, plotting_parameter):
 
 
 x_points_1, y_points_1, z_points_1, x_time_1, y_time_1, z_time_1, start_second_1, end_second_1, start_second_decimal_1, end_second_decimal_1 = file_reader(
-    'uav1_pos.txt', 'pos')
+    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt', 'pos')
 x_points_2, y_points_2, z_points_2, x_time_2, y_time_2, z_time_2, start_second_1, end_second_2, start_second_decimal_2, end_second_decimal_2 = file_reader(
-    'uav2_pos.txt', 'pos')
+    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt', 'pos')
 x_points_3, y_points_3, z_points_3, x_time_3, y_time_3, z_time_3, start_second_3, end_second_3, start_second_decimal_3, end_second_decimal_3 = file_reader(
-    'survivor_pos.txt', 'pos')
+    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor_pos.txt', 'pos')
 
 '''Plotting the agents properties vs time '''
 
