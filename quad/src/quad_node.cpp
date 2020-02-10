@@ -123,12 +123,6 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = &UAV_COUNTER;
-        counter[UAV_COUNTER] = 0;
-    }
-
-    for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
-    {
-        global_pointer = &UAV_COUNTER;
         cout << "UAV COUNTER: " << UAV_COUNTER << " "
              << "PRESENTING POSE OF UAV: " << UAV_COUNTER << endl;
         cout << "X: " << pose[UAV_COUNTER].pose.position.x << endl;
