@@ -4,4 +4,3 @@ quad/.vscode/c_cpp_properties.json
 quad/build
 Quad.code-workspace
 *.vscode
-quad/include/quad/plotter/data/
