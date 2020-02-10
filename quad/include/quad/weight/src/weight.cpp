@@ -90,7 +90,7 @@ int exploration_dumper(weighted_map environment_map[y_max][x_max], int x_max, in
 	//We then plot the exploration status of each cell in the environment.
 
 	//The CSV of the environment_map generated is located at within the plotter package so that all entitities to be plotted are located in the same directory.
-	string initial_filename = "/home/sarthak/catkin_ws/src/quad/include/quad/plotter/explorationMap_";
+	string initial_filename = "/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/explorationMap_";
 	stringstream str_UAV_COUNTER;
 	str_UAV_COUNTER << UAV_COUNTER;
 	string extension = ".csv";
