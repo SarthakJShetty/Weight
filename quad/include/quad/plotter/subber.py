@@ -16,7 +16,7 @@ import time
 
 def position_writer_1(data):
     '''Writing 1st position, i.e. UAV 1's position data.'''
-    data_file = 'uav1_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
@@ -25,7 +25,7 @@ def position_writer_1(data):
 
 def position_writer_2(data):
     '''Writing 1st position, i.e. UAV 1's position data.'''
-    data_file = 'uav2_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
@@ -34,7 +34,7 @@ def position_writer_2(data):
 
 def position_writer_3(data):
     '''Writing survivor's data to the disc.'''
-    data_file = 'survivor_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
