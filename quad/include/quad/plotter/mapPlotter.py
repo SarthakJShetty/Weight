@@ -78,7 +78,7 @@ for weight_file in weight_files:
     plt.grid(True)
 
     if weight_file == 'explorationMap_0.csv' or 'explorationMap_1.csv':
-        plt.title('Exploration of Environment by UAV ' + weight_file.split('/')[-1])
+        plt.title('Exploration of Environment by UAV ' + ((weight_file.split('/')[-1]).split('.'))[0].split('_')[1])
 
     '''Adding labels to the X and the Y axis to improve the readability of the maps here'''
     plt.xticks(row_array)
