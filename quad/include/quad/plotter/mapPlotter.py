@@ -14,9 +14,9 @@ from matplotlib import colors
 from matplotlib.patches import Patch
 
 '''Filename pointing to the explorationMap csv file'''
-weight_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/explorationMap_0.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/explorationMap_1.csv']
+map_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/explorationMap_0.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/explorationMap_1.csv']
 
-for weight_file in weight_files:
+for map_file in map_files:
     '''Start row makes sure that the row-elements are counted only once.'''
     start_row = 0
     '''Variable to count the number of elements in each row.'''
@@ -24,7 +24,7 @@ for weight_file in weight_files:
     '''Variable to count the number of columns.'''
     column = 0
 
-    with open(weight_file) as csv_file:
+    with open(map_file) as csv_file:
         '''This loop is used to calculate the number of rows and columns in the csv file that has been dumped.
         We use this data to intialize the numpy arrays that we use to plot the density maps.'''
         read_file = csv.reader(csv_file, delimiter='\t')
@@ -47,7 +47,7 @@ for weight_file in weight_files:
     column_array = np.arange(0, column)
     row_array = np.arange(0, row)
 
-    with open(weight_file) as csv_file:
+    with open(map_file) as csv_file:
         read_file = csv.reader(csv_file, delimiter='\t')
         for (y_element, element) in zip(column_array, read_file):
             for (x_element, by_element) in zip(row_array, element):
@@ -77,8 +77,8 @@ for weight_file in weight_files:
     '''Adding a grid to improve readability of the map and anchors the colors generated as well.'''
     plt.grid(True)
 
-    if weight_file == 'explorationMap_0.csv' or 'explorationMap_1.csv':
-        plt.title('Exploration of Environment by UAV ' + ((weight_file.split('/')[-1]).split('.'))[0].split('_')[1])
+    if map_file == 'explorationMap_0.csv' or 'explorationMap_1.csv':
+        plt.title('Exploration of Environment by UAV ' + ((map_file.split('/')[-1]).split('.'))[0].split('_')[1])
 
     '''Adding labels to the X and the Y axis to improve the readability of the maps here'''
     plt.xticks(row_array)
@@ -89,5 +89,5 @@ for weight_file in weight_files:
 
     '''Splitting the filename at the extension, extracting only the first part and appending a png to it to save it to disc.'''
     plt.savefig('/home/sarthak/catkin_ws/src/assets/' +
-                (weight_file.split('/')[-1]).split('.')[0]+'.png')
+                (map_file.split('/')[-1]).split('.')[0]+'.png')
     plt.show()
