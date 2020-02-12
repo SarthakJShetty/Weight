@@ -17,16 +17,16 @@ void state_cb(const mavros_msgs::State::ConstPtr &state_msg)
     current_state[*global_pointer] = *state_msg;
 }
 
-void cv_sub(const std_msgs::Int32::ConstPtr &cv_msg)
+void cv_sub(const std_msgs::Int32 cv_msg)
 {
     //This callback function subscribes to the computer-vision code node and checks if a survivor has been found in the field-of-view of the UAVs camera
-    cv_msgs[*global_pointer] = *cv_msg;
+    cv_msgs[*global_pointer] = cv_msg;
 }
 
-void switch_sub(const std_msgs::Int32::ConstPtr &switch_msg)
+void switch_sub(const std_msgs::Int32 switch_msg)
 {
     //This callback function interacts with the observer node. If a non-zero value is received the topic triggers a switch to the weight-based trajectory planning
-    switch_msgs[*global_pointer] = *switch_msg;
+    switch_msgs[*global_pointer] = switch_msg;
 }
 
 void pose_sub(const nav_msgs::Odometry odom_msg)
@@ -164,7 +164,6 @@ int main(int argc, char **argv)
             local_pos_pub[UAV_COUNTER].publish(pose[UAV_COUNTER]);
             ros::spinOnce();
             rate.sleep();
-            cout << endl;
         }
     }
 
@@ -217,9 +216,9 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = &UAV_COUNTER;
-        switch_msgs[UAV_COUNTER].data = false;
+        switch_msgs[UAV_COUNTER].data = 0;
     }
-    
+
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = &UAV_COUNTER;
@@ -306,11 +305,8 @@ int main(int argc, char **argv)
             survivor_pose[UAV_COUNTER].pose.position.y = survivor_y_coordinate_array[UAV_COUNTER];
             survivor_pose[UAV_COUNTER].pose.position.z = 0;
             survivor_position_pub[UAV_COUNTER].publish(survivor_pose[UAV_COUNTER]);
-        }
-        for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
-        {
+
             //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
-            global_pointer = &UAV_COUNTER;
             if (switch_msgs[UAV_COUNTER].data == 1)
             {
                 //Weighted exploration has been triggered here
@@ -333,10 +329,6 @@ int main(int argc, char **argv)
                     lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler);
                 }
             }
-        }
-        for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
-        {
-            global_pointer = &UAV_COUNTER;
             if (counter[UAV_COUNTER] == 0)
             {
                 //Initial set of coordinates being published to the position topic of the UAV
@@ -458,12 +450,9 @@ int main(int argc, char **argv)
                     last_request[UAV_COUNTER] = ros::Time::now();
                 }
             }
-            global_pointer = &UAV_COUNTER;
             local_pos_pub[UAV_COUNTER].publish(pose[UAV_COUNTER]);
-
             counter_msgs[UAV_COUNTER].data = counter[UAV_COUNTER];
             counter_pub[UAV_COUNTER].publish(counter_msgs[UAV_COUNTER]);
-
             ros::spinOnce();
             rate.sleep();
         }
