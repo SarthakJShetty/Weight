@@ -75,9 +75,6 @@ float current_position_x[N_UAV];
 float current_position_y[N_UAV];
 float current_position_z[N_UAV];
 
-//This keeps track of the waypoint currently conveyed to the UAV. If counter[N_UAV] = n*m stops
-int counter[N_UAV];
-
 //Distance keeps track of initial position and desired positon
 float waypoint_dist[N_UAV];
 
