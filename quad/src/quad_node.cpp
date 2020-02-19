@@ -118,7 +118,7 @@ int main(int argc, char **argv)
         takeoff_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
     }
 
-    ros::Rate rate(20.0);
+    ros::Rate rate(10.0);
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = &UAV_COUNTER;
-        for (int i = 100; ros::ok() && i > 0; --i)
+        for (int i = 50; ros::ok() && i > 0; --i)
         {
             cout << "UAV_COUNTER: " << UAV_COUNTER << " "
                  << "INITAL PUBLISHING: " << i << endl;
@@ -298,6 +298,8 @@ int main(int argc, char **argv)
             survivor_pose[UAV_COUNTER].pose.position.y = survivor_y_coordinate_array[UAV_COUNTER];
             survivor_pose[UAV_COUNTER].pose.position.z = 0;
             survivor_position_pub[UAV_COUNTER].publish(survivor_pose[UAV_COUNTER]);
+            ros::spinOnce();
+            rate.sleep();
 
             //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
             if (switch_msgs[UAV_COUNTER].data == 1)
@@ -444,6 +446,9 @@ int main(int argc, char **argv)
                 }
             }
             local_pos_pub[UAV_COUNTER].publish(pose[UAV_COUNTER]);
+            ros::spinOnce();
+            rate.sleep();
+            
             counter_pub[UAV_COUNTER].publish(counter_msgs[UAV_COUNTER]);
             ros::spinOnce();
             rate.sleep();
