@@ -324,16 +324,6 @@ int main(int argc, char **argv)
                     lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler);
                 }
             }
-            if (counter_msgs[UAV_COUNTER].data == 0)
-            {
-                //Initial set of coordinates being published to the position topic of the UAV
-                pose[UAV_COUNTER].pose.position.x = list_maximum_value_y_indices[counter_msgs[UAV_COUNTER].data];
-                pose[UAV_COUNTER].pose.position.y = list_maximum_value_x_indices[counter_msgs[UAV_COUNTER].data];
-                pose[UAV_COUNTER].pose.position.z = 2;
-                counter_msgs[UAV_COUNTER].data += 1;
-            }
-            else if (counter_msgs[UAV_COUNTER].data > 0)
-            {
                 //Difference between the current position and the next waypoint (x, y)
                 waypoint_dist[UAV_COUNTER] = sqrt(pow((pose[UAV_COUNTER].pose.position.x - current_position_x[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.y - current_position_y[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.z - current_position_z[UAV_COUNTER]), 2));
 
@@ -425,7 +415,7 @@ int main(int argc, char **argv)
                         }
                     }
                 }
-            }
+            
             if (current_state[UAV_COUNTER].mode != "OFFBOARD" && (ros::Time::now() - last_request[UAV_COUNTER] > ros::Duration(5.0)))
             {
                 if (set_mode_client[UAV_COUNTER].call(offb_set_mode[UAV_COUNTER]) && offb_set_mode[UAV_COUNTER].response.mode_sent)
