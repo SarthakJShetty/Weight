@@ -132,7 +132,7 @@ int weighting_function(int uav_x_position, int uav_y_position, float &X_1, float
 	X_1 = ((X_4 * pow(n_set, 3)) + pow(n_set, 1) + pow(n_set, 2) + pow(n_set, 3));
 	X_3 = ((X_1 - pow(n_set, 1)) - pow(n_set, 2)) / pow(n_set, 2);
 	X_2 = (X_1 - pow(n_set, 1)) / pow(n_set, 1);
-	X_5 = (X_1 * n_set * 10);
+	X_5 = ((X_1 * n_set) + 1);
 }
 
 int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1, float &X_2, float &X_3, float X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int weight_element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[])
