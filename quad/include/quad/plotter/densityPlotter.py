@@ -62,10 +62,10 @@ for weight_file in weight_files:
     '''Adding a colorbar to understand the value of the different weights & their intensity.'''
     cb = plt.colorbar()
 
-    if weight_file == 'weightMap.csv':
+    if 'weightMap.csv' in weight_file:
         cb.set_label('Increasing Weightage of Waypoints')
-    elif weight_file == 'priorityMap.csv':
-        cb.set_label('Increasing Priority of Waypoints')
+    elif 'priorityMap.csv' in weight_file:
+        cb.set_label('Decreasing Priority of Waypoints')
 
     '''Flipping the coordinates here to ensure that ease of understanding between plots and the Gazebo environment.'''
     plt.ylim(column, 0)
