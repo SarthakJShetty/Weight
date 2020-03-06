@@ -2,5 +2,6 @@
 .rosinstall.bak
 quad/.vscode/c_cpp_properties.json
 quad/build
+quad/include/quad/plotter/data/
 Quad.code-workspace
 *.vscode
