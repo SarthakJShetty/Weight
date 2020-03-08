@@ -9,26 +9,47 @@ This is a temporary code, will replace it with a more robust solution for multip
 */
 
 #include "ros/ros.h"
-#include "std_msgs/Int8.h"
+#include <std_msgs/Int32.h>
 
-#include <sstream>
+using namespace std;
+
+/*Changes to be implemented here:
+1. Move this to independent file within the quad filespace.
+2. Trigger the node using a temrinal based launch file rather than a .cpp file trigger.
+3. How can we decouple the generality of the file from the control of the individual UAVs?
+*/
 
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "observer");
     ros::NodeHandle n;
-    ros::Publisher chatter_pub = n.advertise<std_msgs::Int8>("/uav0/switch_node", 1000);
-    ros::Rate loop_rate(10);
-    int count = 0;
 
+    ros::Publisher switch_publisher_1 = n.advertise<std_msgs::Int32>("/uav0/switch_node", 1000);
+    ros::Publisher switch_publisher_2 = n.advertise<std_msgs::Int32>("/uav1/switch_node", 1000);
+
+    //Lowering the rate here and seems like the erraticity of the model has been reduced. Need to debug this further.
+    ros::Rate loop_rate(0.5);
+    std_msgs::Int32 msg_1, msg_2;
+
+    //This variable makes sure that the cout statement prints only 10 times once the node has been triggered.
+    int print_counter = 0;
     while (ros::ok())
     {
-        std_msgs::Int8 msg;
-        msg.data = 1;
-        chatter_pub.publish(msg);
-        ros::spinOnce();
-        loop_rate.sleep();
-    }
+        while (print_counter < 5)
+        {
+            print_counter += 1;
+            cout << "The observer has been triggered!" << endl;
 
+            msg_1.data = 1;
+            switch_publisher_1.publish(msg_1);
+            ros::spinOnce();
+            loop_rate.sleep();
+
+            msg_2.data = 0;
+            switch_publisher_2.publish(msg_2);
+            ros::spinOnce();
+            loop_rate.sleep();
+        }
+    }
     return 0;
 }
