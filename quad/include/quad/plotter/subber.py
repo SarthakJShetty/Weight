@@ -81,7 +81,7 @@ def plot():
         '''More subscribers can be added here'''
         rospy.Subscriber("/mavros/global_position/local", Odometry, pos1)
         # rospy.Subscriber("/uav1/mavros/global_position/local", Odometry, pos2)
-        rospy.Subscriber("/uav0/survivor_position", PoseStamped, pos3)
+        rospy.Subscriber("/survivor_position", PoseStamped, pos3)
         time.sleep(1)
         rospy.spin()
 
