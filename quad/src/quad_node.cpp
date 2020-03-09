@@ -103,7 +103,7 @@ int main(int argc, char **argv)
         takeoff_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
     }
 
-    ros::Rate rate(10.0);
+    ros::Rate rate(15.0);
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
@@ -310,8 +310,9 @@ int main(int argc, char **argv)
                     weight_generator_function(uav_x_position, uav_y_position, X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, weight_element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
                 }
             }
-            //Difference between the current position and the next waypoint (x, y)
-            waypoint_dist[UAV_COUNTER] = sqrt(pow((pose[UAV_COUNTER].pose.position.x - current_position_x[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.y - current_position_y[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.z - current_position_z[UAV_COUNTER]), 2));
+            /*Difference between the current position and the next waypoint (x, y)
+            Since the barometer on-board the PX4 is prone to erratic, unsteady readings we do not consider the Z axis readings while calculating the distance to the next waypoint.*/
+            waypoint_dist[UAV_COUNTER] = sqrt(pow((pose[UAV_COUNTER].pose.position.x - current_position_x[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.y - current_position_y[UAV_COUNTER]), 2));
 
             //From hereon out, we switch the X and Y coordinates to match that of the map
 
