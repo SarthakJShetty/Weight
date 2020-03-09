@@ -203,7 +203,7 @@ int main(int argc, char **argv)
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
         global_pointer = &UAV_COUNTER;
-        counter_msgs[UAV_COUNTER].data = 0;
+        counter_msgs[UAV_COUNTER].data = -1;
     }
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
@@ -222,6 +222,14 @@ int main(int argc, char **argv)
             //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
             global_pointer = &UAV_COUNTER;
 
+            if (counter_msgs[UAV_COUNTER].data == -1)
+            {
+                counter_msgs[UAV_COUNTER].data += 1;
+                //Initial set of coordinates being published to the position topic of the UAV
+                pose[UAV_COUNTER].pose.position.x = list_maximum_value_y_indices[counter_msgs[UAV_COUNTER].data];
+                pose[UAV_COUNTER].pose.position.y = list_maximum_value_x_indices[counter_msgs[UAV_COUNTER].data];
+                pose[UAV_COUNTER].pose.position.z = 2;
+            }
             /*Here, the survivor coordinate's point to the respective element of the survivor coordinate array.
             This variable is refreshed each time we run the loop, and the value overwritten by the respective element of the coordinate array.*/
             *survivor_x_coordinate = survivor_x_coordinate_array[UAV_COUNTER];
