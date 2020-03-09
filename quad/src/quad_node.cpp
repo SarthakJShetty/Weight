@@ -60,46 +60,46 @@ int main(int argc, char **argv)
 
         //Subscribes declared here
         string cv_node_subsciber_string;
-        cv_node_subsciber_string = "/uav" + pub_sub_initializer.str() + "/cv_node";
+        cv_node_subsciber_string = "/cv_node";
         cv_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int32>(cv_node_subsciber_string, 10, cv_sub);
 
         string switch_node_subsciber_string;
-        switch_node_subsciber_string = "/uav" + pub_sub_initializer.str() + "/switch_node";
+        switch_node_subsciber_string = "/switch_node";
         switch_node[pre_pub_sub_initializer] = nh.subscribe<std_msgs::Int32>(switch_node_subsciber_string, 10, switch_sub);
 
         string position_subscriber_string;
-        position_subscriber_string = "/uav" + pub_sub_initializer.str() + "/mavros/global_position/local";
+        position_subscriber_string = "/mavros/global_position/local";
         position_subscriber[pre_pub_sub_initializer] = nh.subscribe<nav_msgs::Odometry>(position_subscriber_string, 10, pose_sub);
 
         string state_sub_string;
-        state_sub_string = "/uav" + pub_sub_initializer.str() + "/mavros/state";
+        state_sub_string = "/mavros/state";
         state_sub[pre_pub_sub_initializer] = nh.subscribe<mavros_msgs::State>(state_sub_string, 10, state_cb);
 
         //Publishers declared here
         string local_pos_pub_string;
-        local_pos_pub_string = "/uav" + pub_sub_initializer.str() + "/mavros/setpoint_position/local";
+        local_pos_pub_string = "/mavros/setpoint_position/local";
         local_pos_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(local_pos_pub_string, 10);
 
         //The observer publishes to this topic when it notices a survivor in their vicinity
         string survivor_position_pub_string;
-        survivor_position_pub_string = "/uav" + pub_sub_initializer.str() + "/survivor_position";
+        survivor_position_pub_string = "/survivor_position";
         survivor_position_pub[pre_pub_sub_initializer] = nh.advertise<geometry_msgs::PoseStamped>(survivor_position_pub_string, 10);
 
         string counter_pub_string;
-        counter_pub_string = "/uav" + pub_sub_initializer.str() + "/waypoint_counter_element";
+        counter_pub_string = "/waypoint_counter_element";
         counter_pub[pre_pub_sub_initializer] = nh.advertise<std_msgs::Int32>(counter_pub_string, 10);
 
         //Service clients to trigger modes
         string arming_client_string;
-        arming_client_string = "/uav" + pub_sub_initializer.str() + "/mavros/cmd/arming";
+        arming_client_string = "/mavros/cmd/arming";
         arming_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandBool>(arming_client_string);
 
         string set_mode_client_string;
-        set_mode_client_string = "/uav" + pub_sub_initializer.str() + "/mavros/set_mode";
+        set_mode_client_string = "/mavros/set_mode";
         set_mode_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::SetMode>(set_mode_client_string);
 
         string take_off_string;
-        take_off_string = "/uav" + pub_sub_initializer.str() + "/mavros/cmd/takeoff";
+        take_off_string = "/mavros/cmd/takeoff";
         takeoff_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
     }
 

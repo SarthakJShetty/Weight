@@ -24,12 +24,11 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "observer");
     ros::NodeHandle n;
 
-    ros::Publisher switch_publisher_1 = n.advertise<std_msgs::Int32>("/uav0/switch_node", 1000);
-    ros::Publisher switch_publisher_2 = n.advertise<std_msgs::Int32>("/uav1/switch_node", 1000);
+    ros::Publisher switch_publisher_1 = n.advertise<std_msgs::Int32>("switch_node", 1000);
 
     //Lowering the rate here and seems like the erraticity of the model has been reduced. Need to debug this further.
     ros::Rate loop_rate(0.5);
-    std_msgs::Int32 msg_1, msg_2;
+    std_msgs::Int32 msg_1;
 
     //This variable makes sure that the cout statement prints only 10 times once the node has been triggered.
     int print_counter = 0;
@@ -42,11 +41,6 @@ int main(int argc, char **argv)
 
             msg_1.data = 1;
             switch_publisher_1.publish(msg_1);
-            ros::spinOnce();
-            loop_rate.sleep();
-
-            msg_2.data = 0;
-            switch_publisher_2.publish(msg_2);
             ros::spinOnce();
             loop_rate.sleep();
         }
