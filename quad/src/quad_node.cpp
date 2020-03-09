@@ -224,6 +224,10 @@ int main(int argc, char **argv)
 
             if (counter_msgs[UAV_COUNTER].data == -1)
             {
+                /*This loop is required in the hardware to provide an inital waypoint "inertia" to the drone.
+                The first waypoint given to the drone is (0, 0). However, the control code providing the waypoints lies
+                inside a conditional statement because of which the first waypoint is never reached. In simulation however, this issue is not encountered
+                since (0,0) is the point from where the UAV starts, i.e, from takeoff. In physical testing we start after takeoff.*/
                 counter_msgs[UAV_COUNTER].data += 1;
                 //Initial set of coordinates being published to the position topic of the UAV
                 pose[UAV_COUNTER].pose.position.x = list_maximum_value_y_indices[counter_msgs[UAV_COUNTER].data];
