@@ -148,6 +148,21 @@ plt.legend(['Z Position'], loc=1)
 plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV1CoordinatesZ.png')
 plt.show()
 
+import numpy as np
+plt.plot(y_points_1, x_points_1, label='UAV Trajectory')
+plt.plot([y_points_1[0]], [x_points_1[0]], label='UAV Start Point', color='g', marker='D')
+plt.plot([y_points_1[len(y_points_1)-1]], [x_points_1[len(x_points_1)-1]], label='UAV End Point', color = 'r', marker='D')
+plt.legend(title='UAV Trajectory Projection', numpoints=1, loc=1)
+plt.plot(y_points_3, x_points_3, color='y', label='Survivor Trajectory')
+plt.plot([y_points_3[0]], [x_points_3[0]], label='Survivor Start Point', color='g', marker='D')
+plt.plot([y_points_3[len(y_points_3)-1]], [x_points_3[len(x_points_3)-1]], color='r', marker='D')
+plt.title('Projection of Trajectory on X-Y Plane')
+plt.yticks(np.arange(-5, 10))
+plt.xticks(np.arange(-5, 10))
+plt.xlabel('X Coordinate')
+plt.ylabel('Y Coordinate')
+plt.show()
+
 # plt.plot(y_time_2, y_points_2, 'r')
 # plt.title('UAV 2 X Coordinates vs Time')
 # plt.xlabel("Seconds (s)")
@@ -197,8 +212,8 @@ plt.savefig('/home/sarthak/catkin_ws/src/assets/SurvivorZ.png')
 plt.show()
 
 # '''These points are required to plot the boundaries of the environment in the 3D plot'''
-x_points_4 = [0, 18.5, 18.5, 0, 0]
-y_points_4 = [0, 0, 18.5, 18.5, 0]
+x_points_4 = [-5, 18.5, 18.5, -5, -5]
+y_points_4 = [-5, -5, 18.5, 18.5, -5]
 z_points_4 = [0, 0, 0, 0, 0]
 
 fig = plt.figure()
@@ -256,6 +271,6 @@ ax.set_ylabel('X Axis')
 ax.set_zlabel('Z Axis')
 ax.legend(loc='best', title='Trajectories', numpoints=1)
 
-plt.savefig('/home/sarthak/catkin_ws/src/assets/Trajectories.png')
+# plt.savefig('/home/sarthak/catkin_ws/src/assets/Trajectories.png')
 
 plt.show()
