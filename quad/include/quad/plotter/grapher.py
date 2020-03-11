@@ -12,7 +12,6 @@ To-Do:
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-
 def second_converter(time_in_decimal):
     '''Here, we take the start and the end second in the decimal format as sent over by the subber,
     and calulate the time in pure second format.
@@ -116,11 +115,16 @@ def file_reader(coordinates_file_txt, plotting_parameter):
 
 
 x_points_1, y_points_1, z_points_1, x_time_1, y_time_1, z_time_1, start_second_1, end_second_1, start_second_decimal_1, end_second_decimal_1 = file_reader(
-    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt', 'pos')
+    'data/uav1_pos.txt', 'pos')
 # x_points_2, y_points_2, z_points_2, x_time_2, y_time_2, z_time_2, start_second_1, end_second_2, start_second_decimal_2, end_second_decimal_2 = file_reader(
     # '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt', 'pos')
 x_points_3, y_points_3, z_points_3, x_time_3, y_time_3, z_time_3, start_second_3, end_second_3, start_second_decimal_3, end_second_decimal_3 = file_reader(
-    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor_pos.txt', 'pos')
+    'data/survivor_pos.txt', 'pos')
+
+'''These points are required to plot the boundaries of the environment in the 3D plot, to be changed depending on the prototyping environment'''
+x_points_4 = [-5, 20.5, 20.5, -5, -5]
+y_points_4 = [-5, -5, 20.5, 20.5, -5]
+z_points_4 = [0, 0, 0, 0, 0]
 
 '''Plotting the agents properties vs time '''
 
@@ -148,19 +152,21 @@ plt.legend(['Z Position'], loc=1)
 plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV1CoordinatesZ.png')
 plt.show()
 
-import numpy as np
+
+'''Plotting the XY Projection of the agent here'''
+
 plt.plot(y_points_1, x_points_1, label='UAV Trajectory')
 plt.plot([y_points_1[0]], [x_points_1[0]], label='UAV Start Point', color='g', marker='D')
 plt.plot([y_points_1[len(y_points_1)-1]], [x_points_1[len(x_points_1)-1]], label='UAV End Point', color = 'r', marker='D')
-plt.legend(title='UAV Trajectory Projection', numpoints=1, loc=1)
-plt.plot(y_points_3, x_points_3, color='y', label='Survivor Trajectory')
+plt.plot(y_points_3, x_points_3, label='Survivor Trajectory', color='y')
 plt.plot([y_points_3[0]], [x_points_3[0]], label='Survivor Start Point', color='g', marker='D')
-plt.plot([y_points_3[len(y_points_3)-1]], [x_points_3[len(x_points_3)-1]], color='r', marker='D')
+plt.plot([y_points_3[len(y_points_3)-1]], [x_points_3[len(x_points_3)-1]], label = 'Survivor End Point', color='r', marker='D')
+plt.plot(y_points_4, x_points_4, label='Environment Boundary', color='b', marker='>')
 plt.title('Projection of Trajectory on X-Y Plane')
-plt.yticks(np.arange(-5, 10))
-plt.xticks(np.arange(-5, 10))
 plt.xlabel('X Coordinate')
 plt.ylabel('Y Coordinate')
+plt.legend(title='UAV Trajectory Projection', numpoints=1)
+plt.savefig('/home/sarthak/catkin_ws/src/assets/XYProjection.png')
 plt.show()
 
 # plt.plot(y_time_2, y_points_2, 'r')
@@ -170,7 +176,7 @@ plt.show()
 # plt.legend(['X Position'], loc=1)
 # plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV2CoordinatesX.png')
 # plt.show()
-# 
+ 
 # plt.plot(x_time_2, x_points_2, 'g')
 # plt.title('UAV 2 Y Coordinates vs Time')
 # plt.xlabel("Seconds (s)")
@@ -178,7 +184,7 @@ plt.show()
 # plt.legend(['Y Position'], loc=1)
 # plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV2CoordinatesY.png')
 # plt.show()
-# 
+ 
 # plt.plot(z_time_2, z_points_2, 'b')
 # plt.title('UAV 2 Z Coordinates vs Time')
 # plt.xlabel("Seconds (s)")
@@ -186,7 +192,7 @@ plt.show()
 # plt.legend(['Z Position'], loc=1)
 # plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV2CoordinatesZ.png')
 # plt.show()
-# 
+
 plt.plot(y_time_3, y_points_3, 'r')
 plt.xlabel("Seconds (s)")
 plt.ylabel("X Position")
@@ -210,11 +216,6 @@ plt.legend(['Z Position'], loc=1)
 plt.title('Survivor\'s Z Coordinates vs Time')
 plt.savefig('/home/sarthak/catkin_ws/src/assets/SurvivorZ.png')
 plt.show()
-
-# '''These points are required to plot the boundaries of the environment in the 3D plot'''
-x_points_4 = [-5, 18.5, 18.5, -5, -5]
-y_points_4 = [-5, -5, 18.5, 18.5, -5]
-z_points_4 = [0, 0, 0, 0, 0]
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
@@ -271,6 +272,6 @@ ax.set_ylabel('X Axis')
 ax.set_zlabel('Z Axis')
 ax.legend(loc='best', title='Trajectories', numpoints=1)
 
-# plt.savefig('/home/sarthak/catkin_ws/src/assets/Trajectories.png')
+plt.savefig('/home/sarthak/catkin_ws/src/assets/Trajectories.png')
 
 plt.show()
