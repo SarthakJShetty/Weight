@@ -103,7 +103,7 @@ int main(int argc, char **argv)
         takeoff_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
     }
 
-    ros::Rate rate(15.0);
+    ros::Rate rate(10.0);
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
