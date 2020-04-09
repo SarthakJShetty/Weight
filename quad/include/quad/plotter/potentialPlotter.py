@@ -27,33 +27,33 @@ def reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, redu
         for xCounter in range(0, environmentX):
             if((yCounter, xCounter) in obstaclePoints):
                 '''We encounter this loop if the current point is in the obstacle list'''
-                reductivePotential[yCounter, xCounter] = 50
+                reductivePotential[yCounter, xCounter] = np.amax(reductivePotential) + 1
             else:
                 '''If the current point is not in the obstacle list, continue to this section and calculate the distance of the given point from the obstacles'''
-                distancesToObstacle = [(sqrt((yCounter - obstaclePoint[0])**2 + (xCounter - obstaclePoint[1])**2)) for obstaclePoint in obstaclePoints]
+                distancesToObstacle = [sqrt((yCounter - obstaclePoint[0])**2 + (xCounter - obstaclePoint[1])**2) for obstaclePoint in obstaclePoints]
                 '''Cycling through the distance from each obstacle point in the list and the given point'''
                 for distanceToObstacle in distancesToObstacle:
-                    if(distanceToObstacle > distanceFactor):
-                        '''If the given point is distanceFactor away from the obstacle, then ignore and assign reductive potential as 0'''
-                        reductivePotential[yCounter, xCounter] = 0
-                    else:
+                    if(distanceToObstacle < distanceFactor):
                         '''If the distance is less than distanceFactor then calculate the reductive potential'''
-                        reductivePotential[yCounter, xCounter] = reductiveScalingFactor*((1/(sum(distancesToObstacle)) - 1/(distanceFactor))**2)
+                        reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + reductiveScalingFactor*((1/(sum(distancesToObstacle)) - 1/(distanceFactor))**2)
+                    else:
+                        '''If the given point is distanceFactor away from the obstacle, then ignore and assign reductive potential as 0'''
+                        reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + 0
     return reductivePotential
 
 '''Declaring the environment dimensions and the location of the goal coordinate'''
-environmentX = 20
+environmentX = 30
 environmentY = 20
-goalX = 5
-goalY = 5
+goalX = 10
+goalY = 10
 
 '''Declaring the factors for the attractive and reductive potential allocators'''
 attractiveScalingFactor = 10
 reductiveScalingFactor = 100
-distanceFactor = 10
+distanceFactor = 3
 
 '''Declaring the objects here'''
-objectsBoundary = [[(1, 1), (4, 4)]]
+objectsBoundary = [[(4, 4), (8, 8)], [(10, 20), (11, 21)]]
 obstaclePoints = []
 obstaclePoints = obstacleGenerator(objectsBoundary, obstaclePoints)
 
@@ -81,7 +81,7 @@ attractivePotentialMesh = attractivePotential.reshape(columnArray.shape)
 reductivePotentialMesh = reductivePotential.reshape(columnArray.shape)
 
 '''Here, we combine the reductive and the attractive potentials of each coordinate in the map'''
-completePotential = reductivePotentialMesh + attractivePotentialMesh
+completePotential = attractivePotentialMesh + reductivePotentialMesh
 
 '''Initalizing the 3D space for projection of the potential'''
 fig = plt.figure()
