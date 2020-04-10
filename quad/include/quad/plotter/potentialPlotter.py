@@ -25,20 +25,16 @@ def reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, redu
     '''This function generates the reductive potentials generated due to the presence of obstacles in the environment'''
     for yCounter in range(0, environmentY):
         for xCounter in range(0, environmentX):
-            if((yCounter, xCounter) in obstaclePoints):
-                '''We encounter this loop if the current point is in the obstacle list'''
-                reductivePotential[yCounter, xCounter] = np.amax(reductivePotential) + 1
-            else:
-                '''If the current point is not in the obstacle list, continue to this section and calculate the distance of the given point from the obstacles'''
-                distancesToObstacle = [sqrt((yCounter - obstaclePoint[0])**2 + (xCounter - obstaclePoint[1])**2) for obstaclePoint in obstaclePoints]
-                '''Cycling through the distance from each obstacle point in the list and the given point'''
-                for distanceToObstacle in distancesToObstacle:
-                    if(distanceToObstacle < distanceFactor):
-                        '''If the distance is less than distanceFactor then calculate the reductive potential'''
-                        reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + reductiveScalingFactor*((1/(sum(distancesToObstacle)) - 1/(distanceFactor))**2)
-                    else:
-                        '''If the given point is distanceFactor away from the obstacle, then ignore and assign reductive potential as 0'''
-                        reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + 0
+            '''If the current point is not in the obstacle list, continue to this section and calculate the distance of the given point from the obstacles'''
+            distancesToObstacle = [sqrt((yCounter - obstaclePoint[0])**2 + (xCounter - obstaclePoint[1])**2) for obstaclePoint in obstaclePoints]
+            '''Cycling through the distance from each obstacle point in the list and the given point'''
+            for distanceToObstacle in distancesToObstacle:
+                if(distanceToObstacle < distanceFactor):
+                    '''If the distance is less than distanceFactor then calculate the reductive potential'''
+                    reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + reductiveScalingFactor*((1/(sum(distancesToObstacle)) - 1/(distanceFactor))**2)
+                else:
+                    '''If the given point is distanceFactor away from the obstacle, then ignore and assign reductive potential as 0'''
+                    reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + 0
     return reductivePotential
 
 '''Declaring the environment dimensions and the location of the goal coordinate'''
