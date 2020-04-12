@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from math import sqrt
-from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D  
 import matplotlib.pyplot as plt
 
@@ -39,7 +38,7 @@ def reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, redu
 
 '''Declaring the environment dimensions and the location of the goal coordinate'''
 environmentX = 30
-environmentY = 20
+environmentY = 30
 goalX = 10
 goalY = 10
 
@@ -83,8 +82,11 @@ completePotential = attractivePotentialMesh + reductivePotentialMesh
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
+'''Grabbing the colormap from the Matplotlib library'''
+colormap = plt.cm.get_cmap('viridis')
+
 '''Plotting the potential function here over the 3D space'''
-ax.plot_surface(rowArray, columnArray, completePotential, cmap=cm.plasma)
+ax.plot_surface(rowArray, columnArray, completePotential, cmap=colormap)
 
 '''Labelling the axes in the 3D space'''
 ax.set_xlabel('X Axis')
