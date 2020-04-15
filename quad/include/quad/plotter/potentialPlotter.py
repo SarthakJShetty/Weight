@@ -103,5 +103,10 @@ ax.set_xlabel('X Axis')
 ax.set_ylabel('Y Axis')
 ax.set_zlabel('Z Axis')
 
+'''Repurposing the colormap used to plot the surface to generate the colorbar'''
+colorbar = plt.cm.ScalarMappable(cmap = colormap)
+colorbar.set_array(totalPotential)
+plt.colorbar(colorbar)
+
 '''Presenting the manifold generated'''
 plt.show()
