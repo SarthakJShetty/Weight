@@ -55,7 +55,7 @@ reductiveScalingFactor = 100
 distanceFactor = 3
 
 '''Declaring the objects here'''
-objectsBoundary = [[(20, 20), (25, 25)], [(5, 5), (10, 10)]]
+objectsBoundary = [[(5, 5), (10, 10)], [(20, 20), (25, 25)]]
 obstaclePoints = []
 obstaclePoints = obstacleGenerator(objectsBoundary, obstaclePoints)
 
@@ -106,7 +106,14 @@ ax.set_zlabel('Z Axis')
 '''Repurposing the colormap used to plot the surface to generate the colorbar'''
 colorbar = plt.cm.ScalarMappable(cmap = colormap)
 colorbar.set_array(totalPotential)
-plt.colorbar(colorbar)
+colorbar = plt.colorbar(colorbar)
+colorbar.set_label('Increasing Potential')
+
+'''Labelling the figure generated'''
+plt.title('Potential Distribution Across ' + str(environmentX) + ' x '+ str(environmentY)+ ' Environment Space')
+
+'''Setting the default aspect ratio as equal'''
+ax.set_aspect('equal')
 
 '''Presenting the manifold generated'''
 plt.show()
