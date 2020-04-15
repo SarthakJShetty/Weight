@@ -36,11 +36,18 @@ def reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, redu
                     reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + 0
     return reductivePotential
 
-'''Declaring the environment dimensions and the location of the goal coordinate'''
+def totalPotentialGenerator(attractivePotential, reductivePotential):
+    '''Adding the attractive and reductive potentials before meshing'''
+    totalPotential  = attractivePotential + reductivePotential
+    return totalPotential
+
+'''Declaring the environment dimensions'''
 environmentX = 30
 environmentY = 30
-goalX = 10
-goalY = 10
+
+'''Location of the goal coordinates'''
+goalX = 15
+goalY = 15
 
 '''Declaring the factors for the attractive and reductive potential allocators'''
 attractiveScalingFactor = 10
@@ -48,7 +55,7 @@ reductiveScalingFactor = 100
 distanceFactor = 3
 
 '''Declaring the objects here'''
-objectsBoundary = [[(4, 4), (8, 8)], [(10, 20), (11, 21)]]
+objectsBoundary = [[(20, 20), (25, 25)], [(5, 5), (10, 10)]]
 obstaclePoints = []
 obstaclePoints = obstacleGenerator(objectsBoundary, obstaclePoints)
 
@@ -76,7 +83,10 @@ attractivePotentialMesh = attractivePotential.reshape(columnArray.shape)
 reductivePotentialMesh = reductivePotential.reshape(columnArray.shape)
 
 '''Here, we combine the reductive and the attractive potentials of each coordinate in the map'''
-completePotential = attractivePotentialMesh + reductivePotentialMesh
+totalPotential = totalPotentialGenerator(attractivePotential, reductivePotential)
+
+'''Meshing the totalPotential here'''
+totalPotentialMesh = totalPotential.reshape(columnArray.shape)
 
 '''Initalizing the 3D space for projection of the potential'''
 fig = plt.figure()
@@ -86,7 +96,7 @@ ax = fig.add_subplot(111, projection='3d')
 colormap = plt.cm.get_cmap('viridis')
 
 '''Plotting the potential function here over the 3D space'''
-ax.plot_surface(rowArray, columnArray, completePotential, cmap=colormap)
+ax.plot_surface(rowArray, columnArray, totalPotentialMesh, cmap=colormap)
 
 '''Labelling the axes in the 3D space'''
 ax.set_xlabel('X Axis')
