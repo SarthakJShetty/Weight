@@ -4,7 +4,7 @@ from math import sqrt
 from mpl_toolkits.mplot3d import Axes3D  
 import matplotlib.pyplot as plt
 
-def obstacleGenerator(objectsBoundary, obstaclePoints):
+def obstaclePointsGenerator(objectsBoundary, obstaclePoints):
     '''Returning all the points that lie within and on the boundary of the given object, to generate the Repulsive Potential'''
     for objectBoundary in objectsBoundary:
         for lowerBound in range(objectBoundary[0][0], (objectBoundary[1][0]+1)):
@@ -55,7 +55,9 @@ reductiveScalingFactor = 50
 distanceFactor = 3
 
 '''Declaring the point objects here'''
-obstaclePoints = [(10, 10), (20, 20)]
+objectsBoundary = [[(10, 10), (10, 10)], [(20, 20), (20, 20)]]
+obstaclePoints = []
+obstaclePoints = obstaclePointsGenerator(objectsBoundary, obstaclePoints)
 
 '''Generating the numpy arrays for meshing the environment space'''
 column = np.arange(0, environmentY, 1)
@@ -117,7 +119,7 @@ ax.set_aspect('equal')
 plt.grid(True)
 
 '''This line will be used while generating contour plots to clearly mark point obstacles'''
-plt.scatter([[obstaclePoint[0]] for obstaclePoint in obstaclePoints], [[obstaclePoint[1]] for obstaclePoint in obstaclePoints])
+# plt.scatter([[obstaclePoint[0]] for obstaclePoint in obstaclePoints], [[obstaclePoint[1]] for obstaclePoint in obstaclePoints])
 
 '''Presenting the manifold generated'''
 plt.show()
