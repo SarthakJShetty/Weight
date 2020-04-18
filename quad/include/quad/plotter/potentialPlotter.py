@@ -50,14 +50,12 @@ goalX = 15
 goalY = 15
 
 '''Declaring the factors for the attractive and reductive potential allocators'''
-attractiveScalingFactor = 10
-reductiveScalingFactor = 100
+attractiveScalingFactor = 1
+reductiveScalingFactor = 50
 distanceFactor = 3
 
-'''Declaring the objects here'''
-objectsBoundary = [[(5, 5), (10, 10)], [(20, 20), (25, 25)]]
-obstaclePoints = []
-obstaclePoints = obstacleGenerator(objectsBoundary, obstaclePoints)
+'''Declaring the point objects here'''
+obstaclePoints = [(10, 10), (20, 20)]
 
 '''Generating the numpy arrays for meshing the environment space'''
 column = np.arange(0, environmentY, 1)
@@ -114,6 +112,12 @@ plt.title('Potential Distribution Across ' + str(environmentX) + ' x '+ str(envi
 
 '''Setting the default aspect ratio as equal'''
 ax.set_aspect('equal')
+
+'''Adding referential grids to the figure to better figure out contour plots'''
+plt.grid(True)
+
+'''This line will be used while generating contour plots to clearly mark point obstacles'''
+plt.scatter([[obstaclePoint[0]] for obstaclePoint in obstaclePoints], [[obstaclePoint[1]] for obstaclePoint in obstaclePoints])
 
 '''Presenting the manifold generated'''
 plt.show()
