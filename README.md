@@ -8,9 +8,9 @@ Probabilistic path planning for heterogenous UAV swarms.
 
 + This repository contains files related to the "Multi-UAV Swarm for Search & Rescue" project, undertaken at the [Mobile Robotics Laboratory](http://aero.iisc.ac.in/people/debasish-ghose/) in the [Indian Institute of Science, Bengaluru](https://iisc.ac.in).
 
-+ We compared the performace of this model to the conventional lawn-mower model, both in simulation and physical environments. Our model outperforms the conventional algorithms [¹]().
++ We compared the performace of this model to the conventional lawn-mower model, both in simulation and physical environments. Our model outperforms the conventional algorithms [¹](https://github.com/SarthakJShetty/Weight#40-references).
 
-+ The exploration model here is based on the novel "Weight Based Probabilistic" path planning algorithm [²](), described in the figure below.
++ The exploration model here is based on the novel "Weight Based Probabilistic" path planning algorithm [²](https://github.com/SarthakJShetty/Weight#40-references), described in the figure below.
 
 ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/Weightage.jpg "Weight-Based Exploration")
 
@@ -49,13 +49,17 @@ The script subscribes to topics of the form, ```/uavX/mavros/global_position/loc
 
 + The ROS simulation environment is as shown below. The UAV is an 3DR Iris Quadcopter, running a ```mavros``` node on a PX4 Autopilot board.
 
-![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/ROS_Environment.png "ROS Simulation Environment")
+<div style="text-align:center">
+        <img src="https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/ROS_Environment.png" alt="ROS Simulation Environment">
+</div>
 
 #### 3.1.1 Lawn-Mower Results:
 
 Here, the UAV attempts to find the survivor using the lawn-mower.
 
-![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMTrajectories.png "UAV Lawn-Mower Trajectory in Simulation ")
+<div style="text-align:center">
+        <img src="https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMTrajectories.png" alt="UAV Lawn-Mower Trajectory in Simulation">
+</div>
 
 UAV X Coordination Variation           |  UAV Y Coordination Variation | UAV Z Coordination Variation
 :-------------------------:|:-------------------------:|:---------:
@@ -70,7 +74,9 @@ Survivor X Variation             |  Survivor Y Variation | Survivor Z Variation
 
 The UAV starts out following the lawn-mower pattern, then follows the probabilistic pattern upon receiving a stream of messages from the ```quad_observer_node```.
 
-![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBTrajectory.png "UAV Weight-Based Trajectory in Simulation ")
+<div style="text-align:center">
+        <img src="https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBTrajectory.png" alt="UAV Weight-Based Trajectory in Simulation">
+</div>
 
 UAV X Coordination Variation           |  UAV Y Coordination Variation | UAV Z Coordination Variation
 :-------------------------:|:-------------------------:|:---------:
