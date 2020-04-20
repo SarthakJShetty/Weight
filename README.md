@@ -12,7 +12,11 @@ Probabilistic path planning for heterogenous UAV swarms.
 
 + The exploration model here is based on the novel "Weight Based Probabilistic" path planning algorithm [²](https://github.com/SarthakJShetty/Weight#40-references), described in the figure below.
 
-![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/Weightage.jpg "Weight-Based Exploration")
+
+<div style="text-align:center">
+        <img src="https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/Weightage.jpg" alt="Weight-Based Exploration">
+</div>
+<i>Figure 1.1 Weight-Based Exploration</i>
 
 ## 2.0 Simulations:
 
@@ -42,6 +46,7 @@ The script subscribes to topics of the form, ```/uavX/mavros/global_position/loc
 
 2.5 The ```ros_graph``` of the simulation environment is shown below.
 ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/rosgraph.png "ROS Graph")
+<i>Figure 2.1 ROS Graph of the simulation environment</i>
 
 ## 3.0 Results:
 
@@ -52,6 +57,7 @@ The script subscribes to topics of the form, ```/uavX/mavros/global_position/loc
 <div style="text-align:center">
         <img src="https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/ROS_Environment.png" alt="ROS Simulation Environment">
 </div>
+<i>Figure 3.1 Simulation Environment on ROS</i>
 
 #### 3.1.1 Lawn-Mower Results:
 
@@ -60,6 +66,7 @@ Here, the UAV attempts to find the survivor using the lawn-mower.
 <div style="text-align:center">
         <img src="https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMTrajectories.png" alt="UAV Lawn-Mower Trajectory in Simulation">
 </div>
+<i>Figure 3.2 UAV Lawn-Mower Trajectory in Simulation</i>
 
 UAV X Coordination Variation           |  UAV Y Coordination Variation | UAV Z Coordination Variation
 :-------------------------:|:-------------------------:|:---------:
@@ -77,6 +84,7 @@ The UAV starts out following the lawn-mower pattern, then follows the probabilis
 <div style="text-align:center">
         <img src="https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBTrajectory.png" alt="UAV Weight-Based Trajectory in Simulation">
 </div>
+<i>Figure 3.3 UAV Weight-Based Trajectory in Simulation</i>
 
 UAV X Coordination Variation           |  UAV Y Coordination Variation | UAV Z Coordination Variation
 :-------------------------:|:-------------------------:|:---------:
@@ -92,6 +100,7 @@ Survivor X Variation             |  Survivor Y Variation | Survivor Z Variation
 + The UAV used for the physical testing is as shown below, similar to the Iris Quadcopter used in the simulation environment. We use a PX4 Autopilot here as well.
 
 ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhysicalSetup.png "Physical Testing")
+<i>Figure 3.4 UAV used for Physical Testing</i>
 
 #### 3.2.1 Lawn-Mower Results:
 
