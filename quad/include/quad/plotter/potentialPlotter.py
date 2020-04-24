@@ -30,7 +30,12 @@ def reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, redu
             for distanceToObstacle in distancesToObstacle:
                 if(distanceToObstacle < distanceFactor):
                     '''If the distance is less than distanceFactor then calculate the reductive potential'''
-                    reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + reductiveScalingFactor*((1/(sum(distancesToObstacle)) - 1/(distanceFactor))**2)
+                    if(distanceToObstacle != 0):
+                        '''If the given (yCounter, xCounter) is not in obstaclePoints, calculate the reductivepotential'''
+                        reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + reductiveScalingFactor*((1/(sum(distancesToObstacle)) - 1/(distanceFactor))**2)
+                    else:
+                        '''If the given (yCounter, xCounter) is in obstaclePoints, then assign the highest reductivePotential to that point'''
+                        reductivePotential[yCounter, xCounter] = np.max(reductivePotential)
                 else:
                     '''If the given point is distanceFactor away from the obstacle, then ignore and assign reductive potential as 0'''
                     reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + 0
@@ -55,7 +60,7 @@ reductiveScalingFactor = 50
 distanceFactor = 3
 
 '''Declaring the point objects here'''
-objectsBoundary = [[(10, 10), (10, 10)], [(20, 20), (20, 20)]]
+objectsBoundary = [[(5, 5), (5, 5)], [(15, 15), (15, 15)], [(25, 25), (25, 25)]]
 obstaclePoints = []
 obstaclePoints = obstaclePointsGenerator(objectsBoundary, obstaclePoints)
 
@@ -119,7 +124,7 @@ ax.set_aspect('equal')
 plt.grid(True)
 
 '''This line will be used while generating contour plots to clearly mark point obstacles'''
-# plt.scatter([[obstaclePoint[0]] for obstaclePoint in obstaclePoints], [[obstaclePoint[1]] for obstaclePoint in obstaclePoints])
+# plt.scatter([[obstaclePoint[1]] for obstaclePoint in obstaclePoints], [[obstaclePoint[0]] for obstaclePoint in obstaclePoints])
 
 '''Presenting the manifold generated'''
 plt.show()
