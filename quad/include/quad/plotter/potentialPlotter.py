@@ -35,7 +35,7 @@ def reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, redu
                         reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + reductiveScalingFactor*((1/(sum(distancesToObstacle)) - 1/(distanceFactor))**2)
                     else:
                         '''If the given (yCounter, xCounter) is in obstaclePoints, then assign the highest reductivePotential to that point'''
-                        reductivePotential[yCounter, xCounter] = np.max(reductivePotential)
+                        reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + np.max(reductivePotential)
                 else:
                     '''If the given point is distanceFactor away from the obstacle, then ignore and assign reductive potential as 0'''
                     reductivePotential[yCounter, xCounter] = reductivePotential[yCounter, xCounter] + 0
