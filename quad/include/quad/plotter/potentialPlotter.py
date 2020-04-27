@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from math import sqrt
 from mpl_toolkits.mplot3d import Axes3D  
 import matplotlib.pyplot as plt
 
@@ -17,12 +16,12 @@ def attractivePotentialGenerator(environmentX, environmentY, goalX, goalY, attra
     for xCounter in range(0, environmentX):
         for yCounter in range(0, environmentY):
             '''We increment by one here to ensure that the outer edges of the obstacle are also included in the obstacle list'''
-            attractivePotential[xCounter, yCounter] = attractiveScalingFactor*(sqrt((yCounter - goalY)**2 + (xCounter - goalX)**2))
+            attractivePotential[xCounter, yCounter] = attractiveScalingFactor*(((yCounter - goalY)**2 + (xCounter - goalX)**2)**(1/2))
     return attractivePotential
 
 def cartesianDistance(x1, y1, x2, y2):
     '''This function returns the cartesian distance between two given points.'''
-    return sqrt((y1 - y2)**2 + (x1 - x2)**2)
+    return ((y1 - y2)**2 + (x1 - x2)**2)**(1/2)
 
 def reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, reductivePotential, distanceFactor, reductiveScalingFactor):
     '''This function generates the reductive potentials generated due to the presence of obstacles in the environment'''
@@ -51,27 +50,39 @@ def totalPotentialGenerator(attractivePotential, reductivePotential):
     return totalPotential
 
 def pathGenerator(totalPotential, goalX, goalY, startX, startY, radiusOfConsideration, pathCoordinates, potentialPointsOfConsideration, distancePointsOfConsideration):
-    '''This function generates a list of points to the goal from the start coordinates'''
-    pathCoordinates.append((startX, startY))
-    while ((startX!=goalX) or (startY!=goalY)):
+    '''This function generates a list of points to the goal from the start coordinates
+    Our algorithm is as follows:
+    1. Find the point(s) of least potential within the radiusOfConsideration
+    2. Backtrack it into the potentialPointsOfConsideration dictionary and collect the corresponding (X, Y) coordinate
+    3. Find the distances for each of these short-listed points.
+    4. Go to the point with the with the least potential, that's farthest away.
+    5*, If more than 1 are returned from 3., go to the first point, since it doesnt matter (potentials field and radiusOfConsideration circle intersect at these points).
+    6. Add this point to the pathCoordinates list
+    7. Iterate with new startXm startY coordinates'''
+    '''We loop through until the startX and startY converge with goalX and goalY'''
+    while ((startX != goalX) or (startY != goalY)):
+        '''We design a box of radius radiusOfConsideration around the given start(X, Y) coordinates. We use this space for determining the point with the least potential to move to.'''
         for xCounter in range((startX - radiusOfConsideration), (startX + radiusOfConsideration)):
             for yCounter in range((startY - radiusOfConsideration), (startY + radiusOfConsideration)):
+                '''We use dictionaries to ensure traceability from a given potential/distance value to it's key (X, Y) which is in the form of a tuple key in the dictionary
+                We create two dictionaries: 1. To note the potential the points being considered, 2. To note the distance of a point (X, Y) within the radius of consideration.'''
                 potentialPointsOfConsideration[(xCounter, yCounter)] = totalPotential[xCounter, yCounter]
                 distancePointsOfConsideration[(xCounter, yCounter)] = cartesianDistance(startX, startY, xCounter, yCounter)
+        '''We find the minimumPotential here and grab the corresponding coordinate'''
         minimumPotential = min([potential for point, potential in potentialPointsOfConsideration.items()])
-        minimumPotentialPoints = [point for point, potential in potentialPointsOfConsideration.items() if potential==minimumPotential]
+        minimumPotentialPoints = [point for point, potential in potentialPointsOfConsideration.items() if potential == minimumPotential]
+        '''We grab the coordinates corresponding to the least potentials within the radiusOfConsideration'''
         maximumDistance = max([distancePointsOfConsideration[minimumPotentialPoint] for minimumPotentialPoint in minimumPotentialPoints])
-        maximumDistancePoints = [point for point, distance in distancePointsOfConsideration.items() if distance==maximumDistance and point in minimumPotentialPoints]
-        if(startX!=goalX):
-            startX=maximumDistancePoints[0][0]
-        else:
-            startX=startX
-        if(startY!=goalY):
-            startY=maximumDistancePoints[0][1]
-        else:
-            startY=startY
+        maximumDistancePoints = [point for point, distance in distancePointsOfConsideration.items() if distance == maximumDistance and point in minimumPotentialPoints]
+        '''Here, we update start(X, Y) to the new point generated from the preceeding code'''
+        startX = maximumDistancePoints[0][0]
+        startY = maximumDistancePoints[0][1]
+        '''At the end of each iteration we append the pathCoordinates with the new coordinate'''
         pathCoordinates.append((startX, startY))
     return pathCoordinates
+
+'''Adding a variable here to switch between contour plotting and surface'''
+contourPlotting = True
 
 '''Declaring the environment dimensions'''
 environmentX = 30
@@ -82,13 +93,18 @@ goalX = 15
 goalY = 15
 
 '''Start location that has to be eventually routed to the goal(X, Y)'''
-startX = 28
-startY = 22
+startX = 10
+startY = 20
 
 '''Declaring a dictionary to hold the coordinates and their corresponding distances while generating the path to the goal'''
 potentialPointsOfConsideration = {}
 distancePointsOfConsideration = {}
+
+'''pathCoordinates holds the path charted from start(X, Y) to goal(X, Y)'''
 pathCoordinates = []
+
+'''We append the first set of start(X, Y) coordinates here, before the routing begins'''
+pathCoordinates.append((startX, startY))
 
 '''Declaring a radius of consideration to identify the lowest potential coordinate in the neighbourhood of the start(X, Y)'''
 radiusOfConsideration = 2
@@ -96,10 +112,10 @@ radiusOfConsideration = 2
 '''Declaring the factors for the attractive and reductive potential allocators'''
 attractiveScalingFactor = 1
 reductiveScalingFactor = 50
-distanceFactor = 3
+distanceFactor = 2
 
 '''Declaring the point objects here'''
-objectsBoundary = [[(10, 10), (10, 10)]]
+objectsBoundary = [[(10, 10), (10, 10)], [(20, 20), (20, 20)], [(10, 15), (10, 15)]]
 obstaclePoints = []
 obstaclePoints = obstaclePointsGenerator(objectsBoundary, obstaclePoints)
 
@@ -134,18 +150,29 @@ totalPotentialMesh = totalPotential.reshape(columnArray.shape)
 
 '''Initalizing the 3D space for projection of the potential'''
 fig = plt.figure()
-ax = fig.add_subplot(111)
+
+'''The projection parameter is required only for plot_surface'''
+if contourPlotting:
+    ax = fig.add_subplot(111)
+else:
+    ax = fig.add_subplot(111, projection='3d')
 
 '''Grabbing the colormap from the Matplotlib library'''
 colormap = plt.cm.get_cmap('viridis')
 
 '''Plotting the potential function here over the 3D space'''
-ax.contour(rowArray, columnArray, totalPotentialMesh, cmap=colormap)
+if contourPlotting:
+    ax.contour(rowArray, columnArray, totalPotentialMesh, cmap=colormap)
+else:
+    ax.plot_surface(rowArray, columnArray, totalPotentialMesh, cmap=colormap)
 
 '''Labelling the axes in the 3D space'''
 ax.set_xlabel('X Axis')
 ax.set_ylabel('Y Axis')
-# ax.set_zlabel('Z Axis')
+
+'''Z label is required only for surface plots'''
+if not contourPlotting:
+    ax.set_zlabel('Z Axis')
 
 '''Repurposing the colormap used to plot the surface to generate the colorbar'''
 colorbar = plt.cm.ScalarMappable(cmap = colormap)
@@ -164,7 +191,18 @@ plt.grid(True)
 
 '''This line will be used while generating contour plots to clearly mark point obstacles'''
 pathCoordinates= pathGenerator(totalPotential, goalX, goalY, startX, startY, radiusOfConsideration, pathCoordinates, potentialPointsOfConsideration, distancePointsOfConsideration)
-plt.scatter([[obstaclePoint[0]] for obstaclePoint in obstaclePoints], [[obstaclePoint[1]] for obstaclePoint in obstaclePoints])
-plt.scatter([[pathCoordinate[0]] for pathCoordinate in pathCoordinates], [[pathCoordinate[1]] for pathCoordinate in pathCoordinates])
+
+'''Here, we scatter the obstacle for the countour plot. We use scatter instead of plot because we don't want the line connecting the two.'''
+if contourPlotting:
+    plt.scatter([[obstaclePoint[0]] for obstaclePoint in obstaclePoints], [[obstaclePoint[1]] for obstaclePoint in obstaclePoints])
+
+'''Here, we plot the pathCoordinates from the pathGenerator'''
+if contourPlotting:
+    '''For contours we do not use the third dimension'''
+    plt.plot([[pathCoordinate[0]] for pathCoordinate in pathCoordinates], [[pathCoordinate[1]] for pathCoordinate in pathCoordinates], markerfacecolor='r', markeredgecolor='r', marker='X', markersize=5, alpha=1)
+else:
+    '''For surface plots we use totalPotential to plot the points'''
+    plt.plot([[pathCoordinate[0]] for pathCoordinate in pathCoordinates], [[pathCoordinate[1]] for pathCoordinate in pathCoordinates], [totalPotential[pathCoordinate[0], pathCoordinate[1]] for pathCoordinate in pathCoordinates], markerfacecolor='r', markeredgecolor='r', marker='o', markersize=10, alpha=1)
+
 '''Presenting the manifold generated'''
 plt.show()
