@@ -89,12 +89,12 @@ environmentX = 30
 environmentY = 25
 
 '''Location of the goal coordinates'''
-goalX = 15
-goalY = 15
+goalX = 20
+goalY = 20
 
 '''Start location that has to be eventually routed to the goal(X, Y)'''
-startX = 10
-startY = 20
+startX = 9
+startY = 8
 
 '''Declaring a dictionary to hold the coordinates and their corresponding distances while generating the path to the goal'''
 potentialPointsOfConsideration = {}
@@ -115,7 +115,7 @@ reductiveScalingFactor = 50
 distanceFactor = 2
 
 '''Declaring the point objects here'''
-objectsBoundary = [[(10, 10), (10, 10)], [(20, 20), (20, 20)], [(10, 15), (10, 15)]]
+objectsBoundary = [[(10, 10), (10, 10)], [(20, 17), (20, 17)], [(15, 12), (15, 12)], [(15, 16), (15, 16)]]
 obstaclePoints = []
 obstaclePoints = obstaclePointsGenerator(objectsBoundary, obstaclePoints)
 
@@ -160,9 +160,12 @@ else:
 '''Grabbing the colormap from the Matplotlib library'''
 colormap = plt.cm.get_cmap('viridis')
 
+'''Increasing the number of contours in the plot'''
+contourLevels = np.arange(np.min(totalPotential), np.max(totalPotential), 4)
+
 '''Plotting the potential function here over the 3D space'''
 if contourPlotting:
-    ax.contour(rowArray, columnArray, totalPotentialMesh, cmap=colormap)
+    ax.contour(rowArray, columnArray, totalPotentialMesh, cmap=colormap, levels=contourLevels)
 else:
     ax.plot_surface(rowArray, columnArray, totalPotentialMesh, cmap=colormap)
 
@@ -199,7 +202,7 @@ if contourPlotting:
 '''Here, we plot the pathCoordinates from the pathGenerator'''
 if contourPlotting:
     '''For contours we do not use the third dimension'''
-    plt.plot([[pathCoordinate[0]] for pathCoordinate in pathCoordinates], [[pathCoordinate[1]] for pathCoordinate in pathCoordinates], markerfacecolor='r', markeredgecolor='r', marker='X', markersize=5, alpha=1)
+    plt.plot([[pathCoordinate[0]] for pathCoordinate in pathCoordinates], [[pathCoordinate[1]] for pathCoordinate in pathCoordinates], markersize=5, markerfacecolor='r', markeredgecolor='r', marker='o')
 else:
     '''For surface plots we use totalPotential to plot the points'''
     plt.plot([[pathCoordinate[0]] for pathCoordinate in pathCoordinates], [[pathCoordinate[1]] for pathCoordinate in pathCoordinates], [totalPotential[pathCoordinate[0], pathCoordinate[1]] for pathCoordinate in pathCoordinates], markerfacecolor='r', markeredgecolor='r', marker='o', markersize=10, alpha=1)
