@@ -49,7 +49,7 @@ def totalPotentialGenerator(attractivePotential, reductivePotential):
     totalPotential  = attractivePotential + reductivePotential
     return totalPotential
 
-def pathGenerator(totalPotential, goalX, goalY, startX, startY, radiusOfConsideration, pathCoordinates, potentialPointsOfConsideration, distancePointsOfConsideration):
+def pathGenerator(totalPotential, environmentX, environmentY, goalX, goalY, startX, startY, radiusOfConsideration, pathCoordinates, potentialPointsOfConsideration, distancePointsOfConsideration):
     '''This function generates a list of points to the goal from the start coordinates
     Our algorithm is as follows:
     1. Find the point(s) of least potential within the radiusOfConsideration
@@ -61,9 +61,31 @@ def pathGenerator(totalPotential, goalX, goalY, startX, startY, radiusOfConsider
     7. Iterate with new startXm startY coordinates'''
     '''We loop through until the startX and startY converge with goalX and goalY'''
     while ((startX != goalX) or (startY != goalY)):
+        startXValue = startX - radiusOfConsideration
+        endXValue = startX + radiusOfConsideration
+        startYValue = startY - radiusOfConsideration
+        endYValue = startY + radiusOfConsideration
+        '''In some cases, the bounding box used to grab the surrounding potentials may lie outside the environment, where points have null potentials.
+        To ensure that the bounding box always lies within the operating environment, we put in place these checks, to limit the spillage to null potentials.'''
+        if(startXValue < 0):
+            startXValue = 0
+        else:
+            startXValue = startXValue
+        if(endXValue > environmentX):
+            endXValue = environmentX
+        else:
+            endXValue = endXValue
+        if(startYValue < 0):
+            startYValue = 0
+        else:
+            startYValue = startYValue
+        if(endYValue > environmentY):
+            endYValue = environmentY
+        else:
+            endYValue = endYValue
         '''We design a box of radius radiusOfConsideration around the given start(X, Y) coordinates. We use this space for determining the point with the least potential to move to.'''
-        for xCounter in range((startX - radiusOfConsideration), (startX + radiusOfConsideration)):
-            for yCounter in range((startY - radiusOfConsideration), (startY + radiusOfConsideration)):
+        for xCounter in range(startXValue, endXValue):
+            for yCounter in range(startYValue, endYValue):
                 '''We use dictionaries to ensure traceability from a given potential/distance value to it's key (X, Y) which is in the form of a tuple key in the dictionary
                 We create two dictionaries: 1. To note the potential the points being considered, 2. To note the distance of a point (X, Y) within the radius of consideration.'''
                 potentialPointsOfConsideration[(xCounter, yCounter)] = totalPotential[xCounter, yCounter]
@@ -93,8 +115,8 @@ goalX = 20
 goalY = 20
 
 '''Start location that has to be eventually routed to the goal(X, Y)'''
-startX = 9
-startY = 8
+startX = 5
+startY = 5
 
 '''Declaring a dictionary to hold the coordinates and their corresponding distances while generating the path to the goal'''
 potentialPointsOfConsideration = {}
@@ -115,7 +137,7 @@ reductiveScalingFactor = 50
 distanceFactor = 2
 
 '''Declaring the point objects here'''
-objectsBoundary = [[(10, 10), (10, 10)], [(20, 17), (20, 17)], [(15, 12), (15, 12)], [(15, 16), (15, 16)]]
+objectsBoundary = [[(10, 10), (10, 10)]]
 obstaclePoints = []
 obstaclePoints = obstaclePointsGenerator(objectsBoundary, obstaclePoints)
 
@@ -193,7 +215,7 @@ ax.set_aspect('equal')
 plt.grid(True)
 
 '''This line will be used while generating contour plots to clearly mark point obstacles'''
-pathCoordinates= pathGenerator(totalPotential, goalX, goalY, startX, startY, radiusOfConsideration, pathCoordinates, potentialPointsOfConsideration, distancePointsOfConsideration)
+pathCoordinates = pathGenerator(totalPotential, environmentX, environmentY, goalX, goalY, startX, startY, radiusOfConsideration, pathCoordinates, potentialPointsOfConsideration, distancePointsOfConsideration)
 
 '''Here, we scatter the obstacle for the countour plot. We use scatter instead of plot because we don't want the line connecting the two.'''
 if contourPlotting:
