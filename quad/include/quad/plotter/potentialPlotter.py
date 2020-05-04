@@ -16,7 +16,7 @@ def attractivePotentialGenerator(environmentX, environmentY, goalX, goalY, attra
     for xCounter in range(0, environmentX):
         for yCounter in range(0, environmentY):
             '''We increment by one here to ensure that the outer edges of the obstacle are also included in the obstacle list'''
-            attractivePotential[xCounter, yCounter] = attractiveScalingFactor*(((yCounter - goalY)**2 + (xCounter - goalX)**2)**(1/2))
+            attractivePotential[xCounter, yCounter] = attractiveScalingFactor*(cartesianDistance(xCounter, yCounter, goalX, goalY))
     return attractivePotential
 
 def cartesianDistance(x1, y1, x2, y2):
@@ -137,7 +137,7 @@ reductiveScalingFactor = 50
 distanceFactor = 2
 
 '''Declaring the point objects here'''
-objectsBoundary = [[(10, 10), (10, 10)]]
+objectsBoundary = [[(5, 5), (5, 5)], [(9, 9), (9, 9)], [(15, 17), (15, 17)]]
 obstaclePoints = []
 obstaclePoints = obstaclePointsGenerator(objectsBoundary, obstaclePoints)
 
@@ -182,12 +182,9 @@ else:
 '''Grabbing the colormap from the Matplotlib library'''
 colormap = plt.cm.get_cmap('viridis')
 
-'''Increasing the number of contours in the plot'''
-contourLevels = np.arange(np.min(totalPotential), np.max(totalPotential), 4)
-
 '''Plotting the potential function here over the 3D space'''
 if contourPlotting:
-    ax.contour(rowArray, columnArray, totalPotentialMesh, cmap=colormap, levels=contourLevels)
+    ax.contour(rowArray, columnArray, totalPotentialMesh, cmap=colormap)
 else:
     ax.plot_surface(rowArray, columnArray, totalPotentialMesh, cmap=colormap)
 
