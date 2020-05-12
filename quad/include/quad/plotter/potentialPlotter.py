@@ -103,6 +103,30 @@ def pathGenerator(totalPotential, environmentX, environmentY, goalX, goalY, star
         pathCoordinates.append((startX, startY))
     return pathCoordinates
 
+def attractiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY, portCharge, attractivePotential):
+    '''This function generates the attractive potentials generated due to the presence of the port. It's assumed to be a point charge'''
+    for xCounter in range(0, environmentX):
+        for yCounter in range(0, environmentY):
+            if((xCounter, yCounter)!=(goalX, goalY)):
+                '''Standard formula for the electric potential due to a point charge V = (K) * (Q/r)'''
+                attractivePotential[xCounter, yCounter] = -1 * portCharge/(cartesianDistance(xCounter, yCounter, goalX, goalY))
+    '''To prevent the division by zero at the location of the port, we assign the least value - 1 potential to the port'''
+    attractivePotential[goalX, goalY] = attractivePotential.min() - 1
+    return attractivePotential
+
+def reductiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY, shipCharge, obstaclePoints, reductivePotential):
+    '''This function creates the reductive potentials generated due to the presence of ships. They are assumed to be unit point charges.'''
+    for obstaclePoint in obstaclePoints:
+        for xCounter in range(0, environmentX):
+            for yCounter in range(0, environmentY):
+                if((xCounter, yCounter)!=(obstaclePoint[0], obstaclePoint[1])):
+                    '''Standard formula for the electric potential due to a point charge V = (K) * (Q/r)'''
+                    reductivePotential[xCounter, yCounter] = reductivePotential[xCounter, yCounter] + shipCharge/(cartesianDistance(xCounter, yCounter, obstaclePoint[0], obstaclePoint[1]))
+    for obstaclePoint in obstaclePoints:
+        '''To prevent the division by zero at the location of the ships, we calulcate the maximum value encountered in the reductivePotential and assign them one more that value.''' 
+        reductivePotential[obstaclePoint[0], obstaclePoint[1]] = reductivePotential.max() + 1
+    return reductivePotential
+
 '''Adding a variable here to switch between contour plotting and surface'''
 contourPlotting = True
 
@@ -113,6 +137,11 @@ environmentY = 25
 '''Location of the goal coordinates'''
 goalX = 20
 goalY = 20
+
+'''Port is assumed to be negatively charged.'''
+portCharge = 50
+'''Ship is assumed to be unit positvely charged.'''
+shipCharge = 1
 
 '''Start location that has to be eventually routed to the goal(X, Y)'''
 startX = 5
@@ -153,10 +182,12 @@ attractivePotential = np.zeros([environmentX, environmentY])
 reductivePotential = np.zeros([environmentX, environmentY])
 
 '''Generating the attractive potential values here'''
-attractivePotential = attractivePotentialGenerator(environmentX, environmentY, goalX, goalY, attractivePotential, attractiveScalingFactor)
+# attractivePotential = attractivePotentialGenerator(environmentX, environmentY, goalX, goalY, attractivePotential, attractiveScalingFactor)
+attractivePotential = attractiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY, portCharge, attractivePotential)
 
 '''Generating the reductive potential values here'''
-reductivePotential = reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, reductivePotential, distanceFactor, reductiveScalingFactor)
+# reductivePotential = reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, reductivePotential, distanceFactor, reductiveScalingFactor)
+reductivePotential = reductiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY, shipCharge, obstaclePoints, reductivePotential)
 
 '''Reshaping the attractive potential numpy array to the prescribed meshing'''
 attractivePotentialMesh = attractivePotential.reshape(columnArray.shape)
@@ -170,6 +201,9 @@ totalPotential = totalPotentialGenerator(attractivePotential, reductivePotential
 '''Meshing the totalPotential here'''
 totalPotentialMesh = totalPotential.reshape(columnArray.shape)
 
+'''This line will be used while generating contour plots to clearly mark point obstacles'''
+pathCoordinates = pathGenerator(totalPotential, environmentX, environmentY, goalX, goalY, startX, startY, radiusOfConsideration, pathCoordinates, potentialPointsOfConsideration, distancePointsOfConsideration)
+
 '''Initalizing the 3D space for projection of the potential'''
 fig = plt.figure()
 
@@ -182,9 +216,12 @@ else:
 '''Grabbing the colormap from the Matplotlib library'''
 colormap = plt.cm.get_cmap('viridis')
 
+'''Reintroducing the contourLevels variable here to improve readability of the contour plots'''
+contourLevels = np.arange(np.min(totalPotential), np.max(totalPotential), 1)
+
 '''Plotting the potential function here over the 3D space'''
 if contourPlotting:
-    ax.contour(rowArray, columnArray, totalPotentialMesh, cmap=colormap)
+    ax.contour(rowArray, columnArray, totalPotentialMesh, cmap=colormap, levels=contourLevels)
 else:
     ax.plot_surface(rowArray, columnArray, totalPotentialMesh, cmap=colormap)
 
@@ -210,9 +247,6 @@ ax.set_aspect('equal')
 
 '''Adding referential grids to the figure to better figure out contour plots'''
 plt.grid(True)
-
-'''This line will be used while generating contour plots to clearly mark point obstacles'''
-pathCoordinates = pathGenerator(totalPotential, environmentX, environmentY, goalX, goalY, startX, startY, radiusOfConsideration, pathCoordinates, potentialPointsOfConsideration, distancePointsOfConsideration)
 
 '''Here, we scatter the obstacle for the countour plot. We use scatter instead of plot because we don't want the line connecting the two.'''
 if contourPlotting:
