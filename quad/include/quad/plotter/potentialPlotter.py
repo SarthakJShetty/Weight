@@ -1,7 +1,12 @@
 import numpy as np
 import pandas as pd
+from math import sqrt
 from mpl_toolkits.mplot3d import Axes3D  
 import matplotlib.pyplot as plt
+
+def cartesianDistance(x1, y1, x2, y2):
+    '''This function returns the cartesian distance between two given points.'''
+    return ((y1 - y2)**2 + (x1 - x2)**2)**(1/2)
 
 def obstaclePointsGenerator(objectsBoundary, obstaclePoints):
     '''Returning all the points that lie within and on the boundary of the given object, to generate the Repulsive Potential'''
@@ -18,10 +23,6 @@ def attractivePotentialGenerator(environmentX, environmentY, goalX, goalY, attra
             '''We increment by one here to ensure that the outer edges of the obstacle are also included in the obstacle list'''
             attractivePotential[xCounter, yCounter] = attractiveScalingFactor*(cartesianDistance(xCounter, yCounter, goalX, goalY))
     return attractivePotential
-
-def cartesianDistance(x1, y1, x2, y2):
-    '''This function returns the cartesian distance between two given points.'''
-    return ((y1 - y2)**2 + (x1 - x2)**2)**(1/2)
 
 def reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, reductivePotential, distanceFactor, reductiveScalingFactor):
     '''This function generates the reductive potentials generated due to the presence of obstacles in the environment'''
@@ -42,6 +43,30 @@ def reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, redu
                 else:
                     '''If the given point is distanceFactor away from the obstacle, then ignore and assign reductive potential as 0'''
                     reductivePotential[xCounter, yCounter] = reductivePotential[xCounter, yCounter] + 0
+    return reductivePotential
+
+def attractiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY, portCharge, attractivePotential):
+    '''This function generates the attractive potentials generated due to the presence of the port. It's assumed to be a point charge'''
+    for xCounter in range(0, environmentX):
+        for yCounter in range(0, environmentY):
+            if((xCounter, yCounter)!=(goalX, goalY)):
+                '''Standard formula for the electric potential due to a point charge V = (K) * (Q/r)'''
+                attractivePotential[xCounter, yCounter] = -1 * portCharge/(cartesianDistance(xCounter, yCounter, goalX, goalY))
+    '''To prevent the division by zero at the location of the port, we assign the least value - 1 potential to the port'''
+    attractivePotential[goalX, goalY] = attractivePotential.min() - 1
+    return attractivePotential
+
+def reductiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY, shipCharge, obstaclePoints, reductivePotential):
+    '''This function creates the reductive potentials generated due to the presence of ships. They are assumed to be unit point charges.'''
+    for obstaclePoint in obstaclePoints:
+        for xCounter in range(0, environmentX):
+            for yCounter in range(0, environmentY):
+                if((xCounter, yCounter)!=(obstaclePoint[0], obstaclePoint[1])):
+                    '''Standard formula for the electric potential due to a point charge V = (K) * (Q/r)'''
+                    reductivePotential[xCounter, yCounter] = reductivePotential[xCounter, yCounter] + shipCharge/(cartesianDistance(xCounter, yCounter, obstaclePoint[0], obstaclePoint[1]))
+    for obstaclePoint in obstaclePoints:
+        '''To prevent the division by zero at the location of the ships, we calulcate the maximum value encountered in the reductivePotential and assign them one more that value.''' 
+        reductivePotential[obstaclePoint[0], obstaclePoint[1]] = reductivePotential.max() + 1
     return reductivePotential
 
 def totalPotentialGenerator(attractivePotential, reductivePotential):
@@ -103,29 +128,19 @@ def pathGenerator(totalPotential, environmentX, environmentY, goalX, goalY, star
         pathCoordinates.append((startX, startY))
     return pathCoordinates
 
-def attractiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY, portCharge, attractivePotential):
-    '''This function generates the attractive potentials generated due to the presence of the port. It's assumed to be a point charge'''
-    for xCounter in range(0, environmentX):
-        for yCounter in range(0, environmentY):
-            if((xCounter, yCounter)!=(goalX, goalY)):
-                '''Standard formula for the electric potential due to a point charge V = (K) * (Q/r)'''
-                attractivePotential[xCounter, yCounter] = -1 * portCharge/(cartesianDistance(xCounter, yCounter, goalX, goalY))
-    '''To prevent the division by zero at the location of the port, we assign the least value - 1 potential to the port'''
-    attractivePotential[goalX, goalY] = attractivePotential.min() - 1
-    return attractivePotential
-
-def reductiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY, shipCharge, obstaclePoints, reductivePotential):
-    '''This function creates the reductive potentials generated due to the presence of ships. They are assumed to be unit point charges.'''
-    for obstaclePoint in obstaclePoints:
-        for xCounter in range(0, environmentX):
-            for yCounter in range(0, environmentY):
-                if((xCounter, yCounter)!=(obstaclePoint[0], obstaclePoint[1])):
-                    '''Standard formula for the electric potential due to a point charge V = (K) * (Q/r)'''
-                    reductivePotential[xCounter, yCounter] = reductivePotential[xCounter, yCounter] + shipCharge/(cartesianDistance(xCounter, yCounter, obstaclePoint[0], obstaclePoint[1]))
-    for obstaclePoint in obstaclePoints:
-        '''To prevent the division by zero at the location of the ships, we calulcate the maximum value encountered in the reductivePotential and assign them one more that value.''' 
-        reductivePotential[obstaclePoint[0], obstaclePoint[1]] = reductivePotential.max() + 1
-    return reductivePotential
+def timeForPathTraversal(pathCoordinates, startVelocity, finalVelocity, acceleration, timeTaken, totalTime):
+    '''This function calculates the total time taken to traverse the points from start(X, Y) to goal(X, Y), generated by pathGenerator()'''
+    '''We loop to only (N-1)th point since the last point would not have any (N+1)th point, and planning should terminate there'''
+    for pathCoordinateIndex in range(0, len(pathCoordinates)-1):
+        '''Using the equation of One Dimension motion here to find finalVelocity: v**2 = u**2 + 2*a*s'''
+        finalVelocity = sqrt(startVelocity**2 + 2*acceleration*cartesianDistance(pathCoordinates[pathCoordinateIndex][0], pathCoordinates[pathCoordinateIndex][1], pathCoordinates[pathCoordinateIndex+1][0], pathCoordinates[pathCoordinateIndex+1][1]))
+        '''Using the equation of One Dimension motion here to find timeTaken: v = u + a*t'''
+        timeTaken = (finalVelocity - startVelocity)/(acceleration)
+        '''The first start velocity will be 0 considering start from stationary point. Reassigning to the previous finalVelocity here.'''
+        startVelocity = finalVelocity
+        '''Adding the time taken to traverse each rectilinear unit here.'''
+        totalTime += timeTaken
+    return totalTime
 
 '''Adding a variable here to switch between contour plotting and surface'''
 contourPlotting = True
@@ -142,6 +157,17 @@ goalY = 20
 portCharge = 50
 '''Ship is assumed to be unit positvely charged.'''
 shipCharge = 1
+
+'''Variables for the motion code added here. Agent starts from stationary condition hence, startVelocity is 0 unit per second.'''
+startVelocity = 0
+'''Initial finalVelocity assumed to be 0 units per second'''
+finalVelocity = 0
+'''timeTaken by the agent to traverse each length between consecutive waypoints. Added to the totalTime variable.'''
+timeTaken = 0
+'''totalTime taken to traverse the pathCoordinates'''
+totalTime = 0
+'''Assuming the acceleration to be 1 unit per second per second'''
+acceleration = 1
 
 '''Start location that has to be eventually routed to the goal(X, Y)'''
 startX = 5
@@ -204,6 +230,9 @@ totalPotentialMesh = totalPotential.reshape(columnArray.shape)
 '''This line will be used while generating contour plots to clearly mark point obstacles'''
 pathCoordinates = pathGenerator(totalPotential, environmentX, environmentY, goalX, goalY, startX, startY, radiusOfConsideration, pathCoordinates, potentialPointsOfConsideration, distancePointsOfConsideration)
 
+'''This function generates the time taken by the agent to traverse the pathCoordinates'''
+timeTaken = timeForPathTraversal(pathCoordinates, startVelocity, finalVelocity, acceleration, timeTaken, totalTime)
+
 '''Initalizing the 3D space for projection of the potential'''
 fig = plt.figure()
 
@@ -240,7 +269,7 @@ colorbar = plt.colorbar(colorbar)
 colorbar.set_label('Increasing Potential')
 
 '''Labelling the figure generated'''
-plt.title('Potential Distribution Across ' + str(environmentX) + ' x '+ str(environmentY)+ ' Environment Space')
+plt.title('Potential Distribution Across ' + str(environmentX) + ' x '+ str(environmentY)+ ' Environment Space\n' + 'Time Taken: '+str(format(timeTaken, '0.3f')) + ' seconds')
 
 '''Setting the default aspect ratio as equal'''
 ax.set_aspect('equal')
