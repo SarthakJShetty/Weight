@@ -284,10 +284,14 @@ if contourPlotting:
 '''Here, we plot the pathCoordinates from the pathGenerator'''
 if contourPlotting:
     '''For contours we do not use the third dimension'''
-    plt.plot([[pathCoordinate[0]] for pathCoordinate in pathCoordinates], [[pathCoordinate[1]] for pathCoordinate in pathCoordinates], markersize=5, markerfacecolor='r', markeredgecolor='r', marker='o')
+    plt.plot([[pathCoordinate[0]] for pathCoordinate in pathCoordinates], [[pathCoordinate[1]] for pathCoordinate in pathCoordinates], markersize=5, markerfacecolor='b', markeredgecolor='b', marker='o')
+    plt.plot([pathCoordinates[0][0]], [pathCoordinates[0][1]], markerfacecolor='r', markeredgecolor='r', marker='o', markersize=5, alpha=1)
+    plt.plot([pathCoordinates[-1][0]], [pathCoordinates[-1][1]], markerfacecolor='g', markeredgecolor='g', marker='o', markersize=5, alpha=1)
 else:
     '''For surface plots we use totalPotential to plot the points'''
-    plt.plot([[pathCoordinate[0]] for pathCoordinate in pathCoordinates], [[pathCoordinate[1]] for pathCoordinate in pathCoordinates], [totalPotential[pathCoordinate[0], pathCoordinate[1]] for pathCoordinate in pathCoordinates], markerfacecolor='r', markeredgecolor='r', marker='o', markersize=5, alpha=1)
+    plt.plot([[pathCoordinate[0]] for pathCoordinate in pathCoordinates], [[pathCoordinate[1]] for pathCoordinate in pathCoordinates], [totalPotential[pathCoordinate[0], pathCoordinate[1]] for pathCoordinate in pathCoordinates], markerfacecolor='b', markeredgecolor='b', marker='o', markersize=5, alpha=1)
+    plt.plot([pathCoordinates[0][0]], [pathCoordinates[0][1]], [totalPotential[pathCoordinates[0][0], pathCoordinates[0][1]]], markerfacecolor='r', markeredgecolor='r', marker='o', markersize=5, alpha=1)
+    plt.plot([pathCoordinates[-1][0]], [pathCoordinates[-1][1]], [totalPotential[pathCoordinates[-1][0], pathCoordinates[-1][1]]], markerfacecolor='g', markeredgecolor='g', marker='o', markersize=5, alpha=1)
 
 '''Presenting the manifold generated'''
 plt.show()
