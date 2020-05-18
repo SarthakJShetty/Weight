@@ -68,11 +68,11 @@ Here, the UAV attempts to find the survivor using the lawn-mower.
 </div>
 <i>Figure 3.2 UAV Lawn-Mower Trajectory in Simulation</i>
 
-UAV X Coordination Variation           |  UAV Y Coordination Variation | UAV Z Coordination Variation
+UAV X Coordinate Variation           |  UAV Y Coordinate Variation | UAV Z Coordinate Variation
 :-------------------------:|:-------------------------:|:---------:
-![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMUAV1CoordinatesX.png "UAV X Coordination Variation") |  ![](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMUAV1CoordinatesY.png "UAV Y Coordination Variation") | ![](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMUAV1CoordinatesZ.png "UAV Z Coordination Variation")
+![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMUAV1CoordinatesX.png "UAV X Coordinate Variation") |  ![](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMUAV1CoordinatesY.png "UAV Y Coordinate Variation") | ![](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMUAV1CoordinatesZ.png "UAV Z Coordinate Variation")
 
-Survivor X Variation             |  Survivor Y Variation | Survivor Z Variation
+Survivor X Coordinate Variation             |  Survivor Y Coordinate Variation | Survivor Z Coordinate Variation
 :-------------------------:|:-------------------------:|:---------:
 ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMSurvivorX.png "Survivor X Variation")  |  ![](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMSurvivorY.png "Survivor Y Variation") | ![](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimLMSurvivorZ.png "Survivor Z Variation")
 
@@ -86,11 +86,11 @@ The UAV starts out following the lawn-mower pattern, then follows the probabilis
 </div>
 <i>Figure 3.3 UAV Weight-Based Trajectory in Simulation</i>
 
-UAV X Coordination Variation           |  UAV Y Coordination Variation | UAV Z Coordination Variation
+UAV X Coordinate Variation           |  UAV Y Coordinate Variation | UAV Z Coordinate Variation
 :-------------------------:|:-------------------------:|:---------:
-![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBUAV1CoordinatesX.png "UAV X Coordination Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBUAV1CoordinatesY.png "UAV Y Coordination Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBUAV1CoordinatesZ.png "UAV Z Coordination Variation")
+![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBUAV1CoordinatesX.png "UAV X Coordinate Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBUAV1CoordinatesY.png "UAV Y Coordinate Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBUAV1CoordinatesZ.png "UAV Z Coordinate Variation")
 
-Survivor X Variation             |  Survivor Y Variation | Survivor Z Variation
+Survivor X Coordinate Variation             |  Survivor Y Coordinate Variation | Survivor Z Coordinate Variation
 :-------------------------:|:-------------------------:|:---------:
 ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBSurvivorX.png "Survivor X Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBSurvivorX.png "Survivor Y Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/SimWBSurvivorX.png "Survivor Z Variation")
 
@@ -108,11 +108,11 @@ Trajectory           |  Trajectory X-Y Projection
 :-------------------:|:-------------------------:
 ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMTrajectory.png "UAV Lawn-Mower Trajectory during Physical Testing") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMXYProjection.png "UAV Lawn-Mower Trajectory during Physical Testing - XY Projection")
 
-UAV X Coordination Variation           |  UAV Y Coordination Variation | UAV Z Coordination Variation
+UAV X Coordinate Variation           |  UAV Y Coordinate Variation | UAV Z Coordinate Variation
 :-------------------------:|:-------------------------:|:---------:
-![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMUAV1CoordinatesX.png "UAV X Coordination Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMUAV1CoordinatesY.png "UAV Y Coordination Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMUAV1CoordinatesZ.png "UAV Z Coordination Variation")
+![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMUAV1CoordinatesX.png "UAV X Coordinate Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMUAV1CoordinatesY.png "UAV Y Coordinate Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMUAV1CoordinatesZ.png "UAV Z Coordinate Variation")
 
-Survivor X Variation             |  Survivor Y Variation | Survivor Z Variation
+Survivor X Coordinate Variation             |  Survivor Y Coordinate Variation | Survivor Z Coordinate Variation
 :-------------------------:|:-------------------------:|:---------:
 ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMSurvivorX.png "Survivor X Variation")  | ![](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMSurvivorY.png "Survivor Y Variation") | ![](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyLMSurvivorZ.png "Survivor Z Variation")
 
@@ -123,11 +123,11 @@ Trajectory           |  Trajectory X-Y Projection
 :-------------------:|:-------------------------:
 ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBTrajectory.png "UAV Weight-Based Trajectory during Physical Testing") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBXYProjection.png "UAV Weight-Based Trajectory during Physical Testing - XY Projection")
 
-UAV X Coordination Variation           |  UAV Y Coordination Variation | UAV Z Coordination Variation
+UAV X Coordinate Variation           |  UAV Y Coordinate Variation | UAV Z Coordinate Variation
 :-------------------------:|:-------------------------:|:---------:
-![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBUAV1CoordinatesX.png "UAV X Coordination Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBUAV1CoordinatesY.png "UAV Y Coordination Variation")| ![](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBUAV1CoordinatesZ.png "UAV Z Coordination Variation")
+![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBUAV1CoordinatesX.png "UAV X Coordinate Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBUAV1CoordinatesY.png "UAV Y Coordinate Variation")| ![](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBUAV1CoordinatesZ.png "UAV Z Coordinate Variation")
 
-Survivor X Variation             |  Survivor Y Variation | Survivor Z Variation
+Survivor X Coordinate Variation             |  Survivor Y Coordinate Variation | Survivor Z Coordinate Variation
 :-------------------------:|:-------------------------:|:---------:
 ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBSurvivorX.png "Survivor X Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBSurvivorY.png "Survivor Y Variation") | ![alt text](https://raw.githubusercontent.com/SarthakJShetty/Weight/master/assets/PhyWBSurvivorZ.png "Survivor Z Variation")
 
