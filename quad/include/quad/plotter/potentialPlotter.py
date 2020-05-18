@@ -207,12 +207,14 @@ columnArray, rowArray = np.meshgrid(column, row)
 attractivePotential = np.zeros([environmentX, environmentY])
 reductivePotential = np.zeros([environmentX, environmentY])
 
-'''Generating the attractive potential values here'''
+'''Generating the attractive potential values here using theory of Artificial Potential Fields'''
 # attractivePotential = attractivePotentialGenerator(environmentX, environmentY, goalX, goalY, attractivePotential, attractiveScalingFactor)
+'''Generating the attractive potential values here using theory of Electrostatic Potential'''
 attractivePotential = attractiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY, portCharge, attractivePotential)
 
-'''Generating the reductive potential values here'''
+'''Generating the reductive potential values here using theory of Artificial Potential Fields'''
 # reductivePotential = reductivePotentialGenerator(environmentX, environmentY, obstaclePoints, reductivePotential, distanceFactor, reductiveScalingFactor)
+'''Generating the reductive potential values here using theory of Electrostatic Potential'''
 reductivePotential = reductiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY, shipCharge, obstaclePoints, reductivePotential)
 
 '''Reshaping the attractive potential numpy array to the prescribed meshing'''
