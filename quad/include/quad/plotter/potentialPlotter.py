@@ -271,7 +271,7 @@ colorbar = plt.colorbar(colorbar)
 colorbar.set_label('Increasing Potential')
 
 '''Labelling the figure generated'''
-plt.title('Potential Distribution Across ' + str(environmentX) + ' x '+ str(environmentY)+ ' Environment Space\n' + 'Time Taken: '+str(format(timeTaken, '0.3f')) + ' seconds')
+plt.title('Potential Distribution Across ' + str(environmentX) + ' x '+ str(environmentY)+ ' Environment Space')
 
 '''Setting the default aspect ratio as equal'''
 ax.set_aspect('equal')
