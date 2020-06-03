@@ -3,6 +3,7 @@ import pandas as pd
 from math import sqrt
 from mpl_toolkits.mplot3d import Axes3D  
 import matplotlib.pyplot as plt
+import os
 
 def cartesianDistance(x1, y1, x2, y2):
     '''This function returns the cartesian distance between two given points.'''
@@ -63,7 +64,7 @@ def reductiveElectricPotentialGenerator(environmentX, environmentY, goalX, goalY
             for yCounter in range(0, environmentY):
                 if((xCounter, yCounter)!=(obstaclePoint[0], obstaclePoint[1])):
                     '''Standard formula for the electric potential due to a point charge V = (K) * (Q/r)'''
-                    reductivePotential[xCounter, yCounter] = reductivePotential[xCounter, yCounter] + shipCharge/(cartesianDistance(xCounter, yCounter, obstaclePoint[0], obstaclePoint[1]))
+                    reductivePotential[xCounter, yCounter] = reductivePotential[xCounter, yCounter] + (shipCharge/(cartesianDistance(xCounter, yCounter, obstaclePoint[0], obstaclePoint[1])))
     for obstaclePoint in obstaclePoints:
         '''To prevent the division by zero at the location of the ships, we calulcate the maximum value encountered in the reductivePotential and assign them one more that value.''' 
         reductivePotential[obstaclePoint[0], obstaclePoint[1]] = reductivePotential.max() + 1
@@ -124,6 +125,9 @@ def pathGenerator(totalPotential, environmentX, environmentY, goalX, goalY, star
         '''Here, we update start(X, Y) to the new point generated from the preceeding code'''
         startX = maximumDistancePoints[0][0]
         startY = maximumDistancePoints[0][1]
+        hello = open('hello.txt', 'a')
+        hello.write("StartX:" + str(startX) + ", StartY: " + str(startY)+'\n')
+        hello.close()
         '''At the end of each iteration we append the pathCoordinates with the new coordinate'''
         pathCoordinates.append((startX, startY))
     return pathCoordinates
@@ -146,12 +150,12 @@ def timeForPathTraversal(pathCoordinates, startVelocity, finalVelocity, accelera
 contourPlotting = True
 
 '''Declaring the environment dimensions'''
-environmentX = 30
-environmentY = 25
+environmentX = 20
+environmentY = 20
 
 '''Location of the goal coordinates'''
-goalX = 20
-goalY = 20
+goalX = 18
+goalY = 15
 
 '''Port is assumed to be negatively charged.'''
 portCharge = 50
@@ -170,8 +174,8 @@ totalTime = 0
 acceleration = 1
 
 '''Start location that has to be eventually routed to the goal(X, Y)'''
-startX = 5
-startY = 5
+startX = 16
+startY = 18
 
 '''Declaring a dictionary to hold the coordinates and their corresponding distances while generating the path to the goal'''
 potentialPointsOfConsideration = {}
@@ -189,10 +193,12 @@ radiusOfConsideration = 2
 '''Declaring the factors for the attractive and reductive potential allocators'''
 attractiveScalingFactor = 1
 reductiveScalingFactor = 50
+
+'''Distance factor dictates the distance upto which the obstacle influences the potential field in it's vicinity'''
 distanceFactor = 2
 
 '''Declaring the point objects here'''
-objectsBoundary = [[(5, 5), (5, 5)], [(9, 9), (9, 9)], [(15, 17), (15, 17)]]
+objectsBoundary = [[(5, 5), (5, 5)], [(13, 13), (13, 13)], [(17, 17), (17, 17)]]
 obstaclePoints = []
 obstaclePoints = obstaclePointsGenerator(objectsBoundary, obstaclePoints)
 
@@ -225,6 +231,13 @@ reductivePotentialMesh = reductivePotential.reshape(columnArray.shape)
 
 '''Here, we combine the reductive and the attractive potentials of each coordinate in the map'''
 totalPotential = totalPotentialGenerator(attractivePotential, reductivePotential)
+
+for element in totalPotential:
+    for byelement in element:
+        csvTable = open('hello1.csv', 'a')
+        csvTable.write(str(byelement)+'\t')
+    csvTable.write('\n')
+    csvTable.close()
 
 '''Meshing the totalPotential here'''
 totalPotentialMesh = totalPotential.reshape(columnArray.shape)
