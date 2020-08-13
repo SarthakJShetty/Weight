@@ -63,7 +63,7 @@ int survivor_model(int x_max, int y_max, int survivor_direction, int current_sec
         }
         else if (survivor_direction == 4)
         {
-            cout << "Current Seconds: " << current_second << " Previous Second" << *previous_second << endl;
+            cout << "Current Seconds: " << current_second << " Previous Second " << *previous_second << endl;
             cout << "Survivor X, Y:" << setprecision(4) << *survivor_x_coordinate << ", " << setprecision(4) << *survivor_y_coordinate << endl;
             if ((*survivor_x_coordinate >= x_max) || (*survivor_y_coordinate >= y_max))
             {
