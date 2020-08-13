@@ -59,6 +59,8 @@ int main(int argc, char **argv)
         switch_publisher_1.publish(msg_1);
         ros::spinOnce();
         loop_rate.sleep();
+        //We clear the previous data before repopulating it for the next loop. Otherwise, the array becomes multi-dimensoned.
+        msg_1.data.clear();
     }
     return 0;
 }
