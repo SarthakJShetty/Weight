@@ -26,13 +26,8 @@ void cv_sub(const std_msgs::Int32 cv_msg)
 
 void switch_sub(const std_msgs::Int32MultiArray switch_msg)
 {
-    cout<<"Printing Global Pointer for Global Pointer: "<< *global_pointer <<endl;
-    //This callback function interacts with the observer node. If a non-zero value is received the topic triggers a switch to the weight-based trajectory planning
-    // switch_msgs[*global_pointer] = switch_msg;
-    if(switch_msg.data[*global_pointer] == 1)
-    {
-        switch_msgs[*global_pointer].data = 1;
-    }
+    //This callback function interacts with the observer node. If a non-zero value is received the topic triggers a switch to the weight-based trajectory planning.
+    switch_msgs[*global_pointer].data = switch_msg.data[*global_pointer];
 }
 
 void pose_sub(const nav_msgs::Odometry odom_msg)
@@ -307,14 +302,8 @@ int main(int argc, char **argv)
             ros::spinOnce();
             rate.sleep();
 
-            if(switch_msgs[UAV_COUNTER].data == 1)
-            {
-                switch_msgs_counter[UAV_COUNTER] += 1;
-                cout <<"UAV Counter: "<< UAV_COUNTER <<" Detected Switch MSGS: "<< switch_msgs_counter[UAV_COUNTER] << endl;
-            }
-
             //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
-            if (switch_msgs_counter[UAV_COUNTER] == 5)
+            if (switch_msgs[*global_pointer].data == 1)
             {
                 //Weighted exploration has been triggered here
                 if (weight_trigger_check[UAV_COUNTER] != 1)
@@ -327,7 +316,7 @@ int main(int argc, char **argv)
                 }
                 //Enter this condition if weight based is not triggered
             }
-            else if (switch_msgs_counter[UAV_COUNTER] < 5)
+            else if (switch_msgs[*global_pointer].data == 0)
             {
                 if (lawn_mower_trigger_check[UAV_COUNTER] != 1)
                 {
