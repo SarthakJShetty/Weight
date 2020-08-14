@@ -249,6 +249,8 @@ difference = (end_second_decimal_1 - start_second_decimal_1)
 
 print('Completed in: %s seconds: ' % (str(difference)))
 
+ax.set_aspect('equal')
+
 plt.title('UAV & Survivor Paths: Probabilistic Search. \nCompleted in: %s seconds' %
           difference, loc='left')
 ax.set_xlabel('Y Axis')
