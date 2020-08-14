@@ -146,8 +146,8 @@ int lawn_mower_element_cycler = 0;
 int lawn_lawn_mower_element_cycler = 0;
 
 //Creating lists to iterate through waypoints. Hypothesis is that sharing of vectors is causing seg faults.
-int list_maximum_value_x_indices[y_max * x_max];
-int list_maximum_value_y_indices[y_max * x_max];
+int list_maximum_value_x_indices[N_UAV][y_max * x_max];
+int list_maximum_value_y_indices[N_UAV][y_max * x_max];
 
 //Creating a list of waypointss for conveying the lawnmower waypoints
 int pre_list_lawn_mower_x_indices[y_max * x_max];

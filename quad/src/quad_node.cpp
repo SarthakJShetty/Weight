@@ -278,7 +278,7 @@ int main(int argc, char **argv)
                     if (counter_msgs[UAV_COUNTER].data < (grid_points))
                     {
                         //Setting exploration parameter to 2 to indicate a survivor has been found
-                        environment_map[list_maximum_value_y_indices[counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[counter_msgs[UAV_COUNTER].data]].exploration = 2;
+                        environment_map[list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 2;
                         //If survivor within the calulcated threshold and counter hasn't been set to (grid_points), send a detected message to the CL and set counter to (grid_points)
                         cout << "UAV COUNTER: " << UAV_COUNTER << " "
                              << "Human Detected" << endl;
@@ -312,7 +312,7 @@ int main(int argc, char **argv)
                     counter_msgs[UAV_COUNTER].data = 0;
                     //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
                     weight_trigger_check[UAV_COUNTER] = 1;
-                    weight_generator_function(uav_x_position, uav_y_position, X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, weight_element_cycler, list_maximum_value_x_indices, list_maximum_value_y_indices);
+                    weight_generator_function(uav_x_position, uav_y_position, X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, weight_element_cycler, list_maximum_value_x_indices[UAV_COUNTER], list_maximum_value_y_indices[UAV_COUNTER]);
                 }
                 //Enter this condition if weight based is not triggered
             }
@@ -322,7 +322,7 @@ int main(int argc, char **argv)
                 {
                     //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
                     lawn_mower_trigger_check[UAV_COUNTER] = 1;
-                    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices, list_maximum_value_y_indices, pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler);
+                    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices[UAV_COUNTER], list_maximum_value_y_indices[UAV_COUNTER], pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler);
                 }
             }
             //Difference between the current position and the next waypoint (x, y)
@@ -357,7 +357,7 @@ int main(int argc, char **argv)
                     if (cv_msgs[UAV_COUNTER].data == 1)
                     {
                         //Status 2 indicates that a survivor was found at that point.
-                        environment_map[list_maximum_value_y_indices[counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[counter_msgs[UAV_COUNTER].data]].exploration = 2;
+                        environment_map[list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 2;
                         //If the waypoint can be switched, check for the presence of a survivor from the cv_msgs topic
                         cout << "Human Detected by: " << UAV_COUNTER << " UAV" << endl;
                         cout << "RTL" << endl;
@@ -367,15 +367,15 @@ int main(int argc, char **argv)
                     else
                     {
                         //Status 1 for exploration states that the UAV traversed the given point and did not find any survivor at that spot.
-                        environment_map[list_maximum_value_y_indices[counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[counter_msgs[UAV_COUNTER].data]].exploration = 1;
+                        environment_map[list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 1;
                         //If UAV within switching threshold but no human detected switch the waypoint
                         cout << "Counter: " << counter_msgs[UAV_COUNTER].data << endl;
                         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
-                             << "Maximum_Value_X_Indices: " << counter_msgs[UAV_COUNTER].data << " " << list_maximum_value_x_indices[counter_msgs[UAV_COUNTER].data] << endl;
+                             << "Maximum_Value_X_Indices: " << counter_msgs[UAV_COUNTER].data << " " << list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data] << endl;
                         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
-                             << "Maximum_Value_Y_Indices: " << counter_msgs[UAV_COUNTER].data << " " << list_maximum_value_y_indices[counter_msgs[UAV_COUNTER].data] << endl;
-                        pose[UAV_COUNTER].pose.position.x = list_maximum_value_y_indices[counter_msgs[UAV_COUNTER].data];
-                        pose[UAV_COUNTER].pose.position.y = list_maximum_value_x_indices[counter_msgs[UAV_COUNTER].data];
+                             << "Maximum_Value_Y_Indices: " << counter_msgs[UAV_COUNTER].data << " " << list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data] << endl;
+                        pose[UAV_COUNTER].pose.position.x = list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data];
+                        pose[UAV_COUNTER].pose.position.y = list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data];
                         pose[UAV_COUNTER].pose.position.z = 2;
                         counter_msgs[UAV_COUNTER].data += 1;
                     }
