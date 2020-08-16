@@ -22,7 +22,7 @@ const int N_UAV = 2;
 extern const int x_max;
 extern const int y_max;
 extern const int grid_points;
-weighted_map environment_map[y_max][x_max];
+weighted_map environment_map[N_UAV][y_max][x_max];
 
 //Subscribers and publishers declared here
 ros::Subscriber position_subscriber[N_UAV];
@@ -82,19 +82,19 @@ float waypoint_dist[N_UAV];
 float survivor_dist[N_UAV];
 
 //This is the survivor's x, y coordinate & direction. We use pointers to ensure consistancy across the files
-float start_survivor_x_coordinate = 10.0;
-float start_survivor_y_coordinate = 10.0;
+float start_survivor_x_coordinate[N_UAV];
+float start_survivor_y_coordinate[N_UAV];
 
 //Survivor coordinate is continuously updated from the start_survivor_coordinate
-float *survivor_x_coordinate = &start_survivor_x_coordinate;
-float *survivor_y_coordinate = &start_survivor_y_coordinate;
+float *survivor_x_coordinate[N_UAV];
+float *survivor_y_coordinate[N_UAV];
 
 //Introducing survivor coordinates as arrays so that coordinates are truly seperate for UAV i and UAV j ∀ i, j ∈ {0, N}
 float survivor_x_coordinate_array[N_UAV];
 float survivor_y_coordinate_array[N_UAV];
 
 //Velocity of the survivor
-float velocity = 0.3;
+float velocity[N_UAV];
 //Time step to calculate the next set of survivor coordinates from the previous velocity
 float time_step = 1.0;
 
@@ -105,11 +105,11 @@ int start_previous_second = 0;
 int *previous_second = &start_previous_second;
 
 //Survivor's direction 1-> ++, 2-> -+, 3-> --, 4-> +-
-int survivor_direction = 4;
+int survivor_direction[N_UAV];
 
 //UAVs current position
-int uav_y_position = start_survivor_x_coordinate;
-int uav_x_position = start_survivor_y_coordinate;
+int uav_y_position[N_UAV];
+int uav_x_position[N_UAV];
 
 //Corner coordinates of each of the quadrants of exploration
 int x_corner_coordinate_1 = x_max;

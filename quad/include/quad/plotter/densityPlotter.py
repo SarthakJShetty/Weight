@@ -13,7 +13,7 @@ import csv
 import numpy as np
 
 '''Filename pointing to the weightMap csv file'''
-weight_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/weightMap.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/priorityMap.csv']
+weight_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/weightMap_0.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/priorityMap_0.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/weightMap_1.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/priorityMap_1.csv']
 
 for weight_file in weight_files:
     '''Start row makes sure that the row-elements are counted only once.'''

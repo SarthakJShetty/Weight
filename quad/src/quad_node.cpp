@@ -45,6 +45,31 @@ int main(int argc, char **argv)
 
     ros::NodeHandle nh;
 
+    start_survivor_x_coordinate[0] = 10.0;
+    start_survivor_y_coordinate[0] = 10.0;
+    survivor_direction[0] = 4;
+
+    survivor_x_coordinate[0] = &start_survivor_x_coordinate[0];
+    survivor_y_coordinate[0] = &start_survivor_y_coordinate[0];
+
+    uav_y_position[0] = start_survivor_x_coordinate[0];
+    uav_x_position[0] = start_survivor_y_coordinate[0];
+
+    velocity[0] = 0.3;
+
+    start_survivor_x_coordinate[1] = 5.0;
+    start_survivor_y_coordinate[1] = 5.0;
+    survivor_direction[1] = 1;
+
+    survivor_x_coordinate[1] = &start_survivor_x_coordinate[1];
+    survivor_y_coordinate[1] = &start_survivor_y_coordinate[1];
+
+    uav_y_position[1] = start_survivor_x_coordinate[1];
+    uav_x_position[1] = start_survivor_y_coordinate[1];
+
+    velocity[1] = 0.1;
+
+
     /*
     What are we trying to incorporate here?
     1. A for loop from 0 -> N_UAV
@@ -237,8 +262,8 @@ int main(int argc, char **argv)
         /*Here, we initialize the N-Dimensioned array to the default start point of the survivor.
         We do this to ensure that different survivor positions are ported to the respective publishers of the UAVs.*/
         global_pointer = &UAV_COUNTER;
-        survivor_x_coordinate_array[UAV_COUNTER] = start_survivor_x_coordinate;
-        survivor_y_coordinate_array[UAV_COUNTER] = start_survivor_y_coordinate;
+        survivor_x_coordinate_array[UAV_COUNTER] = start_survivor_x_coordinate[UAV_COUNTER];
+        survivor_y_coordinate_array[UAV_COUNTER] = start_survivor_y_coordinate[UAV_COUNTER];
     }
 
     while (ros::ok())
@@ -248,8 +273,8 @@ int main(int argc, char **argv)
             global_pointer = &UAV_COUNTER;
             /*Here, the survivor coordinate's point to the respective element of the survivor coordinate array.
             This variable is refreshed each time we run the loop, and the value overwritten by the respective element of the coordinate array.*/
-            *survivor_x_coordinate = survivor_x_coordinate_array[UAV_COUNTER];
-            *survivor_y_coordinate = survivor_y_coordinate_array[UAV_COUNTER];
+            *survivor_x_coordinate[UAV_COUNTER] = survivor_x_coordinate_array[UAV_COUNTER];
+            *survivor_y_coordinate[UAV_COUNTER] = survivor_y_coordinate_array[UAV_COUNTER];
             if (weight_trigger_check[UAV_COUNTER] == 1)
             {
                 /*What needs to be implemented here?
@@ -260,14 +285,14 @@ int main(int argc, char **argv)
                 if (survivor_detection_check[UAV_COUNTER] != 1)
                 {
                     //This condition makes sure that the survivor's model updates the coordinates in the heading reported only if the survivor has not been encountered by the UAV.
-                    survivor_model(x_max, y_max, survivor_direction, current_second, previous_second, survivor_x_coordinate, survivor_y_coordinate, velocity, time_step);
+                    survivor_model(x_max, y_max, survivor_direction[UAV_COUNTER], current_second, previous_second, survivor_x_coordinate[UAV_COUNTER], survivor_y_coordinate[UAV_COUNTER], velocity[UAV_COUNTER], time_step);
                 }
                 //Calculating the distance between the survivor's coordinates and the UAV's current position, once the weight based search has been triggered.
-                survivor_dist[UAV_COUNTER] = sqrt(pow((*survivor_x_coordinate - current_position_x[UAV_COUNTER]), 2) + pow((*survivor_y_coordinate - current_position_y[UAV_COUNTER]), 2));
+                survivor_dist[UAV_COUNTER] = sqrt(pow((*survivor_x_coordinate[UAV_COUNTER] - current_position_x[UAV_COUNTER]), 2) + pow((*survivor_y_coordinate[UAV_COUNTER] - current_position_y[UAV_COUNTER]), 2));
 
                 cout << "UAV COUNTER: " << UAV_COUNTER << " "
-                     << "Survivor X: " << setprecision(4) << *survivor_x_coordinate << ", "
-                     << "Survivor Y: " << setprecision(4) << *survivor_y_coordinate << ", "
+                     << "Survivor X: " << setprecision(4) << *survivor_x_coordinate[UAV_COUNTER] << ", "
+                     << "Survivor Y: " << setprecision(4) << *survivor_y_coordinate[UAV_COUNTER] << ", "
                      << "Survivor Distance: " << survivor_dist[UAV_COUNTER] << endl;
 
                 if (survivor_dist[UAV_COUNTER] < survivor_dist_threshold)
@@ -278,7 +303,7 @@ int main(int argc, char **argv)
                     if (counter_msgs[UAV_COUNTER].data < (grid_points))
                     {
                         //Setting exploration parameter to 2 to indicate a survivor has been found
-                        environment_map[list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 2;
+                        environment_map[UAV_COUNTER][list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 2;
                         //If survivor within the calulcated threshold and counter hasn't been set to (grid_points), send a detected message to the CL and set counter to (grid_points)
                         cout << "UAV COUNTER: " << UAV_COUNTER << " "
                              << "Human Detected" << endl;
@@ -290,8 +315,8 @@ int main(int argc, char **argv)
             }
 
             //Refreshing the survivor coordinate arrays with the newly updated survivor coordinate pointers
-            survivor_x_coordinate_array[UAV_COUNTER] = *survivor_x_coordinate;
-            survivor_y_coordinate_array[UAV_COUNTER] = *survivor_y_coordinate;
+            survivor_x_coordinate_array[UAV_COUNTER] = *survivor_x_coordinate[UAV_COUNTER];
+            survivor_y_coordinate_array[UAV_COUNTER] = *survivor_y_coordinate[UAV_COUNTER];
 
             /* This else statement is opened to ensure that the survivor's coordinates are published regardless of whether or not the 
             observer node has been triggered or not*/
@@ -312,7 +337,7 @@ int main(int argc, char **argv)
                     counter_msgs[UAV_COUNTER].data = 0;
                     //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
                     weight_trigger_check[UAV_COUNTER] = 1;
-                    weight_generator_function(uav_x_position, uav_y_position, X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, survivor_direction, x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, weight_element_cycler, list_maximum_value_x_indices[UAV_COUNTER], list_maximum_value_y_indices[UAV_COUNTER]);
+                    weight_generator_function(uav_x_position[UAV_COUNTER], uav_y_position[UAV_COUNTER], X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, survivor_direction[UAV_COUNTER], x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, weight_element_cycler, list_maximum_value_x_indices[UAV_COUNTER], list_maximum_value_y_indices[UAV_COUNTER], UAV_COUNTER);
                 }
                 //Enter this condition if weight based is not triggered
             }
@@ -322,7 +347,7 @@ int main(int argc, char **argv)
                 {
                     //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
                     lawn_mower_trigger_check[UAV_COUNTER] = 1;
-                    lawn_mower_generator_function(y_max, x_max, uav_x_position, uav_y_position, list_maximum_value_x_indices[UAV_COUNTER], list_maximum_value_y_indices[UAV_COUNTER], pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler);
+                    lawn_mower_generator_function(y_max, x_max, uav_x_position[UAV_COUNTER], uav_y_position[UAV_COUNTER], list_maximum_value_x_indices[UAV_COUNTER], list_maximum_value_y_indices[UAV_COUNTER], pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler);
                 }
             }
             //Difference between the current position and the next waypoint (x, y)
@@ -357,7 +382,7 @@ int main(int argc, char **argv)
                     if (cv_msgs[UAV_COUNTER].data == 1)
                     {
                         //Status 2 indicates that a survivor was found at that point.
-                        environment_map[list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 2;
+                        environment_map[UAV_COUNTER][list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 2;
                         //If the waypoint can be switched, check for the presence of a survivor from the cv_msgs topic
                         cout << "Human Detected by: " << UAV_COUNTER << " UAV" << endl;
                         cout << "RTL" << endl;
@@ -367,7 +392,7 @@ int main(int argc, char **argv)
                     else
                     {
                         //Status 1 for exploration states that the UAV traversed the given point and did not find any survivor at that spot.
-                        environment_map[list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 1;
+                        environment_map[UAV_COUNTER][list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 1;
                         //If UAV within switching threshold but no human detected switch the waypoint
                         cout << "Counter: " << counter_msgs[UAV_COUNTER].data << endl;
                         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
@@ -394,7 +419,7 @@ int main(int argc, char **argv)
                     if ((exploration_dump_check[UAV_COUNTER]) == 0)
                     {
                         //This condition is to make sure that the exploration map gets dumped only once to the disc
-                        exploration_dumper(environment_map, x_max, y_max, UAV_COUNTER);
+                        exploration_dumper(environment_map[UAV_COUNTER], x_max, y_max, UAV_COUNTER);
                         exploration_dump_check[UAV_COUNTER] = 1;
                     }
                 }
@@ -411,7 +436,7 @@ int main(int argc, char **argv)
                     if ((exploration_dump_check[UAV_COUNTER]) == 0)
                     {
                         //This condition is to make sure that the exploration map gets dumped only once to the disc
-                        exploration_dumper(environment_map, x_max, y_max, UAV_COUNTER);
+                        exploration_dumper(environment_map[UAV_COUNTER], x_max, y_max, UAV_COUNTER);
                         exploration_dump_check[UAV_COUNTER] = 1;
                     }
                 }

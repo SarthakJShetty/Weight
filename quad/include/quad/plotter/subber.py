@@ -34,12 +34,19 @@ def position_writer_2(data):
 
 def position_writer_3(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor1_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
     data_file_writer.close()
 
+def position_writer_4(data):
+    '''Writing survivor's data to the disc.'''
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor2_pos.txt'
+    data_file_writer = open(data_file, 'a')
+    data_file_writer.write(data)
+    data_file_writer.write('\n')
+    data_file_writer.close()
 
 def pos1(data):
     '''Subscribes to the 1st position, i.e. UAV 1's position data.'''
@@ -73,6 +80,15 @@ def pos3(data):
     position_writer_3(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
                        str(datetime.datetime.now().time().second)))
 
+def pos4(data):
+    '''Subscribes to the survivor's position data.'''
+    print("Subscribing to Survivor\'s Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (
+        str(data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
+    position_writer_4(str(data.pose.position.x))
+    position_writer_4(str(data.pose.position.y))
+    position_writer_4(str(data.pose.position.z))
+    position_writer_4(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)))
 
 def plot():
     '''Plotting all the data here'''
@@ -82,6 +98,7 @@ def plot():
         rospy.Subscriber("/uav0/mavros/global_position/local", Odometry, pos1)
         rospy.Subscriber("/uav1/mavros/global_position/local", Odometry, pos2)
         rospy.Subscriber("/uav0/survivor_position", PoseStamped, pos3)
+        rospy.Subscriber("/uav1/survivor_position", PoseStamped, pos4)
         time.sleep(1)
         rospy.spin()
 
