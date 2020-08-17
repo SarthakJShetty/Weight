@@ -73,10 +73,10 @@ for weight_file in weight_files:
     '''Adding a grid to improve readability of the map and anchors the colors generated as well.'''
     plt.grid(True)
 
-    if weight_file.split('/')[-1] == 'weightMap.csv':
-        plt.title('Density of Weights')
-    elif weight_file.split('/')[-1] == 'priorityMap.csv':
-        plt.title('Priority of Waypoints')
+    if 'weightMap' in weight_file.split('/')[-1]:
+        plt.title('Density of Weights for UAV ' + ((weight_file.split('/')[-1]).split('.'))[0].split('_')[1])
+    elif 'priorityMap' in weight_file.split('/')[-1]:
+        plt.title('Priority of Waypoints for UAV ' + ((weight_file.split('/')[-1]).split('.'))[0].split('_')[1])
     
     ax.set_aspect('equal')
     
