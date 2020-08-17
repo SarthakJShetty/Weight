@@ -76,9 +76,8 @@ for map_file in map_files:
 
     '''Adding a grid to improve readability of the map and anchors the colors generated as well.'''
     plt.grid(True)
-
-    if map_file == 'explorationMap_0.csv' or 'explorationMap_1.csv':
-        plt.title('Exploration of Environment by UAV ' + ((map_file.split('/')[-1]).split('.'))[0].split('_')[1])
+    
+    plt.title('Exploration of Environment by UAV ' + ((map_file.split('/')[-1]).split('.'))[0].split('_')[1])
 
     '''Adding labels to the X and the Y axis to improve the readability of the maps here'''
     plt.xticks(row_array)
