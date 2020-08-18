@@ -80,7 +80,7 @@ int priority_dumper(weighted_map environment_map[y_max][x_max], int x_max, int y
 	// during the simulations.
 
 	//The CSV of the environment_map generated is located at within the plotter package so that all entitities to be plotted are located in the same directory.
-	
+
 	string initial_filename = "/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/priorityMap_";
 	stringstream str_UAV_COUNTER;
 	str_UAV_COUNTER << UAV_COUNTER;
@@ -163,9 +163,12 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 	//This function generates the weights that have to be assigned to each quadrant of the environment.
 	weighting_function(uav_x_position, uav_y_position, X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, x_max, y_max);
 
+	//Assigning the highest weight to the start coordinate from where the UAV begins exploration.
 	environment_map[uav_y_position][uav_x_position].weight = X_5;
 
-	//Visualizing the for loops as vectors helps. Y direction as vertical movement, X as horizontal movement
+	/*Visualizing the for loops as vectors helps. Y direction as vertical movement, X as horizontal movement.
+	We address each quadrant here. The top left corner is (0, 0) and the right hand axis is X, and the bottom, Y. We assign weights to the outer quadrants first,
+	and then move inside.*/
 	while ((x_corner_coordinate_1 != uav_x_position))
 	{
 		for (int j = (uav_y_position - 1); j >= y_corner_coordinate_1; j--)
