@@ -300,38 +300,76 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
     3. If you encounter >= current maximum then append index (x, y) 
     4. Check the maximum value and remove it each row
     5. Iterate through environment_map again*/
-
+	int row_element;
 	while (weight_element_cycler <= (y_max * x_max))
 	{
 		for (int row_iterator = 0; row_iterator < y_max; row_iterator++)
 		{
 			for (int column_iterator = 0; column_iterator < x_max; column_iterator++)
 			{
-				if (environment_map[row_iterator][column_iterator].weight > maximum_value)
+				if (environment_map[row_iterator][column_iterator].weight >= maximum_value)
 				{
+					//We use
 					maximum_value = environment_map[row_iterator][column_iterator].weight;
+					row_element = abs(uav_y_position - row_iterator);
 				}
 			}
 		}
 
-		for (int row_iterator_2 = 0; row_iterator_2 < y_max; row_iterator_2++)
-		{
-			for (int column_iterator_2 = 0; column_iterator_2 < x_max; column_iterator_2++)
-			{
-				if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
-				{
-					environment_map[row_iterator_2][column_iterator_2].weight = 0;
-					weight_element_cycler += 1;
+		/*What has been implemented here?
+		1. A variable (row_element) to keep track of the Y-coordinate () of the maximum_value.
+		2. If this variable is even, then turn the for loops in the next section are as follows:
+			2.1 X: 0 -> X_MAX
+			2.2 Y: Y_MAX -> 0
+		3, If the variable is odd, the turn the for loops in the next section as follows:
+			3.1 X: X_MAX -> 0
+			3.2 Y: 0 -> Y_MAX*/
 
-					if (maximum_value != 0)
+		if ((row_element) % 2 == 0)
+		//If the Y axis of the weightiest element is even, then:
+		{
+			for (int row_iterator_2 = (y_max - 1); row_iterator_2 >= 0; row_iterator_2--)
+			{
+				for (int column_iterator_2 = 0; column_iterator_2 < x_max; column_iterator_2++)
+				{
+					if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
 					{
-						environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
-						list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
-						list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+						environment_map[row_iterator_2][column_iterator_2].weight = 0;
+						weight_element_cycler += 1;
+
+						if (maximum_value != 0)
+						{
+							environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
+							list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+							list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+						}
 					}
 				}
 			}
 		}
+		else
+		//If the Y axis of the weightiest element is odd, then:
+		{
+			for (int row_iterator_2 = 0; row_iterator_2 < y_max; row_iterator_2++)
+			{
+				for (int column_iterator_2 = (x_max - 1); column_iterator_2 >= 0; column_iterator_2--)
+				{
+					if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
+					{
+						environment_map[row_iterator_2][column_iterator_2].weight = 0;
+						weight_element_cycler += 1;
+
+						if (maximum_value != 0)
+						{
+							environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
+							list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+							list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+						}
+					}
+				}
+			}
+		}
+
 		maximum_value = 0;
 		//locator(environment_map, x_max, y_max, uav_x_position, uav_y_position);
 		//std::cout << endl;
