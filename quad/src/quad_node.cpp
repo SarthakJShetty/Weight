@@ -55,19 +55,19 @@ int main(int argc, char **argv)
     uav_y_position[0] = start_survivor_x_coordinate[0];
     uav_x_position[0] = start_survivor_y_coordinate[0];
 
-    velocity[0] = 0.3;
+    velocity[0] = 1;
 
-    start_survivor_x_coordinate[1] = 5.0;
-    start_survivor_y_coordinate[1] = 5.0;
-    survivor_direction[1] = 1;
+    // start_survivor_x_coordinate[1] = 5.0;
+    // start_survivor_y_coordinate[1] = 5.0;
+    // survivor_direction[1] = 1;
 
-    survivor_x_coordinate[1] = &start_survivor_x_coordinate[1];
-    survivor_y_coordinate[1] = &start_survivor_y_coordinate[1];
+    // survivor_x_coordinate[1] = &start_survivor_x_coordinate[1];
+    // survivor_y_coordinate[1] = &start_survivor_y_coordinate[1];
 
-    uav_y_position[1] = start_survivor_x_coordinate[1];
-    uav_x_position[1] = start_survivor_y_coordinate[1];
+    // uav_y_position[1] = start_survivor_x_coordinate[1];
+    // uav_x_position[1] = start_survivor_y_coordinate[1];
 
-    velocity[1] = 0.1;
+    // velocity[1] = 0.1;
 
 
     /*
