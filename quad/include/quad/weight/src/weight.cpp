@@ -300,7 +300,10 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
     3. If you encounter >= current maximum then append index (x, y) 
     4. Check the maximum value and remove it each row
     5. Iterate through environment_map again*/
-	int row_element;
+
+	/*We use row_element to tabulate the switching schemes of the weight-based pattern.
+	We use y/x_element to keep track of where the coordinate occurs so that the limits for the quadrant can be selected appropriately.*/
+	int row_element, y_element, x_element;
 	while (weight_element_cycler <= (y_max * x_max))
 	{
 		for (int row_iterator = 0; row_iterator < y_max; row_iterator++)
@@ -312,6 +315,8 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 					//We use
 					maximum_value = environment_map[row_iterator][column_iterator].weight;
 					row_element = abs(uav_y_position - row_iterator);
+					y_element = row_iterator;
+					x_element = column_iterator;
 				}
 			}
 		}
@@ -324,46 +329,189 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 		3, If the variable is odd, the turn the for loops in the next section as follows:
 			3.1 X: X_MAX -> 0
 			3.2 Y: 0 -> Y_MAX*/
-
-		if ((row_element) % 2 == 0)
-		//If the Y axis of the weightiest element is even, then:
+		if ((y_element < uav_y_position) && (x_element > uav_x_position))
 		{
-			for (int row_iterator_2 = (y_max - 1); row_iterator_2 >= 0; row_iterator_2--)
+			if ((row_element) % 2 == 0)
+			//If the Y axis of the weightiest element is even, then:
 			{
-				for (int column_iterator_2 = 0; column_iterator_2 < x_max; column_iterator_2++)
+				for (int row_iterator_2 = (y_max - 1); row_iterator_2 >= 0; row_iterator_2--)
 				{
-					if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
+					for (int column_iterator_2 = 0; column_iterator_2 < x_max; column_iterator_2++)
 					{
-						environment_map[row_iterator_2][column_iterator_2].weight = 0;
-						weight_element_cycler += 1;
-
-						if (maximum_value != 0)
+						if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
 						{
-							environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
-							list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
-							list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+							environment_map[row_iterator_2][column_iterator_2].weight = 0;
+							weight_element_cycler += 1;
+
+							if (maximum_value != 0)
+							{
+								environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
+								list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+								list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+							}
+						}
+					}
+				}
+			}
+			else
+			//If the Y axis of the weightiest element is odd, then:
+			{
+				for (int row_iterator_2 = 0; row_iterator_2 <= (y_max - 1); row_iterator_2++)
+				{
+					for (int column_iterator_2 = (x_max - 1); column_iterator_2 >= 0; column_iterator_2--)
+					{
+						if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
+						{
+							environment_map[row_iterator_2][column_iterator_2].weight = 0;
+							weight_element_cycler += 1;
+
+							if (maximum_value != 0)
+							{
+								environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
+								list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+								list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+							}
 						}
 					}
 				}
 			}
 		}
-		else
-		//If the Y axis of the weightiest element is odd, then:
+		else if ((y_element < uav_y_position) && (x_element < uav_x_position))
 		{
-			for (int row_iterator_2 = 0; row_iterator_2 < y_max; row_iterator_2++)
+			if ((row_element) % 2 == 0)
+			//If the Y axis of the weightiest element is even, then:
 			{
-				for (int column_iterator_2 = (x_max - 1); column_iterator_2 >= 0; column_iterator_2--)
+				for (int row_iterator_2 = (y_max - 1); row_iterator_2 >= 0; row_iterator_2--)
 				{
-					if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
+					for (int column_iterator_2 = (x_max - 1); column_iterator_2 >= 0; column_iterator_2--)
 					{
-						environment_map[row_iterator_2][column_iterator_2].weight = 0;
-						weight_element_cycler += 1;
-
-						if (maximum_value != 0)
+						if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
 						{
-							environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
-							list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
-							list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+							environment_map[row_iterator_2][column_iterator_2].weight = 0;
+							weight_element_cycler += 1;
+
+							if (maximum_value != 0)
+							{
+								environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
+								list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+								list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+							}
+						}
+					}
+				}
+			}
+			else
+			//If the Y axis of the weightiest element is odd, then:
+			{
+				for (int row_iterator_2 = 0; row_iterator_2 <= (y_max - 1); row_iterator_2++)
+				{
+					for (int column_iterator_2 = 0; column_iterator_2 <= (x_max - 1); column_iterator_2++)
+					{
+						if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
+						{
+							environment_map[row_iterator_2][column_iterator_2].weight = 0;
+							weight_element_cycler += 1;
+
+							if (maximum_value != 0)
+							{
+								environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
+								list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+								list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+							}
+						}
+					}
+				}
+			}
+		}
+		else if ((y_element > uav_y_position) && (x_element < uav_x_position))
+		{
+			if ((row_element) % 2 == 0)
+			//If the Y axis of the weightiest element is even, then:
+			{
+				for (int row_iterator_2 = 0; row_iterator_2 <= (y_max - 1); row_iterator_2++)
+				{
+					for (int column_iterator_2 = (x_max - 1); column_iterator_2 >= 0; column_iterator_2--)
+					{
+						if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
+						{
+							environment_map[row_iterator_2][column_iterator_2].weight = 0;
+							weight_element_cycler += 1;
+
+							if (maximum_value != 0)
+							{
+								environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
+								list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+								list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+							}
+						}
+					}
+				}
+			}
+			else
+			//If the Y axis of the weightiest element is odd, then:
+			{
+				for (int row_iterator_2 = (y_max - 1); row_iterator_2 >= 0; row_iterator_2--)
+				{
+					for (int column_iterator_2 = 0; column_iterator_2 <= (x_max - 1); column_iterator_2++)
+					{
+						if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
+						{
+							environment_map[row_iterator_2][column_iterator_2].weight = 0;
+							weight_element_cycler += 1;
+
+							if (maximum_value != 0)
+							{
+								environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
+								list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+								list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+							}
+						}
+					}
+				}
+			}
+		}
+		else if ((y_element > uav_y_position) && (x_element > uav_x_position))
+		{
+			if ((row_element) % 2 == 0)
+			//If the Y axis of the weightiest element is even, then:
+			{
+				for (int row_iterator_2 = 0; row_iterator_2 <= (y_max - 1); row_iterator_2++)
+				{
+					for (int column_iterator_2 = 0; column_iterator_2 <= (x_max - 1); column_iterator_2++)
+					{
+						if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
+						{
+							environment_map[row_iterator_2][column_iterator_2].weight = 0;
+							weight_element_cycler += 1;
+
+							if (maximum_value != 0)
+							{
+								environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
+								list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+								list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+							}
+						}
+					}
+				}
+			}
+			else
+			//If the Y axis of the weightiest element is odd, then:
+			{
+				for (int row_iterator_2 = (y_max - 1); row_iterator_2 >= 0; row_iterator_2--)
+				{
+					for (int column_iterator_2 = (x_max - 1); column_iterator_2 >= 0; column_iterator_2--)
+					{
+						if ((environment_map[row_iterator_2][column_iterator_2].weight == maximum_value))
+						{
+							environment_map[row_iterator_2][column_iterator_2].weight = 0;
+							weight_element_cycler += 1;
+
+							if (maximum_value != 0)
+							{
+								environment_map[row_iterator_2][column_iterator_2].priority = weight_element_cycler;
+								list_maximum_value_x_indices[weight_element_cycler - 1] = (column_iterator_2);
+								list_maximum_value_y_indices[weight_element_cycler - 1] = (row_iterator_2);
+							}
 						}
 					}
 				}
