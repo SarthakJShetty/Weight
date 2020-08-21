@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 
     start_survivor_x_coordinate[0] = 10.0;
     start_survivor_y_coordinate[0] = 10.0;
-    survivor_direction[0] = 4;
+    survivor_direction[0] = 1;
 
     survivor_x_coordinate[0] = &start_survivor_x_coordinate[0];
     survivor_y_coordinate[0] = &start_survivor_y_coordinate[0];
@@ -57,17 +57,17 @@ int main(int argc, char **argv)
 
     velocity[0] = 1;
 
-    // start_survivor_x_coordinate[1] = 5.0;
-    // start_survivor_y_coordinate[1] = 5.0;
-    // survivor_direction[1] = 1;
+    start_survivor_x_coordinate[1] = 5.0;
+    start_survivor_y_coordinate[1] = 5.0;
+    survivor_direction[1] = 1;
 
-    // survivor_x_coordinate[1] = &start_survivor_x_coordinate[1];
-    // survivor_y_coordinate[1] = &start_survivor_y_coordinate[1];
+    survivor_x_coordinate[1] = &start_survivor_x_coordinate[1];
+    survivor_y_coordinate[1] = &start_survivor_y_coordinate[1];
 
-    // uav_y_position[1] = start_survivor_x_coordinate[1];
-    // uav_x_position[1] = start_survivor_y_coordinate[1];
+    uav_y_position[1] = start_survivor_x_coordinate[1];
+    uav_x_position[1] = start_survivor_y_coordinate[1];
 
-    // velocity[1] = 0.1;
+    velocity[1] = 0.1;
 
 
     /*
@@ -288,7 +288,7 @@ int main(int argc, char **argv)
                     survivor_model(x_max, y_max, survivor_direction[UAV_COUNTER], current_second, previous_second, survivor_x_coordinate[UAV_COUNTER], survivor_y_coordinate[UAV_COUNTER], velocity[UAV_COUNTER], time_step);
                 }
                 //Calculating the distance between the survivor's coordinates and the UAV's current position, once the weight based search has been triggered.
-                survivor_dist[UAV_COUNTER] = sqrt(pow((*survivor_x_coordinate[UAV_COUNTER] - current_position_x[UAV_COUNTER]), 2) + pow((*survivor_y_coordinate[UAV_COUNTER] - current_position_y[UAV_COUNTER]), 2));
+                survivor_dist[UAV_COUNTER] = sqrt(pow((*survivor_y_coordinate[UAV_COUNTER] - current_position_x[UAV_COUNTER]), 2) + pow((*survivor_x_coordinate[UAV_COUNTER] - current_position_y[UAV_COUNTER]), 2));
 
                 cout << "UAV COUNTER: " << UAV_COUNTER << " "
                      << "Survivor X: " << setprecision(4) << *survivor_x_coordinate[UAV_COUNTER] << ", "
