@@ -117,12 +117,12 @@ def file_reader(coordinates_file_txt, plotting_parameter):
 
 x_points_1, y_points_1, z_points_1, x_time_1, y_time_1, z_time_1, start_second_1, end_second_1, start_second_decimal_1, end_second_decimal_1 = file_reader(
     '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt', 'pos')
-# x_points_2, y_points_2, z_points_2, x_time_2, y_time_2, z_time_2, start_second_1, end_second_2, start_second_decimal_2, end_second_decimal_2 = file_reader(
-#     '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt', 'pos')
+x_points_2, y_points_2, z_points_2, x_time_2, y_time_2, z_time_2, start_second_1, end_second_2, start_second_decimal_2, end_second_decimal_2 = file_reader(
+    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt', 'pos')
 x_points_3, y_points_3, z_points_3, x_time_3, y_time_3, z_time_3, start_second_3, end_second_3, start_second_decimal_3, end_second_decimal_3 = file_reader(
     '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor1_pos.txt', 'pos')
-# x_points_4, y_points_4, z_points_4, x_time_4, y_time_4, z_time_4, start_second_4, end_second_4, start_second_decimal_4, end_second_decimal_4 = file_reader(
-#     '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor2_pos.txt', 'pos')
+x_points_4, y_points_4, z_points_4, x_time_4, y_time_4, z_time_4, start_second_4, end_second_4, start_second_decimal_4, end_second_decimal_4 = file_reader(
+    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor2_pos.txt', 'pos')
 
 '''Plotting the agents properties vs time '''
 
@@ -150,29 +150,29 @@ plt.legend(['Z Position'], loc=1)
 plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV1CoordinatesZ.png')
 plt.show()
 
-# plt.plot(y_time_2, y_points_2, 'r')
-# plt.title('UAV 2 X Coordinates vs Time')
-# plt.xlabel("Seconds (s)")
-# plt.ylabel("X Position")
-# plt.legend(['X Position'], loc=1)
-# plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV2CoordinatesX.png')
-# plt.show()
+plt.plot(y_time_2, y_points_2, 'r')
+plt.title('UAV 2 X Coordinates vs Time')
+plt.xlabel("Seconds (s)")
+plt.ylabel("X Position")
+plt.legend(['X Position'], loc=1)
+plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV2CoordinatesX.png')
+plt.show()
 
-# plt.plot(x_time_2, x_points_2, 'g')
-# plt.title('UAV 2 Y Coordinates vs Time')
-# plt.xlabel("Seconds (s)")
-# plt.ylabel("Y Position")
-# plt.legend(['Y Position'], loc=1)
-# plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV2CoordinatesY.png')
-# plt.show()
+plt.plot(x_time_2, x_points_2, 'g')
+plt.title('UAV 2 Y Coordinates vs Time')
+plt.xlabel("Seconds (s)")
+plt.ylabel("Y Position")
+plt.legend(['Y Position'], loc=1)
+plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV2CoordinatesY.png')
+plt.show()
 
-# plt.plot(z_time_2, z_points_2, 'b')
-# plt.title('UAV 2 Z Coordinates vs Time')
-# plt.xlabel("Seconds (s)")
-# plt.ylabel("Z Position")
-# plt.legend(['Z Position'], loc=1)
-# plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV2CoordinatesZ.png')
-# plt.show()
+plt.plot(z_time_2, z_points_2, 'b')
+plt.title('UAV 2 Z Coordinates vs Time')
+plt.xlabel("Seconds (s)")
+plt.ylabel("Z Position")
+plt.legend(['Z Position'], loc=1)
+plt.savefig('/home/sarthak/catkin_ws/src/assets/UAV2CoordinatesZ.png')
+plt.show()
 
 plt.plot(y_time_3, y_points_3, 'r')
 plt.xlabel("Seconds (s)")
@@ -198,29 +198,29 @@ plt.title('Survivor 1 Z Coordinates vs Time')
 plt.savefig('/home/sarthak/catkin_ws/src/assets/Survivor1Z.png')
 plt.show()
 
-# plt.plot(y_time_4, y_points_4, 'r')
-# plt.xlabel("Seconds (s)")
-# plt.ylabel("X Position")
-# plt.legend(['X Position'], loc=1)
-# plt.title('Survivor 2 X Coordinates vs Time')
-# plt.savefig('/home/sarthak/catkin_ws/src/assets/Survivor2X.png')
-# plt.show()
+plt.plot(y_time_4, y_points_4, 'r')
+plt.xlabel("Seconds (s)")
+plt.ylabel("X Position")
+plt.legend(['X Position'], loc=1)
+plt.title('Survivor 2 X Coordinates vs Time')
+plt.savefig('/home/sarthak/catkin_ws/src/assets/Survivor2X.png')
+plt.show()
 
-# plt.plot(x_time_4, x_points_4, 'g')
-# plt.xlabel("Seconds (s)")
-# plt.ylabel("Y Position")
-# plt.legend(['Y Position'], loc=1)
-# plt.title('Survivor 2 Y Coordinates vs Time')
-# plt.savefig('/home/sarthak/catkin_ws/src/assets/Survivor2Y.png')
-# plt.show()
+plt.plot(x_time_4, x_points_4, 'g')
+plt.xlabel("Seconds (s)")
+plt.ylabel("Y Position")
+plt.legend(['Y Position'], loc=1)
+plt.title('Survivor 2 Y Coordinates vs Time')
+plt.savefig('/home/sarthak/catkin_ws/src/assets/Survivor2Y.png')
+plt.show()
 
-# plt.plot(z_time_4, z_points_4, 'b')
-# plt.xlabel("Seconds (s)")
-# plt.ylabel("Z Position")
-# plt.legend(['Z Position'], loc=1)
-# plt.title('Survivor 2 Z Coordinates vs Time')
-# plt.savefig('/home/sarthak/catkin_ws/src/assets/Survivor2Z.png')
-# plt.show()
+plt.plot(z_time_4, z_points_4, 'b')
+plt.xlabel("Seconds (s)")
+plt.ylabel("Z Position")
+plt.legend(['Z Position'], loc=1)
+plt.title('Survivor 2 Z Coordinates vs Time')
+plt.savefig('/home/sarthak/catkin_ws/src/assets/Survivor2Z.png')
+plt.show()
 
 '''These points are required to plot the boundaries of the environment in the 3D plot'''
 x_points_env = [0, 18.5, 18.5, 0, 0]
@@ -242,41 +242,41 @@ ax.plot([x_points_1[0]], [y_points_1[0]], [z_points_1[0]],
 ax.plot([x_points_1[len(x_points_1)-1]], [y_points_1[len(x_points_1)-1]], [z_points_1[len(x_points_1)-1]],
         label='UAV 1 End Point', color='r', marker='x')
 
-# '''Plotting the entire trajectory of UAV 2 in the environment'''
-# ax.plot(x_points_2, y_points_2, z_points_2,
-#         label='UAV 2 Trajectory', color='c')
+'''Plotting the entire trajectory of UAV 2 in the environment'''
+ax.plot(x_points_2, y_points_2, z_points_2,
+        label='UAV 2 Trajectory', color='c')
 
-# '''Plotting only the start point of UAV 2 trajectory'''
-# ax.plot([x_points_2[0]], [y_points_2[0]], [z_points_2[0]],
-#         label='UAV 2 Start Point', color='g', marker='o')
+'''Plotting only the start point of UAV 2 trajectory'''
+ax.plot([x_points_2[0]], [y_points_2[0]], [z_points_2[0]],
+        label='UAV 2 Start Point', color='g', marker='o')
 
-# '''Plotting only the end point of UAV 2 trajectory'''
-# ax.plot([x_points_2[len(x_points_2)-1]], [y_points_2[len(x_points_2)-1]], [z_points_2[len(x_points_2)-1]],
-#         label='UAV 2 End Point', color='r', marker='o')
+'''Plotting only the end point of UAV 2 trajectory'''
+ax.plot([x_points_2[len(x_points_2)-1]], [y_points_2[len(x_points_2)-1]], [z_points_2[len(z_points_2)-1]],
+        label='UAV 2 End Point', color='r', marker='o')
 
 '''Plotting the entire trajectory of the survivors in the environment'''
-ax.plot(x_points_3, y_points_3, z_points_3,
+ax.plot(y_points_3, x_points_3, z_points_3,
         label='Survivor 1 Trajectory', color='y')
 
 '''Plotting only the start point of the survivors trajectory'''
-ax.plot([x_points_3[0]], [y_points_3[0]], [z_points_3[0]],
+ax.plot([y_points_3[0]], [x_points_3[0]], [z_points_3[0]],
         label='Survivor 1 Start Point', color='g', marker='D')
 
 '''Plotting only the end point of the survivors trajectory'''
-ax.plot([x_points_3[len(x_points_3)-1]], [y_points_3[len(x_points_3)-1]], [z_points_3[len(x_points_3)-1]],
+ax.plot([y_points_3[len(y_points_3)-1]], [x_points_3[len(x_points_3)-1]], [z_points_3[len(z_points_3)-1]],
         label='Survivor 1 End Point', color='r', marker='D')
 
-# '''Plotting the entire trajectory of the survivors in the environment'''
-# ax.plot(x_points_4, y_points_4, z_points_4,
-#         label='Survivor 2 Trajectory', color='y')
+'''Plotting the entire trajectory of the survivors in the environment'''
+ax.plot(y_points_4, x_points_4, z_points_4,
+        label='Survivor 2 Trajectory', color='y')
 
-# '''Plotting only the start point of the survivors trajectory'''
-# ax.plot([x_points_4[0]], [y_points_4[0]], [z_points_4[0]],
-#         label='Survivor 2 Start Point', color='g', marker='D')
+'''Plotting only the start point of the survivors trajectory'''
+ax.plot([y_points_4[0]], [x_points_4[0]], [z_points_4[0]],
+        label='Survivor 2 Start Point', color='g', marker='D')
 
-# '''Plotting only the end point of the survivors trajectory'''
-# ax.plot([x_points_4[len(x_points_4)-1]], [y_points_4[len(x_points_4)-1]], [z_points_4[len(x_points_4)-1]],
-#         label='Survivor 2 End Point', color='r', marker='D')
+'''Plotting only the end point of the survivors trajectory'''
+ax.plot([y_points_4[len(y_points_4)-1]], [x_points_4[len(x_points_4)-1]], [z_points_4[len(z_points_4)-1]],
+        label='Survivor 2 End Point', color='r', marker='D')
 
 '''Plotting the environment boundary'''
 ax.plot(x_points_env, y_points_env, z_points_env,
