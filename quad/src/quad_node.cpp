@@ -45,6 +45,7 @@ int main(int argc, char **argv)
 
     ros::NodeHandle nh;
 
+    //This assignment of coordinates is not placed in a loop since it's each UAV has different survivor attributes.
     start_survivor_x_coordinate[0] = 10.0;
     start_survivor_y_coordinate[0] = 10.0;
     survivor_direction[0] = 1;
@@ -67,8 +68,7 @@ int main(int argc, char **argv)
     uav_y_position[1] = start_survivor_x_coordinate[1];
     uav_x_position[1] = start_survivor_y_coordinate[1];
 
-    velocity[1] = 0.1;
-
+    velocity[1] = 1;
 
     /*
     What are we trying to incorporate here?
