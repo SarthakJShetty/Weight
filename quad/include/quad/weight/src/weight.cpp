@@ -145,9 +145,9 @@ int weighting_function(int uav_x_position, int uav_y_position, float &X_1, float
 		n_set = n_y_difference;
 	}
 
-	X_1 = ((X_4 * pow(n_set, 3)) + pow(n_set, 1) + pow(n_set, 2) + pow(n_set, 3));
-	X_3 = ((X_1 - pow(n_set, 1)) - pow(n_set, 2)) / pow(n_set, 2);
-	X_2 = (X_1 - pow(n_set, 1)) / pow(n_set, 1);
+	X_1 = ((X_4 * pow(n_set, 3)) + pow(n_set, 2) + pow(n_set, 1)) + 1;
+	X_3 = ((X_1 - pow(n_set, 1)) - pow(n_set, 1)) / pow(n_set, 2);
+	X_2 = (X_1 - pow(n_set, 0)) / pow(n_set, 1);
 	X_5 = ((X_1 * n_set) + 1);
 }
 
@@ -181,7 +181,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 				else if (survivor_direction == 2)
 				{
-					environment_map[j][i].weight += X_2;
+					environment_map[j][i].weight += X_3;
 				}
 				else if (survivor_direction == 3)
 				{
@@ -189,7 +189,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 				else if (survivor_direction == 4)
 				{
-					environment_map[j][i].weight += X_3;
+					environment_map[j][i].weight += X_2;
 				}
 				//locator(environment_map, x_max, y_max, uav_x_position, uav_y_position);
 				//std::cout << endl;
@@ -207,7 +207,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 			{
 				if (survivor_direction == 1)
 				{
-					environment_map[j][i].weight += X_3;
+					environment_map[j][i].weight += X_2;
 				}
 				else if (survivor_direction == 2)
 				{
@@ -215,7 +215,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 				else if (survivor_direction == 3)
 				{
-					environment_map[j][i].weight += X_2;
+					environment_map[j][i].weight += X_3;
 				}
 				else if (survivor_direction == 4)
 				{
@@ -241,7 +241,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 				else if (survivor_direction == 2)
 				{
-					environment_map[j][i].weight += X_3;
+					environment_map[j][i].weight += X_2;
 				}
 				else if (survivor_direction == 3)
 				{
@@ -249,7 +249,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 				else if (survivor_direction == 4)
 				{
-					environment_map[j][i].weight += X_2;
+					environment_map[j][i].weight += X_3;
 				}
 				//locator(environment_map, x_max, y_max, uav_x_position, uav_y_position);
 				//std::cout << endl;
@@ -304,19 +304,34 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 	/*We use row_element to tabulate the switching schemes of the weight-based pattern.
 	We use y/x_element to keep track of where the coordinate occurs so that the limits for the quadrant can be selected appropriately.*/
 	int row_element, y_element, x_element;
+
 	while (weight_element_cycler <= (y_max * x_max))
 	{
 		for (int row_iterator = 0; row_iterator < y_max; row_iterator++)
 		{
 			for (int column_iterator = 0; column_iterator < x_max; column_iterator++)
 			{
-				if (environment_map[row_iterator][column_iterator].weight >= maximum_value)
+				if (row_iterator <= uav_y_position)
 				{
-					//We use
-					maximum_value = environment_map[row_iterator][column_iterator].weight;
-					row_element = abs(uav_y_position - row_iterator);
-					y_element = row_iterator;
-					x_element = column_iterator;
+					//If the maximum value element occurs above uav_y_position, then take the first occuring maximum_value to tabulate the row_element
+					if (environment_map[row_iterator][column_iterator].weight > maximum_value)
+					{
+						maximum_value = environment_map[row_iterator][column_iterator].weight;
+						row_element = abs(uav_y_position - row_iterator);
+						y_element = row_iterator;
+						x_element = column_iterator;
+					}
+				}
+				else
+				{
+					//If the maximum value element occurs below uav_y_position, then take the last occuring maximum_value to tabulate the row_element
+					if (environment_map[row_iterator][column_iterator].weight >= maximum_value)
+					{
+						maximum_value = environment_map[row_iterator][column_iterator].weight;
+						row_element = abs(uav_y_position - row_iterator);
+						y_element = row_iterator;
+						x_element = column_iterator;
+					}
 				}
 			}
 		}
@@ -326,11 +341,13 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 		2. If this variable is even, then turn the for loops in the next section are as follows:
 			2.1 X: 0 -> X_MAX
 			2.2 Y: Y_MAX -> 0
-		3, If the variable is odd, the turn the for loops in the next section as follows:
+		3. If the variable is odd, the turn the for loops in the next section as follows:
 			3.1 X: X_MAX -> 0
 			3.2 Y: 0 -> Y_MAX*/
-		if ((y_element < uav_y_position) && (x_element > uav_x_position))
+
+		if ((y_element >= uav_y_position) && (x_element >= (uav_x_position + 1)))
 		{
+			//If the maximum_value element is in the FOURTH quadrant then:
 			if ((row_element) % 2 == 0)
 			//If the Y axis of the weightiest element is even, then:
 			{
@@ -376,8 +393,9 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 			}
 		}
-		else if ((y_element < uav_y_position) && (x_element < uav_x_position))
+		else if ((y_element >= (uav_y_position + 1)) && (x_element <= (uav_x_position)))
 		{
+			//If the maximum_value element is in the THIRD quadrant then:
 			if ((row_element) % 2 == 0)
 			//If the Y axis of the weightiest element is even, then:
 			{
@@ -423,8 +441,9 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 			}
 		}
-		else if ((y_element > uav_y_position) && (x_element < uav_x_position))
+		else if ((y_element <= (uav_y_position)) && (x_element <= (uav_x_position - 1)))
 		{
+			//If the maximum_value element is in the SECOND quadrant then:
 			if ((row_element) % 2 == 0)
 			//If the Y axis of the weightiest element is even, then:
 			{
@@ -470,8 +489,9 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 			}
 		}
-		else if ((y_element > uav_y_position) && (x_element > uav_x_position))
+		else if ((y_element <= (uav_y_position - 1)) && (x_element >= (uav_x_position)))
 		{
+			//If the maximum_value element is in the FIRST quadrant then:
 			if ((row_element) % 2 == 0)
 			//If the Y axis of the weightiest element is even, then:
 			{
@@ -516,6 +536,14 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 					}
 				}
 			}
+		}
+		else if (x_element == uav_x_position && y_element == uav_y_position)
+		{
+			//If the maximum_value element is uav_x/y_position, it isn't indexed by any of the previous loops, hence:
+			environment_map[uav_y_position][uav_x_position].weight = 0;
+			weight_element_cycler += 1;
+			list_maximum_value_x_indices[weight_element_cycler - 1] = x_element;
+			list_maximum_value_y_indices[weight_element_cycler - 1] = y_element;
 		}
 
 		maximum_value = 0;
