@@ -198,6 +198,7 @@ axs[3, 2].legend(['Z Position'], loc=1)
 axs[3, 2].set_title('Survivor 2 Z Coordinates vs Time')
 
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=0.5)
+plt.savefig('/home/sarthak/catkin_ws/src/assets/UAVSurvivorInfo.png')
 plt.show()
 
 '''These points are required to plot the boundaries of the environment in the 3D plot'''
