@@ -52,6 +52,9 @@ def file_reader(coordinates_file_txt, plotting_parameter):
     for line in position_file:
         if line != '\n':
             file_elements.append(line)
+    if('SECONDS' in file_elements[-1]):
+        '''If the last recorded data line is a SECONDS line, we pop it here'''
+        file_elements.pop(-1)
     '''Traversing the elements of file_elements and checking if it contains the SECONDS keyword to grab the time of data collection'''
     for line in file_elements:
         if "SECONDS" in line:
