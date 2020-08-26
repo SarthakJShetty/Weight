@@ -107,9 +107,9 @@ int *previous_second = &start_previous_second;
 //Survivor's direction 1-> ++, 2-> -+, 3-> --, 4-> +-
 int survivor_direction[N_UAV];
 
-//UAVs current position
-int uav_y_position[N_UAV];
-int uav_x_position[N_UAV];
+//UAVs starting position on the weighted map, the same as the survivor's start position
+int weight_uav_y_position[N_UAV];
+int weight_uav_x_position[N_UAV];
 
 //Corner coordinates of each of the quadrants of exploration
 int x_corner_coordinate_1 = x_max;

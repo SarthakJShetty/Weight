@@ -30,11 +30,11 @@ struct weighted_map
     int exploration;
 };
 
-int weighting_function(int uav_x_position, int uav_y_position, float &X_1, float &X_2, float &X_3, float &X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int x_max, int y_max);
+int weighting_function(int weight_uav_x_position, int weight_uav_y_position, float &X_1, float &X_2, float &X_3, float &X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int x_max, int y_max);
 int weight_initializer(weighted_map environment_map[y_max][x_max], int x_max, int y_max);
 int exploration_initializer(weighted_map environment_map[y_max][x_max], int x_max, int y_max);
-int locator(weighted_map environment_map[y_max][x_max], int x_max, int y_max, int uav_x_position, int uav_y_position);
-int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1, float &X_2, float &X_3, float X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int weight_element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[], int UAV_COUNTER);
+int locator(weighted_map environment_map[y_max][x_max], int x_max, int y_max, int weight_uav_x_position, int weight_uav_y_position);
+int weight_generator_function(int weight_uav_x_position, int weight_uav_y_position, float &X_1, float &X_2, float &X_3, float X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int weight_element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[], int UAV_COUNTER);
 int weight_dumper(weighted_map environment_map[y_max][x_max], int x_max, int y_max, int UAV_COUNTER);
 int priority_dumper(weighted_map environment_map[y_max][x_max], int x_max, int y_max, int UAV_COUNTER);
 int exploration_dumper(weighted_map environment_map[y_max][x_max], int x_max, int y_max, int UAV_COUNTER);

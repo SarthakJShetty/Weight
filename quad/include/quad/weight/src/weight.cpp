@@ -26,14 +26,14 @@ int exploration_initializer(weighted_map environment_map[y_max][x_max], int x_ma
 	return 0;
 }
 
-int locator(weighted_map environment_map[y_max][x_max], int x_max, int y_max, int uav_x_position, int uav_y_position)
+int locator(weighted_map environment_map[y_max][x_max], int x_max, int y_max, int weight_uav_x_position, int weight_uav_y_position)
 {
 	//Locating the UAV in the environment_map generated
 	for (int j = 0; j < y_max; j++)
 	{
 		for (int i = 0; i < x_max; i++)
 		{
-			if (i == (uav_x_position) && j == (uav_y_position))
+			if (i == (weight_uav_x_position) && j == (weight_uav_y_position))
 			{
 				std::cout << "*\t";
 			}
@@ -124,7 +124,7 @@ int exploration_dumper(weighted_map environment_map[y_max][x_max], int x_max, in
 	explorationMapCSV.close();
 }
 
-int weighting_function(int uav_x_position, int uav_y_position, float &X_1, float &X_2, float &X_3, float &X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int x_max, int y_max)
+int weighting_function(int weight_uav_x_position, int weight_uav_y_position, float &X_1, float &X_2, float &X_3, float &X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int x_max, int y_max)
 {
 	/*We've creating a new function to decide the weights to be assigned to each of the quadrants while generating weights. 
 	This function solves 2 problems:
@@ -133,8 +133,8 @@ int weighting_function(int uav_x_position, int uav_y_position, float &X_1, float
 
 	//uav_x/y_position is being subtracted from x/y_max since the boundary is the largest possible value of n_x/y_difference.
 
-	n_x_difference = x_max - uav_x_position;
-	n_y_difference = y_max - uav_y_position;
+	n_x_difference = x_max - weight_uav_x_position;
+	n_y_difference = y_max - weight_uav_y_position;
 
 	if (n_x_difference > n_y_difference)
 	{
@@ -151,7 +151,7 @@ int weighting_function(int uav_x_position, int uav_y_position, float &X_1, float
 	X_5 = ((X_1 * n_set) + 1);
 }
 
-int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1, float &X_2, float &X_3, float X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int weight_element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[], int UAV_COUNTER)
+int weight_generator_function(int weight_uav_x_position, int weight_uav_y_position, float &X_1, float &X_2, float &X_3, float X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int weight_element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[], int UAV_COUNTER)
 {
 	weighted_map environment_map[y_max][x_max];
 
@@ -161,19 +161,19 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 	exploration_initializer(environment_map, x_max, y_max);
 
 	//This function generates the weights that have to be assigned to each quadrant of the environment.
-	weighting_function(uav_x_position, uav_y_position, X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, x_max, y_max);
+	weighting_function(weight_uav_x_position, weight_uav_y_position, X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, x_max, y_max);
 
 	//Assigning the highest weight to the start coordinate from where the UAV begins exploration.
-	environment_map[uav_y_position][uav_x_position].weight = X_5;
+	environment_map[weight_uav_y_position][weight_uav_x_position].weight = X_5;
 
 	/*Visualizing the for loops as vectors helps. Y direction as vertical movement, X as horizontal movement.
 	We address each quadrant here. The top left corner is (0, 0) and the right hand axis is X, and the bottom, Y. We assign weights to the outer quadrants first,
 	and then move inside.*/
-	while ((x_corner_coordinate_1 != uav_x_position))
+	while ((x_corner_coordinate_1 != weight_uav_x_position))
 	{
-		for (int j = (uav_y_position - 1); j >= y_corner_coordinate_1; j--)
+		for (int j = (weight_uav_y_position - 1); j >= y_corner_coordinate_1; j--)
 		{
-			for (int i = (uav_x_position); i < x_corner_coordinate_1; i++)
+			for (int i = (weight_uav_x_position); i < x_corner_coordinate_1; i++)
 			{
 				if (survivor_direction == 1)
 				{
@@ -191,7 +191,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				{
 					environment_map[j][i].weight += X_2;
 				}
-				//locator(environment_map, x_max, y_max, uav_x_position, uav_y_position);
+				//locator(environment_map, x_max, y_max, weight_uav_x_position, weight_uav_y_position);
 				//std::cout << endl;
 			}
 		}
@@ -199,11 +199,11 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 		y_corner_coordinate_1 += 1;
 	}
 
-	while ((x_corner_coordinate_2 != uav_x_position))
+	while ((x_corner_coordinate_2 != weight_uav_x_position))
 	{
-		for (int j = (uav_y_position); j >= y_corner_coordinate_2; j--)
+		for (int j = (weight_uav_y_position); j >= y_corner_coordinate_2; j--)
 		{
-			for (int i = (uav_x_position - 1); i >= x_corner_coordinate_2; i--)
+			for (int i = (weight_uav_x_position - 1); i >= x_corner_coordinate_2; i--)
 			{
 				if (survivor_direction == 1)
 				{
@@ -221,7 +221,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				{
 					environment_map[j][i].weight += X_4;
 				}
-				//locator(environment_map, x_max, y_max, uav_x_position, uav_y_position);
+				//locator(environment_map, x_max, y_max, weight_uav_x_position, weight_uav_y_position);
 				//std::cout << endl;
 			}
 		}
@@ -229,11 +229,11 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 		y_corner_coordinate_2 += 1;
 	}
 
-	while ((x_corner_coordinate_3 != uav_x_position))
+	while ((x_corner_coordinate_3 != weight_uav_x_position))
 	{
-		for (int j = (uav_y_position + 1); j < y_corner_coordinate_3; j++)
+		for (int j = (weight_uav_y_position + 1); j < y_corner_coordinate_3; j++)
 		{
-			for (int i = (uav_x_position); i >= x_corner_coordinate_3; i--)
+			for (int i = (weight_uav_x_position); i >= x_corner_coordinate_3; i--)
 			{
 				if (survivor_direction == 1)
 				{
@@ -251,7 +251,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				{
 					environment_map[j][i].weight += X_3;
 				}
-				//locator(environment_map, x_max, y_max, uav_x_position, uav_y_position);
+				//locator(environment_map, x_max, y_max, weight_uav_x_position, weight_uav_y_position);
 				//std::cout << endl;
 			}
 		}
@@ -259,11 +259,11 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 		y_corner_coordinate_3 -= 1;
 	}
 
-	while ((x_corner_coordinate_4 != uav_x_position))
+	while ((x_corner_coordinate_4 != weight_uav_x_position))
 	{
-		for (int j = (uav_y_position); j < y_corner_coordinate_4; j++)
+		for (int j = (weight_uav_y_position); j < y_corner_coordinate_4; j++)
 		{
-			for (int i = (uav_x_position + 1); i < x_corner_coordinate_4; i++)
+			for (int i = (weight_uav_x_position + 1); i < x_corner_coordinate_4; i++)
 			{
 				if (survivor_direction == 1)
 				{
@@ -281,7 +281,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				{
 					environment_map[j][i].weight += X_1;
 				}
-				//locator(environment_map, x_max, y_max, uav_x_position, uav_y_position);
+				//locator(environment_map, x_max, y_max, weight_uav_x_position, weight_uav_y_position);
 				//std::cout << endl;
 			}
 		}
@@ -311,24 +311,24 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 		{
 			for (int column_iterator = 0; column_iterator < x_max; column_iterator++)
 			{
-				if (row_iterator <= uav_y_position)
+				if (row_iterator <= weight_uav_y_position)
 				{
-					//If the maximum value element occurs above uav_y_position, then take the first occuring maximum_value to tabulate the row_element
+					//If the maximum value element occurs above weight_uav_y_position, then take the first occuring maximum_value to tabulate the row_element
 					if (environment_map[row_iterator][column_iterator].weight > maximum_value)
 					{
 						maximum_value = environment_map[row_iterator][column_iterator].weight;
-						row_element = abs(uav_y_position - row_iterator);
+						row_element = abs(weight_uav_y_position - row_iterator);
 						y_element = row_iterator;
 						x_element = column_iterator;
 					}
 				}
 				else
 				{
-					//If the maximum value element occurs below uav_y_position, then take the last occuring maximum_value to tabulate the row_element
+					//If the maximum value element occurs below weight_uav_y_position, then take the last occuring maximum_value to tabulate the row_element
 					if (environment_map[row_iterator][column_iterator].weight >= maximum_value)
 					{
 						maximum_value = environment_map[row_iterator][column_iterator].weight;
-						row_element = abs(uav_y_position - row_iterator);
+						row_element = abs(weight_uav_y_position - row_iterator);
 						y_element = row_iterator;
 						x_element = column_iterator;
 					}
@@ -345,7 +345,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 			3.1 X: X_MAX -> 0
 			3.2 Y: 0 -> Y_MAX*/
 
-		if ((y_element >= uav_y_position) && (x_element >= (uav_x_position + 1)))
+		if ((y_element >= weight_uav_y_position) && (x_element >= (weight_uav_x_position + 1)))
 		{
 			//If the maximum_value element is in the FOURTH quadrant then:
 			if ((row_element) % 2 == 0)
@@ -393,7 +393,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 			}
 		}
-		else if ((y_element >= (uav_y_position + 1)) && (x_element <= (uav_x_position)))
+		else if ((y_element >= (weight_uav_y_position + 1)) && (x_element <= (weight_uav_x_position)))
 		{
 			//If the maximum_value element is in the THIRD quadrant then:
 			if ((row_element) % 2 == 0)
@@ -441,7 +441,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 			}
 		}
-		else if ((y_element <= (uav_y_position)) && (x_element <= (uav_x_position - 1)))
+		else if ((y_element <= (weight_uav_y_position)) && (x_element <= (weight_uav_x_position - 1)))
 		{
 			//If the maximum_value element is in the SECOND quadrant then:
 			if ((row_element) % 2 == 0)
@@ -489,7 +489,7 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 			}
 		}
-		else if ((y_element <= (uav_y_position - 1)) && (x_element >= (uav_x_position)))
+		else if ((y_element <= (weight_uav_y_position - 1)) && (x_element >= (weight_uav_x_position)))
 		{
 			//If the maximum_value element is in the FIRST quadrant then:
 			if ((row_element) % 2 == 0)
@@ -537,17 +537,17 @@ int weight_generator_function(int uav_x_position, int uav_y_position, float &X_1
 				}
 			}
 		}
-		else if (x_element == uav_x_position && y_element == uav_y_position)
+		else if (x_element == weight_uav_x_position && y_element == weight_uav_y_position)
 		{
 			//If the maximum_value element is uav_x/y_position, it isn't indexed by any of the previous loops, hence:
-			environment_map[uav_y_position][uav_x_position].weight = 0;
+			environment_map[weight_uav_y_position][weight_uav_x_position].weight = 0;
 			weight_element_cycler += 1;
 			list_maximum_value_x_indices[weight_element_cycler - 1] = x_element;
 			list_maximum_value_y_indices[weight_element_cycler - 1] = y_element;
 		}
 
 		maximum_value = 0;
-		//locator(environment_map, x_max, y_max, uav_x_position, uav_y_position);
+		//locator(environment_map, x_max, y_max, weight_uav_x_position, weight_uav_y_position);
 		//std::cout << endl;
 	}
 

@@ -11,4 +11,4 @@ using namespace std;
 
 //This is the only function accessed by quad_node. It generates a NxM map for exploration with priority based on the lawn-mower pattern
 int lawn_mower_initializer_function(int y_max, int x_max, int pre_list_lawn_mower_x_indices[], int pre_list_lawn_mower_y_indices[], int lawn_mower_element_cycler);
-int lawn_mower_generator_function(int y_max, int x_max, int uav_x_position, int uav_y_position, int list_lawn_mower_x_indices[], int list_lawn_mower_y_indices[], int pre_list_lawn_mower_x_indices[], int pre_list_lawn_mower_y_indices[], int lawn_mower_element_cycler, int lawn_lawn_mower_element_cycler);
+int lawn_mower_generator_function(int y_max, int x_max, int list_lawn_mower_x_indices[], int list_lawn_mower_y_indices[], int pre_list_lawn_mower_x_indices[], int pre_list_lawn_mower_y_indices[], int lawn_mower_element_cycler, int lawn_lawn_mower_element_cycler);
