@@ -537,11 +537,12 @@ int weight_generator_function(int weight_uav_x_position, int weight_uav_y_positi
 				}
 			}
 		}
-		else if (x_element == weight_uav_x_position && y_element == weight_uav_y_position)
+		else if ((x_element == weight_uav_x_position) && (y_element == weight_uav_y_position))
 		{
 			//If the maximum_value element is uav_x/y_position, it isn't indexed by any of the previous loops, hence:
 			environment_map[weight_uav_y_position][weight_uav_x_position].weight = 0;
 			weight_element_cycler += 1;
+			environment_map[weight_uav_y_position][weight_uav_x_position].priority = weight_element_cycler;
 			list_maximum_value_x_indices[weight_element_cycler - 1] = x_element;
 			list_maximum_value_y_indices[weight_element_cycler - 1] = y_element;
 		}
