@@ -15,13 +15,14 @@ catkin_package(
     INCLUDE_DIRS include
     LIBRARIES weight variables lawnmower survivor
     CATKIN_DEPENDS geometry_msgs mavros roscpp rospy std_msgs mavros_msgs
-    # DEPENDS system_lib
 )
 
 SET(WEIGHT_INCLUDE_DIR include/quad/weight/include/)
 SET(WEIGHT_SRC_DIR include/quad/weight/src/)
+
 SET(LAWNMOWER_INCLUDE_DIR include/quad/lawnmower/include/)
 SET(LAWNMOWER_SRC_DIR include/quad/lawnmower/src/)
+
 SET(SURVIVOR_INCLUDE_DIR include/quad/survivor/include/)
 SET(SURVIVOR_SRC_DIR include/quad/survivor/src/)
 
