@@ -44,14 +44,25 @@ def file_reader(coordinates_file_txt, plotting_parameter):
     start_tracker = 0
     '''List to hold all the elements of the file, so that they can be accessed easily through the course of the program execution'''
     file_elements = []
+    '''Variables to hold the global position of the UAV'''
+    global_x_position = 0
+    global_y_position = 0
+    '''Grab the global_position_x/y only once'''
+    global_position_check = 0
     '''Lists to hold the X, Y and Z coordinates respectively'''
     x_points = []
     y_points = []
     z_points = []
     '''Reading the lines in the text files and holding it in the file_elements list'''
     for line in position_file:
-        if line != '\n':
+        if (line != '\n') and ('START' not in line):
             file_elements.append(line)
+        if(('START' in line) and (global_position_check == 0)):
+            '''We continously publish the relative positon of the UAV on the global coordinate system, and we use this loop to check for it in the .txt dump, 
+            and report it to the main code, so that it can be added to the local coordinate system accordingly.'''
+            global_x_position = float(line.split(" ")[1])
+            global_y_position = float(line.split(" ")[2])
+            global_position_check = 1
     if('SECONDS' in file_elements[-1]):
         '''If the last recorded data line is a SECONDS line, we pop it here'''
         file_elements.pop(-1)
@@ -110,6 +121,10 @@ def file_reader(coordinates_file_txt, plotting_parameter):
 
     for time in range(0, z_points_length):
         z_time.append(time)
+
+    '''Converting the local coordinates to the global coordinate system from the relative position published by the quad_node'''
+    x_points = [(x_point + global_x_position) for x_point in x_points]
+    y_points = [(y_point + global_y_position) for y_point in y_points]
 
     '''Returning all the variables recorded to the plotting functions'''
     return x_points, y_points, z_points, x_time, y_time, z_time, start_second, end_second, start_second_decimal, end_second_decimal
