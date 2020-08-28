@@ -41,6 +41,7 @@ weighted_map environment_map[N_UAV][y_max][x_max];
 ros::Subscriber position_subscriber[N_UAV];
 ros::Subscriber state_sub[N_UAV];
 
+ros::Publisher global_pos_pub[N_UAV];
 ros::Publisher local_pos_pub[N_UAV];
 ros::Publisher survivor_position_pub[N_UAV];
 ros::Publisher counter_pub[N_UAV];
@@ -65,6 +66,9 @@ std_msgs::Int32 counter_msgs[N_UAV];
 
 //Declaring the pose here for both UAVs
 geometry_msgs::PoseStamped pose[N_UAV];
+
+//Declaring the pose here for both UAVs
+geometry_msgs::PoseStamped global_pose[N_UAV];
 
 //Declaring the pose here for both UAVs
 geometry_msgs::PoseStamped survivor_pose[N_UAV];
