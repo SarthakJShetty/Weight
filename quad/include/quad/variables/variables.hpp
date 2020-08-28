@@ -1,6 +1,19 @@
+#include <ros/ros.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <nav_msgs/Odometry.h>
+#include <mavros_msgs/CommandBool.h>
+#include <mavros_msgs/CommandTOL.h>
+#include <mavros_msgs/SetMode.h>
+#include <mavros_msgs/State.h>
+#include <std_msgs/Int32.h>
+#include <std_msgs/Int32MultiArray.h>
+#include <math.h>
 #include <vector>
 #include <stdlib.h>
 #include <iostream>
+#include "weight.hpp"
+#include "lawnmower.hpp"
+#include "survivor.hpp"
 
 using namespace std;
 
@@ -27,6 +40,7 @@ weighted_map environment_map[N_UAV][y_max][x_max];
 //Subscribers and publishers declared here
 ros::Subscriber position_subscriber[N_UAV];
 ros::Subscriber state_sub[N_UAV];
+
 ros::Publisher local_pos_pub[N_UAV];
 ros::Publisher survivor_position_pub[N_UAV];
 ros::Publisher counter_pub[N_UAV];
@@ -110,6 +124,10 @@ int survivor_direction[N_UAV];
 //UAVs starting position on the weighted map, the same as the survivor's start position
 int weight_uav_y_position[N_UAV];
 int weight_uav_x_position[N_UAV];
+
+//Fixed starting point of the UAVs are declared using this array
+int start_uav_x_position[N_UAV];
+int start_uav_y_position[N_UAV];
 
 //Corner coordinates of each of the quadrants of exploration
 int x_corner_coordinate_1 = x_max;
