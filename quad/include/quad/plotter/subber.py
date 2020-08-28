@@ -13,6 +13,21 @@ from nav_msgs.msg import Odometry
 import datetime
 import time
 
+def global_position_writer_1(data):
+    '''Writing survivor's data to the disc.'''
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
+    data_file_writer = open(data_file, 'a')
+    data_file_writer.write("START: " + data)
+    data_file_writer.write('\n')
+    data_file_writer.close()
+
+def global_position_writer_2(data):
+    '''Writing survivor's data to the disc.'''
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt'
+    data_file_writer = open(data_file, 'a')
+    data_file_writer.write("START: " + data)
+    data_file_writer.write('\n')
+    data_file_writer.close()
 
 def position_writer_1(data):
     '''Writing 1st position, i.e. UAV 1's position data.'''
@@ -90,18 +105,29 @@ def pos4(data):
     position_writer_4(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
                        str(datetime.datetime.now().time().second)))
 
+def global_pos1(data):
+    global_position_writer_1(str(data.pose.position.x) + " " + str(data.pose.position.y))
+
+def global_pos2(data):
+    global_position_writer_2(str(data.pose.position.x) + " " + str(data.pose.position.y))
+
 def plot():
     '''Plotting all the data here'''
     rospy.init_node('plott', anonymous=True)
     while not rospy.is_shutdown():
-        '''More subscribers can be added here'''
+        '''Relative global position of the UAV is being subscribed to here'''
+        rospy.Subscriber("/uav0/global_position", PoseStamped, global_pos1)
+        rospy.Subscriber("/uav1/global_position", PoseStamped, global_pos2)
+
+        '''Local position of the UAV is being subscribed to here'''
         rospy.Subscriber("/uav0/mavros/global_position/local", Odometry, pos1)
         rospy.Subscriber("/uav1/mavros/global_position/local", Odometry, pos2)
+
+        '''Global position of the survivors is being subscribed to here'''
         rospy.Subscriber("/uav0/survivor_position", PoseStamped, pos3)
         rospy.Subscriber("/uav1/survivor_position", PoseStamped, pos4)
         time.sleep(1)
         rospy.spin()
-
 
 if __name__ == '__main__':
     try:
