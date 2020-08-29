@@ -82,7 +82,11 @@ for map_file in map_files:
     '''Adding labels to the X and the Y axis to improve the readability of the maps here'''
     plt.xticks(row_array)
     plt.yticks(column_array)
-    
+
+    '''Axes here are flipped because we follow the right hand screw rule in 3D.'''
+    plt.xlabel('Y Axis')
+    plt.ylabel('X Axis')
+
     ax.set_aspect('equal')
     ax.legend(handles = legend_elements)
 

@@ -143,13 +143,13 @@ x_points_4, y_points_4, z_points_4, x_time_4, y_time_4, z_time_4, start_second_4
 
 fig, axs = plt.subplots(4, 3)
 
-axs[0, 0].plot(y_time_1, y_points_1, 'r')
+axs[0, 0].plot(x_time_1, x_points_1, 'r')
 axs[0, 0].set_title('UAV 1 X Coordinates vs Time')
 axs[0, 0].set_xlabel("Seconds (s)")
 axs[0, 0].set_ylabel("X Position")
 axs[0, 0].legend(['X Position'], loc=1)
 
-axs[0, 1].plot(x_time_1, x_points_1, 'g')
+axs[0, 1].plot(y_time_1, y_points_1, 'g')
 axs[0, 1].set_title('UAV 1 Y Coordinates vs Time')
 axs[0, 1].set_xlabel("Seconds (s)")
 axs[0, 1].set_ylabel("Y Position")
@@ -161,13 +161,13 @@ axs[0, 2].set_xlabel("Seconds (s)")
 axs[0, 2].set_ylabel("Z Position")
 axs[0, 2].legend(['Z Position'], loc=1)
 
-axs[1, 0].plot(y_time_2, y_points_2, 'r')
+axs[1, 0].plot(x_time_2, x_points_2, 'r')
 axs[1, 0].set_title('UAV 2 X Coordinates vs Time')
 axs[1, 0].set_xlabel("Seconds (s)")
 axs[1, 0].set_ylabel("X Position")
 axs[1, 0].legend(['X Position'], loc=1)
 
-axs[1, 1].plot(x_time_2, x_points_2, 'g')
+axs[1, 1].plot(y_time_2, y_points_2, 'g')
 axs[1, 1].set_title('UAV 2 Y Coordinates vs Time')
 axs[1, 1].set_xlabel("Seconds (s)")
 axs[1, 1].set_ylabel("Y Position")
@@ -179,13 +179,13 @@ axs[1, 2].set_xlabel("Seconds (s)")
 axs[1, 2].set_ylabel("Z Position")
 axs[1, 2].legend(['Z Position'], loc=1)
 
-axs[2, 0].plot(y_time_3, y_points_3, 'r')
+axs[2, 0].plot(x_time_3, x_points_3, 'r')
 axs[2, 0].set_xlabel("Seconds (s)")
 axs[2, 0].set_ylabel("X Position")
 axs[2, 0].legend(['X Position'], loc=1)
 axs[2, 0].set_title('Survivor 1 X Coordinates vs Time')
 
-axs[2, 1].plot(x_time_3, x_points_3, 'g')
+axs[2, 1].plot(y_time_3, y_points_3, 'g')
 axs[2, 1].set_xlabel("Seconds (s)")
 axs[2, 1].set_ylabel("Y Position")
 axs[2, 1].legend(['Y Position'], loc=1)
@@ -197,13 +197,13 @@ axs[2, 2].set_ylabel("Z Position")
 axs[2, 2].legend(['Z Position'], loc=1)
 axs[2, 2].set_title('Survivor 1 Z Coordinates vs Time')
 
-axs[3, 0].plot(y_time_4, y_points_4, 'r')
+axs[3, 0].plot(x_time_4, x_points_4, 'r')
 axs[3, 0].set_xlabel("Seconds (s)")
 axs[3, 0].set_ylabel("X Position")
 axs[3, 0].legend(['X Position'], loc=1)
 axs[3, 0].set_title('Survivor 2 X Coordinates vs Time')
 
-axs[3, 1].plot(x_time_4, x_points_4, 'g')
+axs[3, 1].plot(y_time_4, y_points_4, 'g')
 axs[3, 1].set_xlabel("Seconds (s)")
 axs[3, 1].set_ylabel("Y Position")
 axs[3, 1].legend(['Y Position'], loc=1)
@@ -252,27 +252,27 @@ ax.plot([x_points_2[len(x_points_2)-1]], [y_points_2[len(x_points_2)-1]], [z_poi
         label='UAV 2 End Point', color='r', marker='o')
 
 '''Plotting the entire trajectory of the survivors in the environment'''
-ax.plot(y_points_3, x_points_3, z_points_3,
+ax.plot(x_points_3, y_points_3, z_points_3,
         label='Survivor 1 Trajectory', color='y')
 
 '''Plotting only the start point of the survivors trajectory'''
-ax.plot([y_points_3[0]], [x_points_3[0]], [z_points_3[0]],
+ax.plot([x_points_3[0]], [y_points_3[0]], [z_points_3[0]],
         label='Survivor 1 Start Point', color='g', marker='D')
 
 '''Plotting only the end point of the survivors trajectory'''
-ax.plot([y_points_3[len(y_points_3)-1]], [x_points_3[len(x_points_3)-1]], [z_points_3[len(z_points_3)-1]],
+ax.plot([x_points_3[len(x_points_3)-1]], [y_points_3[len(y_points_3)-1]], [z_points_3[len(z_points_3)-1]],
         label='Survivor 1 End Point', color='r', marker='D')
 
 '''Plotting the entire trajectory of the survivors in the environment'''
-ax.plot(y_points_4, x_points_4, z_points_4,
+ax.plot(x_points_4, y_points_4, z_points_4,
         label='Survivor 2 Trajectory', color='y')
 
 '''Plotting only the start point of the survivors trajectory'''
-ax.plot([y_points_4[0]], [x_points_4[0]], [z_points_4[0]],
+ax.plot([x_points_4[0]], [y_points_4[0]], [z_points_4[0]],
         label='Survivor 2 Start Point', color='g', marker='D')
 
 '''Plotting only the end point of the survivors trajectory'''
-ax.plot([y_points_4[len(y_points_4)-1]], [x_points_4[len(x_points_4)-1]], [z_points_4[len(z_points_4)-1]],
+ax.plot([x_points_4[len(x_points_4)-1]], [y_points_4[len(y_points_4)-1]], [z_points_4[len(z_points_4)-1]],
         label='Survivor 2 End Point', color='r', marker='D')
 
 '''Plotting the environment boundary'''
@@ -288,8 +288,8 @@ ax.set_aspect('equal')
 
 plt.title('UAV & Survivor Paths: Probabilistic Search. \nCompleted in: %s seconds' %
           difference, loc='left')
-ax.set_xlabel('Y Axis')
-ax.set_ylabel('X Axis')
+ax.set_xlabel('X Axis')
+ax.set_ylabel('Y Axis')
 ax.set_zlabel('Z Axis')
 ax.legend(loc='best', title='Trajectories', numpoints=1)
 

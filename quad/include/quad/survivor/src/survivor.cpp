@@ -17,15 +17,15 @@ int survivor_model(int x_max, int y_max, int survivor_direction, int current_sec
     {
         if (survivor_direction == 1)
         {
-            if ((*survivor_x_coordinate >= x_max) || (*survivor_y_coordinate <= 0))
+            if ((*survivor_y_coordinate >= y_max) || (*survivor_x_coordinate <= 0))
             {
                 *survivor_x_coordinate = *survivor_x_coordinate;
                 *survivor_y_coordinate = *survivor_y_coordinate;
             }
             else
             {
-                *survivor_x_coordinate += (velocity * time_step);
-                *survivor_y_coordinate -= (velocity * time_step);
+                *survivor_x_coordinate -= (velocity * time_step);
+                *survivor_y_coordinate += (velocity * time_step);
 
                 cout << "Survivor X: " << setprecision(4) << *survivor_x_coordinate << ", "
                      << "Survivor Y: " << setprecision(4) << *survivor_y_coordinate << endl;
@@ -33,7 +33,7 @@ int survivor_model(int x_max, int y_max, int survivor_direction, int current_sec
         }
         else if (survivor_direction == 2)
         {
-            if ((*survivor_x_coordinate <= 0) || (*survivor_y_coordinate <= 0))
+            if ((*survivor_y_coordinate <= 0) || (*survivor_x_coordinate <= 0))
             {
                 *survivor_x_coordinate = *survivor_y_coordinate;
                 *survivor_y_coordinate = *survivor_x_coordinate;
@@ -48,32 +48,30 @@ int survivor_model(int x_max, int y_max, int survivor_direction, int current_sec
         }
         else if (survivor_direction == 3)
         {
-            if ((*survivor_x_coordinate <= 0) || (*survivor_y_coordinate >= y_max))
+            if ((*survivor_y_coordinate <= 0) || (*survivor_x_coordinate >= x_max))
             {
                 *survivor_x_coordinate = *survivor_x_coordinate;
                 *survivor_y_coordinate = *survivor_y_coordinate;
             }
             else
             {
-                *survivor_x_coordinate -= (velocity * time_step);
-                *survivor_y_coordinate += (velocity * time_step);
+                *survivor_x_coordinate += (velocity * time_step);
+                *survivor_y_coordinate -= (velocity * time_step);
                 cout << "Survivor X: " << setprecision(4) << *survivor_x_coordinate << ", "
                      << "Survivor Y: " << setprecision(4) << *survivor_y_coordinate << endl;
             }
         }
         else if (survivor_direction == 4)
         {
-            cout << "Current Seconds: " << current_second << " Previous Second " << *previous_second << endl;
-            cout << "Survivor X, Y:" << setprecision(4) << *survivor_x_coordinate << ", " << setprecision(4) << *survivor_y_coordinate << endl;
-            if ((*survivor_x_coordinate >= x_max) || (*survivor_y_coordinate >= y_max))
+            if ((*survivor_y_coordinate >= y_max) || (*survivor_x_coordinate >= x_max))
             {
                 *survivor_x_coordinate = *survivor_x_coordinate;
                 *survivor_y_coordinate = *survivor_y_coordinate;
             }
             else
             {
-                *survivor_x_coordinate = *survivor_x_coordinate + (velocity * time_step);
-                *survivor_y_coordinate = *survivor_y_coordinate + (velocity * time_step);
+                *survivor_x_coordinate += (velocity * time_step);
+                *survivor_y_coordinate += (velocity * time_step);
                 cout << "Survivor X: " << setprecision(4) << *survivor_x_coordinate << ", "
                      << "Survivor Y: " << setprecision(4) << *survivor_y_coordinate << endl;
             }
