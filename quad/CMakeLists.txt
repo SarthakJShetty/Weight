@@ -13,7 +13,7 @@ find_package(cmake_modules REQUIRED)
 
 catkin_package(
     INCLUDE_DIRS include
-    LIBRARIES weight variables lawnmower survivor
+    LIBRARIES weight variables lawnmower survivor split
     CATKIN_DEPENDS geometry_msgs mavros roscpp rospy std_msgs mavros_msgs
 )
 
@@ -26,6 +26,9 @@ SET(LAWNMOWER_SRC_DIR include/quad/lawnmower/src/)
 SET(SURVIVOR_INCLUDE_DIR include/quad/survivor/include/)
 SET(SURVIVOR_SRC_DIR include/quad/survivor/src/)
 
+SET(SPLIT_INCLUDE_DIR include/quad/split/include/)
+SET(SPLIT_SRC_DIR include/quad/split/src/)
+
 SET(VARIABLES_DIR include/quad/variables/)
 
 include_directories(include
@@ -33,6 +36,7 @@ include_directories(include
                     ${WEIGHT_INCLUDE_DIR}
                     ${LAWNMOWER_INCLUDE_DIR}
                     ${SURVIVOR_INCLUDE_DIR}
+                    ${SPLIT_INCLUDE_DIR}
                     ${catkin_INCLUDE_DIRS}
                     )
 
@@ -45,10 +49,13 @@ set_target_properties(lawnmower PROPERTIES LINKER_LANGUAGE CXX)
 add_library(survivor ${SURVIVOR_INCLUDE_DIR}/survivor.hpp)
 set_target_properties(survivor PROPERTIES LINKER_LANGUAGE CXX)
 
+add_library(split ${SPLIT_INCLUDE_DIR}/split.hpp)
+set_target_properties(split PROPERTIES LINKER_LANGUAGE CXX)
+
 add_library(variables ${VARIABLES_DIR}/variables.hpp)
 set_target_properties(variables PROPERTIES LINKER_LANGUAGE CXX)
 
-add_executable(${PROJECT_NAME}_node src/quad_node.cpp ${WEIGHT_SRC_DIR}/weight.cpp ${LAWNMOWER_SRC_DIR}/lawnmower.cpp ${SURVIVOR_SRC_DIR}/survivor.cpp)
+add_executable(${PROJECT_NAME}_node src/quad_node.cpp ${WEIGHT_SRC_DIR}/weight.cpp ${LAWNMOWER_SRC_DIR}/lawnmower.cpp ${SURVIVOR_SRC_DIR}/survivor.cpp ${SPLIT_SRC_DIR}/split.cpp)
 add_executable(${PROJECT_NAME}_observer_node src/observer.cpp)
 
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
