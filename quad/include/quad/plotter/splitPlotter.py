@@ -13,7 +13,7 @@ from matplotlib import colors
 from matplotlib.patches import Patch
 
 '''Filename pointing to the explorationMap csv file'''
-map_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_0.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_1.csv']
+map_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_0.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_1.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_2.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_3.csv']
 
 def get_cmap(n, name = 'viridis'):
     '''Here, we declare a simple function to generate a colormap to be utilized across the code'''

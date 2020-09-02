@@ -72,12 +72,12 @@
         </include>
     </group>
     <!-- UAV2 -->
-    <!-- <group ns="uav2">
+    <group ns="uav2">
         <arg name="ID" value="2"/>
         <arg name="fcu_url" default="udp://:14542@localhost:14582"/>
         <include file="$(find px4)/launch/single_vehicle_spawn.launch">
-            <arg name="x" value="0"/>
-            <arg name="y" value="1"/>
+            <arg name="x" value="-10"/>
+            <arg name="y" value="10"/>
             <arg name="z" value="0"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
@@ -93,7 +93,31 @@
             <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
             <arg name="tgt_component" value="1"/>
         </include>
-    </group> -->
+    </group>
+
+    <group ns="uav3">
+        <arg name="ID" value="3"/>
+        <arg name="fcu_url" default="udp://:14543@localhost:14583"/>
+        <include file="$(find px4)/launch/single_vehicle_spawn.launch">
+            <arg name="x" value="10"/>
+            <arg name="y" value="-10"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="$(arg vehicle)"/>
+            <arg name="mavlink_udp_port" value="14563"/>
+            <arg name="mavlink_tcp_port" value="4563"/>
+            <arg name="ID" value="$(arg ID)"/>
+        </include>
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+
 </launch>
 <!-- to add more UAVs (up to 10):
 Increase the id

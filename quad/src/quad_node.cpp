@@ -64,6 +64,36 @@ int main(int argc, char **argv)
 
     velocity[1] = 1;
 
+    start_uav_x_position[2] = 20;
+    start_uav_y_position[2] = 0;
+
+    start_survivor_x_coordinate[2] = 15;
+    start_survivor_y_coordinate[2] = 10;
+    survivor_direction[2] = 1;
+
+    survivor_x_coordinate[2] = &start_survivor_x_coordinate[2];
+    survivor_y_coordinate[2] = &start_survivor_y_coordinate[2];
+
+    weight_uav_y_position[2] = start_survivor_x_coordinate[2];
+    weight_uav_x_position[2] = start_survivor_y_coordinate[2];
+
+    velocity[2] = 1;
+
+    start_uav_x_position[3] = 0;
+    start_uav_y_position[3] = 20;
+
+    start_survivor_x_coordinate[3] = 15;
+    start_survivor_y_coordinate[3] = 10;
+    survivor_direction[3] = 1;
+
+    survivor_x_coordinate[3] = &start_survivor_x_coordinate[3];
+    survivor_y_coordinate[3] = &start_survivor_y_coordinate[3];
+
+    weight_uav_y_position[3] = start_survivor_x_coordinate[3];
+    weight_uav_x_position[3] = start_survivor_y_coordinate[3];
+
+    velocity[3] = 1;
+
     /*
     What are we trying to incorporate here?
     1. A for loop from 0 -> N_UAV
