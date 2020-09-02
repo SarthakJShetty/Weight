@@ -3,11 +3,9 @@
 -Sarthak
 14/08/2019*/
 #include <iostream>
-#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <algorithm>
-#include <vector>
 #include <fstream>
 #include <string>
 #include <sstream>
