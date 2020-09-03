@@ -1,4 +1,5 @@
 #include "weight.hpp"
+#include "split.hpp"
 
 int weight_initializer(weighted_map environment_map[y_max][x_max], int x_max, int y_max)
 {
@@ -116,30 +117,30 @@ int priority_dumper(weighted_map environment_map[y_max][x_max], int x_max, int y
 int split_environment(weighted_map environment_map[y_max][x_max], int start_uav_x_position[], int start_uav_y_position[], int y_max, int x_max, int N_UAV, int UAV_COUNTER)
 {
 	//This function splits the environment amongst the different UAV, by assigning the closest UAV to each coordinate.
-    for (int j = 0; j < y_max; j++)
-    {
-        for (int i = 0; i < x_max; i++)
-        {
+	for (int j = 0; j < y_max; j++)
+	{
+		for (int i = 0; i < x_max; i++)
+		{
 			//We calculate the distance to UAV from each of the coordinates
-            int distance_to_uav[N_UAV];
+			int distance_to_uav[N_UAV];
 			//We keep track of which UAV yields the smallest distance to the given coordinate using this variable
-            int least_distance_uav_index = 0;
-            for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
-            {
-                distance_to_uav[UAV_COUNTER] = sqrt(pow((j - start_uav_y_position[UAV_COUNTER]), 2) + pow((i - start_uav_x_position[UAV_COUNTER]), 2));
-                if (distance_to_uav[UAV_COUNTER] < distance_to_uav[least_distance_uav_index])
-                {
+			int least_distance_uav_index = 0;
+			for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
+			{
+				distance_to_uav[UAV_COUNTER] = sqrt(pow((j - start_uav_y_position[UAV_COUNTER]), 2) + pow((i - start_uav_x_position[UAV_COUNTER]), 2));
+				if (distance_to_uav[UAV_COUNTER] < distance_to_uav[least_distance_uav_index])
+				{
 					//If the given distance is smaller than previously recorded smallest distance, then replace the least_distance_uav_index with that counter
-                    least_distance_uav_index = UAV_COUNTER;
-                }
-            }
+					least_distance_uav_index = UAV_COUNTER;
+				}
+			}
 			//Assigning the closest UAV to that coordinate
-            environment_map[j][i].split = least_distance_uav_index;
-        }
-    }
+			environment_map[j][i].split = least_distance_uav_index;
+		}
+	}
 	//Dumping the closest UAV information to the disc, to be plotted
-    split_dumper(environment_map, x_max, y_max, UAV_COUNTER);
-    return 0;
+	split_dumper(environment_map, x_max, y_max, UAV_COUNTER);
+	return 0;
 }
 
 int split_dumper(weighted_map environment_map[y_max][x_max], int x_max, int y_max, int UAV_COUNTER)
@@ -219,7 +220,7 @@ int weighting_function(int weight_uav_x_position, int weight_uav_y_position, flo
 	X_5 = ((X_1 * n_set) + 1);
 }
 
-int weight_generator_function(int weight_uav_x_position, int weight_uav_y_position, float &X_1, float &X_2, float &X_3, float X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int weight_element_cycler, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[], int start_uav_x_position[], int start_uav_y_position[], int N_UAV, int UAV_COUNTER)
+int weight_generator_function(int weight_uav_x_position, int weight_uav_y_position, float &X_1, float &X_2, float &X_3, float X_4, float &X_5, int n_x_difference, int n_y_difference, int n_set, int survivor_direction, int x_corner_coordinate_1, int x_corner_coordinate_2, int x_corner_coordinate_3, int x_corner_coordinate_4, int y_corner_coordinate_1, int y_corner_coordinate_2, int y_corner_coordinate_3, int y_corner_coordinate_4, int maximum_value, int weight_element_cycler, vector<int> &vector_list_maximum_value_x_indices, vector<int> &vector_list_maximum_value_y_indices, int list_maximum_value_x_indices[], int list_maximum_value_y_indices[], int start_uav_x_position[], int start_uav_y_position[], int N_UAV, int UAV_COUNTER)
 {
 	weighted_map environment_map[y_max][x_max];
 
@@ -622,10 +623,18 @@ int weight_generator_function(int weight_uav_x_position, int weight_uav_y_positi
 		//std::cout << endl;
 	}
 
+	vector_list_maximum_value_x_indices.resize(0);
+	vector_list_maximum_value_y_indices.resize(0);
+
 	for (int i = 0; i < (y_max * x_max); i++)
 	{
 		std::cout << "Maximum Value X Index:" << list_maximum_value_x_indices[i] << endl;
 		std::cout << "Maximum Value Y Index:" << list_maximum_value_y_indices[i] << endl;
+		if (UAV_COUNTER == split_environment(list_maximum_value_x_indices[i], list_maximum_value_y_indices[i], start_uav_x_position, start_uav_y_position, N_UAV))
+		{
+			vector_list_maximum_value_x_indices.push_back(list_maximum_value_x_indices[i]);
+			vector_list_maximum_value_y_indices.push_back(list_maximum_value_y_indices[i]);
+		}
 	}
 
 	for (int j = 0; j < y_max; j++)

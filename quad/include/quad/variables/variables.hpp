@@ -171,6 +171,9 @@ int lawn_lawn_mower_element_cycler = 0;
 int list_maximum_value_x_indices[N_UAV][y_max * x_max];
 int list_maximum_value_y_indices[N_UAV][y_max * x_max];
 
+vector <int> vector_list_maximum_value_x_indices[N_UAV];
+vector <int> vector_list_maximum_value_y_indices[N_UAV];
+
 //Creating a list of waypointss for conveying the lawnmower waypoints
 int pre_list_lawn_mower_x_indices[y_max * x_max];
 int pre_list_lawn_mower_y_indices[y_max * x_max];

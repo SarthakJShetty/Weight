@@ -29,14 +29,29 @@ def global_position_writer_2(data):
     data_file_writer.write('\n')
     data_file_writer.close()
 
+def global_position_writer_3(data):
+    '''Writing survivor's data to the disc.'''
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt'
+    data_file_writer = open(data_file, 'a')
+    data_file_writer.write("START: " + data)
+    data_file_writer.write('\n')
+    data_file_writer.close()
+
+def global_position_writer_4(data):
+    '''Writing survivor's data to the disc.'''
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav4_pos.txt'
+    data_file_writer = open(data_file, 'a')
+    data_file_writer.write("START: " + data)
+    data_file_writer.write('\n')
+    data_file_writer.close()
+
 def position_writer_1(data):
     '''Writing 1st position, i.e. UAV 1's position data.'''
     data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
-    data_file_writer.close()
-
+    data_file_writer.close()  
 
 def position_writer_2(data):
     '''Writing 1st position, i.e. UAV 1's position data.'''
@@ -46,10 +61,9 @@ def position_writer_2(data):
     data_file_writer.write('\n')
     data_file_writer.close()
 
-
 def position_writer_3(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor1_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
@@ -57,11 +71,44 @@ def position_writer_3(data):
 
 def position_writer_4(data):
     '''Writing survivor's data to the disc.'''
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav4_pos.txt'
+    data_file_writer = open(data_file, 'a')
+    data_file_writer.write(data)
+    data_file_writer.write('\n')
+    data_file_writer.close()
+
+def position_writer_5(data):
+    '''Writing survivor's data to the disc.'''
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor1_pos.txt'
+    data_file_writer = open(data_file, 'a')
+    data_file_writer.write(data)
+    data_file_writer.write('\n')
+    data_file_writer.close()
+
+def position_writer_6(data):
+    '''Writing survivor's data to the disc.'''
     data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor2_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
     data_file_writer.close()
+
+def position_writer_7(data):
+    '''Writing survivor's data to the disc.'''
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor3_pos.txt'
+    data_file_writer = open(data_file, 'a')
+    data_file_writer.write(data)
+    data_file_writer.write('\n')
+    data_file_writer.close()
+
+def position_writer_8(data):
+    '''Writing survivor's data to the disc.'''
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor4_pos.txt'
+    data_file_writer = open(data_file, 'a')
+    data_file_writer.write(data)
+    data_file_writer.write('\n')
+    data_file_writer.close()
+
 
 def pos1(data):
     '''Subscribes to the 1st position, i.e. UAV 1's position data.'''
@@ -73,7 +120,6 @@ def pos1(data):
     position_writer_1(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
                        str(datetime.datetime.now().time().second)))
 
-
 def pos2(data):
     '''Subscribes to the 1st position, i.e. UAV 2's position data.'''
     print("Subscribing to UAV 2 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
@@ -84,25 +130,64 @@ def pos2(data):
     position_writer_2(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
                        str(datetime.datetime.now().time().second)))
 
-
 def pos3(data):
-    '''Subscribes to the survivor's position data.'''
-    print("Subscribing to Survivor\'s Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (
-        str(data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
-    position_writer_3(str(data.pose.position.x))
-    position_writer_3(str(data.pose.position.y))
-    position_writer_3(str(data.pose.position.z))
+    '''Subscribes to the 1st position, i.e. UAV 2's position data.'''
+    print("Subscribing to UAV 2 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
+        data.pose.pose.position.y), str(data.pose.pose.position.x), (str(data.pose.pose.position.z))))
+    position_writer_3(str(data.pose.pose.position.x))
+    position_writer_3(str(data.pose.pose.position.y))
+    position_writer_3(str(data.pose.pose.position.z))
     position_writer_3(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
                        str(datetime.datetime.now().time().second)))
 
 def pos4(data):
+    '''Subscribes to the 1st position, i.e. UAV 2's position data.'''
+    print("Subscribing to UAV 4 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
+        data.pose.pose.position.y), str(data.pose.pose.position.x), (str(data.pose.pose.position.z))))
+    position_writer_4(str(data.pose.pose.position.x))
+    position_writer_4(str(data.pose.pose.position.y))
+    position_writer_4(str(data.pose.pose.position.z))
+    position_writer_4(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)))
+
+def pos5(data):
     '''Subscribes to the survivor's position data.'''
     print("Subscribing to Survivor\'s Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (
         str(data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
-    position_writer_4(str(data.pose.position.x))
-    position_writer_4(str(data.pose.position.y))
-    position_writer_4(str(data.pose.position.z))
-    position_writer_4(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+    position_writer_5(str(data.pose.position.x))
+    position_writer_5(str(data.pose.position.y))
+    position_writer_5(str(data.pose.position.z))
+    position_writer_5(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)))
+
+def pos6(data):
+    '''Subscribes to the survivor's position data.'''
+    print("Subscribing to Survivor\'s Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (
+        str(data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
+    position_writer_6(str(data.pose.position.x))
+    position_writer_6(str(data.pose.position.y))
+    position_writer_6(str(data.pose.position.z))
+    position_writer_6(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)))
+
+def pos7(data):
+    '''Subscribes to the survivor's position data.'''
+    print("Subscribing to Survivor\'s Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (
+        str(data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
+    position_writer_7(str(data.pose.position.x))
+    position_writer_7(str(data.pose.position.y))
+    position_writer_7(str(data.pose.position.z))
+    position_writer_7(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)))
+
+def pos8(data):
+    '''Subscribes to the survivor's position data.'''
+    print("Subscribing to Survivor\'s Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (
+        str(data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
+    position_writer_8(str(data.pose.position.x))
+    position_writer_8(str(data.pose.position.y))
+    position_writer_8(str(data.pose.position.z))
+    position_writer_8(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
                        str(datetime.datetime.now().time().second)))
 
 def global_pos1(data):
@@ -111,6 +196,12 @@ def global_pos1(data):
 def global_pos2(data):
     global_position_writer_2(str(data.pose.position.x) + " " + str(data.pose.position.y))
 
+def global_pos3(data):
+    global_position_writer_3(str(data.pose.position.x) + " " + str(data.pose.position.y))
+
+def global_pos4(data):
+    global_position_writer_4(str(data.pose.position.x) + " " + str(data.pose.position.y))
+
 def plot():
     '''Plotting all the data here'''
     rospy.init_node('plott', anonymous=True)
@@ -118,14 +209,21 @@ def plot():
         '''Relative global position of the UAV is being subscribed to here'''
         rospy.Subscriber("/uav0/global_position", PoseStamped, global_pos1)
         rospy.Subscriber("/uav1/global_position", PoseStamped, global_pos2)
+        rospy.Subscriber("/uav2/global_position", PoseStamped, global_pos3)
+        rospy.Subscriber("/uav3/global_position", PoseStamped, global_pos4)
 
         '''Local position of the UAV is being subscribed to here'''
         rospy.Subscriber("/uav0/mavros/global_position/local", Odometry, pos1)
         rospy.Subscriber("/uav1/mavros/global_position/local", Odometry, pos2)
+        rospy.Subscriber("/uav2/mavros/global_position/local", Odometry, pos3)
+        rospy.Subscriber("/uav3/mavros/global_position/local", Odometry, pos4)
 
         '''Global position of the survivors is being subscribed to here'''
-        rospy.Subscriber("/uav0/survivor_position", PoseStamped, pos3)
-        rospy.Subscriber("/uav1/survivor_position", PoseStamped, pos4)
+        rospy.Subscriber("/uav0/survivor_position", PoseStamped, pos5)
+        rospy.Subscriber("/uav1/survivor_position", PoseStamped, pos6)
+        rospy.Subscriber("/uav2/survivor_position", PoseStamped, pos7)
+        rospy.Subscriber("/uav3/survivor_position", PoseStamped, pos8)
+
         time.sleep(1)
         rospy.spin()
 
