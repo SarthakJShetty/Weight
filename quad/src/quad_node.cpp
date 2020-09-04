@@ -499,12 +499,8 @@ int main(int argc, char **argv)
             global_pose[UAV_COUNTER].pose.position.x = start_uav_y_position[UAV_COUNTER];
             global_pose[UAV_COUNTER].pose.position.y = start_uav_x_position[UAV_COUNTER];
             global_pos_pub[UAV_COUNTER].publish(global_pose[UAV_COUNTER]);
-            ros::spinOnce();
-            rate.sleep();
 
             local_pos_pub[UAV_COUNTER].publish(pose[UAV_COUNTER]);
-            ros::spinOnce();
-            rate.sleep();
 
             counter_pub[UAV_COUNTER].publish(counter_msgs[UAV_COUNTER]);
             ros::spinOnce();
