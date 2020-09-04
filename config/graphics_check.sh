@@ -4,4 +4,4 @@
 #(28/01/2020)
 
 #Pinging the nvidia-smi command every second until uninterrupted
-while sleep 1; do nvidia-smi; done
+nvidia-smi -q -d MEMORY,TEMPERATURE --loop-ms=100
