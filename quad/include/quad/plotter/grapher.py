@@ -11,7 +11,7 @@ To-Do:
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-
+import os.path
 
 def second_converter(time_in_decimal):
     '''Here, we take the start and the end second in the decimal format as sent over by the subber,
@@ -129,103 +129,93 @@ def file_reader(coordinates_file_txt, plotting_parameter):
     '''Returning all the variables recorded to the plotting functions'''
     return x_points, y_points, z_points, x_time, y_time, z_time, start_second, end_second, start_second_decimal, end_second_decimal
 
+'''This variable checks the number of UAV file data available on disc'''
+n_uav = 0
 
-x_points_1, y_points_1, z_points_1, x_time_1, y_time_1, z_time_1, start_second_1, end_second_1, start_second_decimal_1, end_second_decimal_1 = file_reader(
-    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt', 'pos')
-x_points_2, y_points_2, z_points_2, x_time_2, y_time_2, z_time_2, start_second_1, end_second_2, start_second_decimal_2, end_second_decimal_2 = file_reader(
-    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt', 'pos')
-x_points_3, y_points_3, z_points_3, x_time_3, y_time_3, z_time_3, start_second_3, end_second_3, start_second_decimal_3, end_second_decimal_3 = file_reader(
-    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt', 'pos')
-x_points_4, y_points_4, z_points_4, x_time_4, y_time_4, z_time_4, start_second_4, end_second_4, start_second_decimal_4, end_second_decimal_4 = file_reader(
-    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav4_pos.txt', 'pos')
-x_points_5, y_points_5, z_points_5, x_time_5, y_time_5, z_time_5, start_second_5, end_second_5, start_second_decimal_5, end_second_decimal_5 = file_reader(
-    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor1_pos.txt', 'pos')
-x_points_6, y_points_6, z_points_6, x_time_6, y_time_6, z_time_6, start_second_6, end_second_6, start_second_decimal_6, end_second_decimal_6 = file_reader(
-    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor2_pos.txt', 'pos')
-x_points_7, y_points_7, z_points_7, x_time_7, y_time_7, z_time_7, start_second_7, end_second_7, start_second_decimal_7, end_second_decimal_7 = file_reader(
-    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor3_pos.txt', 'pos')
-x_points_8, y_points_8, z_points_8, x_time_8, y_time_8, z_time_8, start_second_8, end_second_8, start_second_decimal_8, end_second_decimal_8 = file_reader(
-    '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor4_pos.txt', 'pos')
+'''This line checks the number of UAV/Survivor paits found in the disc'''
+while os.path.isfile('data/uav'+str(n_uav)+'_pos.txt'):
+    n_uav+=1
 
-'''Plotting the agents properties vs time '''
+'''All UAV data is collected in these lists. Numpy arrays are not used since pre-declaration is required'''
+x_points_uav = [[] for uav in range(0, n_uav)]
+y_points_uav = [[] for uav in range(0, n_uav)]
+z_points_uav = [[] for uav in range(0, n_uav)]
+x_time_uav = [[] for uav in range(0, n_uav)]
+y_time_uav = [[] for uav in range(0, n_uav)]
+z_time_uav = [[] for uav in range(0, n_uav)]
+start_second_uav = [[] for uav in range(0, n_uav)]
+end_second_uav = [[] for uav in range(0, n_uav)]
+start_second_decimal_uav = [[] for uav in range(0, n_uav)]
+end_second_decimal_uav = [[] for uav in range(0, n_uav)]
 
-fig, axs = plt.subplots(4, 3)
+'''All Survivor data is collected in these lists. Numpy arrays are not used since pre-declaration is required'''
+x_points_survivor = [[] for uav in range(0, n_uav)]
+y_points_survivor = [[] for uav in range(0, n_uav)]
+z_points_survivor = [[] for uav in range(0, n_uav)]
+x_time_survivor = [[] for uav in range(0, n_uav)]
+y_time_survivor = [[] for uav in range(0, n_uav)]
+z_time_survivor = [[] for uav in range(0, n_uav)]
+start_second_survivor = [[] for uav in range(0, n_uav)]
+end_second_survivor = [[] for uav in range(0, n_uav)]
+start_second_decimal_survivor = [[] for uav in range(0, n_uav)]
+end_second_decimal_survivor = [[] for uav in range(0, n_uav)]
 
-axs[0, 0].plot(x_time_1, x_points_1, 'r')
-axs[0, 0].set_title('UAV 1 X Coordinates vs Time')
-axs[0, 0].set_xlabel("Seconds (s)")
-axs[0, 0].set_ylabel("X Position")
-axs[0, 0].legend(['X Position'], loc=1)
+for uav in range(0, n_uav):
+    '''Populating the UAV/Survivor list of lists prior to plotting'''
+    x_points_uav[uav], y_points_uav[uav], z_points_uav[uav], x_time_uav[uav], y_time_uav[uav], z_time_uav[uav], start_second_uav[uav], end_second_uav[uav], start_second_decimal_uav[uav], end_second_decimal_uav[uav] = file_reader('data/uav'+str(uav)+'_pos.txt', 'pos')
+    x_points_survivor[uav], y_points_survivor[uav], z_points_survivor[uav], x_time_survivor[uav], y_time_survivor[uav], z_time_survivor[uav], start_second_survivor[uav], end_second_survivor[uav], start_second_decimal_survivor[uav], end_second_decimal_survivor[uav] = file_reader('data/survivor'+str(uav)+'_pos.txt', 'pos')
 
-axs[0, 1].plot(y_time_1, y_points_1, 'g')
-axs[0, 1].set_title('UAV 1 Y Coordinates vs Time')
-axs[0, 1].set_xlabel("Seconds (s)")
-axs[0, 1].set_ylabel("Y Position")
-axs[0, 1].legend(['Y Position'], loc=1)
+'''We multiply with 2 because each UAV is paired with a survivor'''
+fig, axs = plt.subplots(n_uav*2, 3)
 
-axs[0, 2].plot(z_time_1, z_points_1, 'b')
-axs[0, 2].set_title('UAV 1 Z Coordinates vs Time')
-axs[0, 2].set_xlabel("Seconds (s)")
-axs[0, 2].set_ylabel("Z Position")
-axs[0, 2].legend(['Z Position'], loc=1)
+'''subplot_counter keeps track of the subplot frame being accessed'''
+subplot_counter = 0
 
-axs[1, 0].plot(x_time_2, x_points_2, 'r')
-axs[1, 0].set_title('UAV 2 X Coordinates vs Time')
-axs[1, 0].set_xlabel("Seconds (s)")
-axs[1, 0].set_ylabel("X Position")
-axs[1, 0].legend(['X Position'], loc=1)
+'''uav_counter keeps track of which UAV/Survivor pair data is being plotted right now'''
+uav_counter = 0
 
-axs[1, 1].plot(y_time_2, y_points_2, 'g')
-axs[1, 1].set_title('UAV 2 Y Coordinates vs Time')
-axs[1, 1].set_xlabel("Seconds (s)")
-axs[1, 1].set_ylabel("Y Position")
-axs[1, 1].legend(['Y Position'], loc=1)
+while subplot_counter < (n_uav * 2):
+    '''Here we plot the position graphs for the various UAVs'''
+    axs[subplot_counter, 0].plot(x_time_uav[uav_counter], x_points_uav[uav_counter], 'r')
+    axs[subplot_counter, 0].set_title('UAV '+str(uav_counter+1)+' X Coordinates vs Time')
+    axs[subplot_counter, 0].set_xlabel("Seconds (s)")
+    axs[subplot_counter, 0].set_ylabel("X Position")
 
-axs[1, 2].plot(z_time_2, z_points_2, 'b')
-axs[1, 2].set_title('UAV 2 Z Coordinates vs Time')
-axs[1, 2].set_xlabel("Seconds (s)")
-axs[1, 2].set_ylabel("Z Position")
-axs[1, 2].legend(['Z Position'], loc=1)
+    axs[subplot_counter, 1].plot(y_time_uav[uav_counter], y_points_uav[uav_counter], 'g')
+    axs[subplot_counter, 1].set_title('UAV '+str(uav_counter+1)+' Y Coordinates vs Time')
+    axs[subplot_counter, 1].set_xlabel("Seconds (s)")
+    axs[subplot_counter, 1].set_ylabel("Y Position")
 
-axs[2, 0].plot(x_time_3, x_points_3, 'r')
-axs[2, 0].set_xlabel("Seconds (s)")
-axs[2, 0].set_ylabel("X Position")
-axs[2, 0].legend(['X Position'], loc=1)
-axs[2, 0].set_title('Survivor 1 X Coordinates vs Time')
+    axs[subplot_counter, 2].plot(z_time_uav[uav_counter], z_points_uav[uav_counter], 'b')
+    axs[subplot_counter, 2].set_title('UAV '+str(uav_counter+1)+' Z Coordinates vs Time')
+    axs[subplot_counter, 2].set_xlabel("Seconds (s)")
+    axs[subplot_counter, 2].set_ylabel("Z Position")
 
-axs[2, 1].plot(y_time_3, y_points_3, 'g')
-axs[2, 1].set_xlabel("Seconds (s)")
-axs[2, 1].set_ylabel("Y Position")
-axs[2, 1].legend(['Y Position'], loc=1)
-axs[2, 1].set_title('Survivor 1 Y Coordinates vs Time')
+    '''For the same UAV, plot the survivor's data as well'''
+    subplot_counter+=1
 
-axs[2, 2].plot(z_time_3, z_points_3, 'b')
-axs[2, 2].set_xlabel("Seconds (s)")
-axs[2, 2].set_ylabel("Z Position")
-axs[2, 2].legend(['Z Position'], loc=1)
-axs[2, 2].set_title('Survivor 1 Z Coordinates vs Time')
+    axs[subplot_counter, 0].plot(x_time_survivor[uav_counter], x_points_survivor[uav_counter], 'r')
+    axs[subplot_counter, 0].set_title('Survivor '+str(uav_counter+1)+' X Coordinates vs Time')
+    axs[subplot_counter, 0].set_xlabel("Seconds (s)")
+    axs[subplot_counter, 0].set_ylabel("X Position")
 
-axs[3, 0].plot(x_time_4, x_points_4, 'r')
-axs[3, 0].set_xlabel("Seconds (s)")
-axs[3, 0].set_ylabel("X Position")
-axs[3, 0].legend(['X Position'], loc=1)
-axs[3, 0].set_title('Survivor 2 X Coordinates vs Time')
+    axs[subplot_counter, 1].plot(y_time_survivor[uav_counter], y_points_survivor[uav_counter], 'g')
+    axs[subplot_counter, 1].set_title('Survivor '+str(uav_counter+1)+' Y Coordinates vs Time')
+    axs[subplot_counter, 1].set_xlabel("Seconds (s)")
+    axs[subplot_counter, 1].set_ylabel("Y Position")
 
-axs[3, 1].plot(y_time_4, y_points_4, 'g')
-axs[3, 1].set_xlabel("Seconds (s)")
-axs[3, 1].set_ylabel("Y Position")
-axs[3, 1].legend(['Y Position'], loc=1)
-axs[3, 1].set_title('Survivor 2 Y Coordinates vs Time')
+    axs[subplot_counter, 2].plot(z_time_survivor[uav_counter], z_points_survivor[uav_counter], 'b')
+    axs[subplot_counter, 2].set_title('Survivor '+str(uav_counter+1)+' Z Coordinates vs Time')
+    axs[subplot_counter, 2].set_xlabel("Seconds (s)")
+    axs[subplot_counter, 2].set_ylabel("Z Position")
 
-axs[3, 2].plot(z_time_4, z_points_4, 'b')
-axs[3, 2].set_xlabel("Seconds (s)")
-axs[3, 2].set_ylabel("Z Position")
-axs[3, 2].legend(['Z Position'], loc=1)
-axs[3, 2].set_title('Survivor 2 Z Coordinates vs Time')
+    '''After each iteration, we go to the next pair of subplots (UAV + Survivor combo) and the next agent (refers to the index of UAV/Survivor lists)'''
+    subplot_counter+=1
+    uav_counter+=1
 
-plt.subplots_adjust(left=None, bottom=None, right=None,
-                    top=None, wspace=None, hspace=0.5)
+plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=1.8)
 plt.savefig('/home/sarthak/catkin_ws/src/assets/UAVSurvivorInfo.png')
+
 plt.show()
 
 '''These points are required to plot the boundaries of the environment in the 3D plot'''
@@ -233,121 +223,61 @@ x_points_env = [0, 19, 19, 0, 0]
 y_points_env = [0, 0, 19, 19, 0]
 z_points_env = [0, 0, 0, 0, 0]
 
+'''Generating the 3D plot object'''
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-'''Plotting the entire trajectory of UAV 1 in the environment'''
-ax.plot(x_points_1, y_points_1, z_points_1,
-        label='UAV 1 Trajectory', color='r')
+def get_cmap(n, name = 'hsv'):
+    '''Here, we declare a simple function to generate a colormap to be utilized across the code'''
+    return plt.cm.get_cmap(name, n)
 
-'''Plotting only the start point of UAV 1 trajectory'''
-ax.plot([x_points_1[0]], [y_points_1[0]], [z_points_1[0]],
-        label='UAV 1 Start Point', color='g', marker='x')
+'''Here, we generate the colormaps that will be used by the 3D plotting system'''
+cmap = get_cmap(n_uav * 2)
 
-'''Plotting only the end point of UAV 1 trajectory'''
-ax.plot([x_points_1[len(x_points_1)-1]], [y_points_1[len(x_points_1)-1]], [z_points_1[len(x_points_1)-1]],
-        label='UAV 1 End Point', color='r', marker='x')
+for agent_counter in range(0, n_uav):
+    '''Plotting the entire trajectory of UAV x in the environment'''
+    ax.plot(x_points_uav[agent_counter], y_points_uav[agent_counter], z_points_uav[agent_counter],
+            label='UAV '+str(agent_counter+1)+' Trajectory', color = cmap(agent_counter))
 
-'''Plotting the entire trajectory of UAV 2 in the environment'''
-ax.plot(x_points_2, y_points_2, z_points_2,
-        label='UAV 2 Trajectory', color='c')
+    '''Plotting only the start point of UAV x trajectory'''
+    ax.plot([x_points_uav[agent_counter][0]], [y_points_uav[agent_counter][0]], [z_points_uav[agent_counter][0]],
+            label='UAV '+str(agent_counter+1)+' Start Point', color='g', marker='x')
 
-'''Plotting only the start point of UAV 2 trajectory'''
-ax.plot([x_points_2[0]], [y_points_2[0]], [z_points_2[0]],
-        label='UAV 2 Start Point', color='g', marker='o')
+    '''Plotting only the end point of UAV x trajectory'''
+    ax.plot([x_points_uav[agent_counter][len(x_points_uav[agent_counter])-1]], [y_points_uav[agent_counter][len(x_points_uav[agent_counter])-1]], [z_points_uav[agent_counter][len(x_points_uav[agent_counter])-1]],
+            label='UAV '+str(agent_counter+1)+' End Point', color='r', marker='x')    
 
-'''Plotting only the end point of UAV 2 trajectory'''
-ax.plot([x_points_2[len(x_points_2)-1]], [y_points_2[len(x_points_2)-1]], [z_points_2[len(z_points_2)-1]],
-        label='UAV 2 End Point', color='r', marker='o')
+    '''Plotting the entire trajectory of the survivors in the environment'''
+    ax.plot(x_points_survivor[agent_counter], y_points_survivor[agent_counter], z_points_survivor[agent_counter],
+            label='Survivor '+str(agent_counter+1)+' Trajectory', color=cmap(agent_counter))
 
-'''Plotting the entire trajectory of UAV 2 in the environment'''
-ax.plot(x_points_3, y_points_3, z_points_3,
-        label='UAV 3 Trajectory', color='c')
+    '''Plotting only the start point of the survivors trajectory'''
+    ax.plot([x_points_survivor[agent_counter][0]], [y_points_survivor[agent_counter][0]], [z_points_survivor[agent_counter][0]],
+            label='Survivor '+str(agent_counter+1)+' Start Point', color='g', marker='D')
 
-'''Plotting only the start point of UAV 2 trajectory'''
-ax.plot([x_points_3[0]], [y_points_3[0]], [z_points_3[0]],
-        label='UAV 3 Start Point', color='g', marker='o')
-
-'''Plotting only the end point of UAV 2 trajectory'''
-ax.plot([x_points_3[len(x_points_3)-1]], [y_points_3[len(x_points_3)-1]], [z_points_3[len(z_points_3)-1]],
-        label='UAV 3 End Point', color='r', marker='o')
-
-'''Plotting the entire trajectory of UAV 2 in the environment'''
-ax.plot(x_points_4, y_points_4, z_points_4,
-        label='UAV 4 Trajectory', color='c')
-
-'''Plotting only the start point of UAV 2 trajectory'''
-ax.plot([x_points_4[0]], [y_points_4[0]], [z_points_4[0]],
-        label='UAV 4 Start Point', color='g', marker='o')
-
-'''Plotting only the end point of UAV 2 trajectory'''
-ax.plot([x_points_4[len(x_points_4)-1]], [y_points_4[len(x_points_4)-1]], [z_points_4[len(z_points_4)-1]],
-        label='UAV 4 End Point', color='r', marker='o')
-
-'''Plotting the entire trajectory of the survivors in the environment'''
-ax.plot(x_points_5, y_points_5, z_points_5,
-        label='Survivor 1 Trajectory', color='y')
-
-'''Plotting only the start point of the survivors trajectory'''
-ax.plot([x_points_5[0]], [y_points_5[0]], [z_points_5[0]],
-        label='Survivor 1 Start Point', color='g', marker='D')
-
-'''Plotting only the end point of the survivors trajectory'''
-ax.plot([x_points_5[len(x_points_5)-1]], [y_points_5[len(y_points_5)-1]], [z_points_5[len(z_points_5)-1]],
-        label='Survivor 1 End Point', color='r', marker='D')
-
-'''Plotting the entire trajectory of the survivors in the environment'''
-ax.plot(x_points_6, y_points_6, z_points_6,
-        label='Survivor 2 Trajectory', color='y')
-
-'''Plotting only the start point of the survivors trajectory'''
-ax.plot([x_points_6[0]], [y_points_6[0]], [z_points_6[0]],
-        label='Survivor 2 Start Point', color='g', marker='D')
-
-'''Plotting only the end point of the survivors trajectory'''
-ax.plot([x_points_6[len(x_points_6)-1]], [y_points_6[len(y_points_6)-1]], [z_points_6[len(z_points_6)-1]],
-        label='Survivor 2 End Point', color='r', marker='D')
-
-'''Plotting the entire trajectory of the survivors in the environment'''
-ax.plot(x_points_7, y_points_7, z_points_7,
-        label='Survivor 3 Trajectory', color='y')
-
-'''Plotting only the start point of the survivors trajectory'''
-ax.plot([x_points_7[0]], [y_points_7[0]], [z_points_7[0]],
-        label='Survivor 3 Start Point', color='g', marker='D')
-
-'''Plotting only the end point of the survivors trajectory'''
-ax.plot([x_points_7[len(x_points_7)-1]], [y_points_7[len(y_points_7)-1]], [z_points_7[len(z_points_7)-1]],
-        label='Survivor 3 End Point', color='r', marker='D')
-
-'''Plotting the entire trajectory of the survivors in the environment'''
-ax.plot(x_points_8, y_points_8, z_points_8,
-        label='Survivor 4 Trajectory', color='y')
-
-'''Plotting only the start point of the survivors trajectory'''
-ax.plot([x_points_8[0]], [y_points_8[0]], [z_points_8[0]],
-        label='Survivor 4 Start Point', color='g', marker='D')
-
-'''Plotting only the end point of the survivors trajectory'''
-ax.plot([x_points_8[len(x_points_8)-1]], [y_points_8[len(y_points_8)-1]], [z_points_8[len(z_points_8)-1]],
-        label='Survivor 4 End Point', color='r', marker='D')
+    '''Plotting only the end point of the survivors trajectory'''
+    ax.plot([x_points_survivor[agent_counter][len(x_points_survivor[agent_counter])-1]], [y_points_survivor[agent_counter][len(y_points_survivor[agent_counter])-1]], [z_points_survivor[agent_counter][len(z_points_survivor[agent_counter])-1]],
+            label='Survivor '+str(agent_counter+1)+' End Point', color='r', marker='D')
 
 '''Plotting the environment boundary'''
 ax.plot(x_points_env, y_points_env, z_points_env,
         label='Environment Boundary', color='b', marker='>')
 
 '''Calculating the difference between the observer node has been triggered till when the UAV returns to the base'''
-difference = (end_second_decimal_1 - start_second_decimal_1)
+time_difference = (end_second_decimal_uav[0] - start_second_decimal_uav[0])
 
-print('Completed in: %s seconds: ' % (str(difference)))
+print('Completed in: %s seconds.' % (str(time_difference)))
 
 ax.set_aspect('equal')
 
 plt.title('UAV & Survivor Paths: Probabilistic Search. \nCompleted in: %s seconds' %
-          difference, loc='left')
+          time_difference, loc='left')
+
+'''Labelling the axes here'''
 ax.set_xlabel('X Axis')
 ax.set_ylabel('Y Axis')
 ax.set_zlabel('Z Axis')
+
 ax.legend(loc='best', title='Trajectories', numpoints=1)
 
 plt.savefig('/home/sarthak/catkin_ws/src/assets/Trajectories.png')
