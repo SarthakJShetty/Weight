@@ -332,7 +332,7 @@ int main(int argc, char **argv)
                     if (counter_msgs[UAV_COUNTER].data < (vector_list_maximum_value_x_indices[UAV_COUNTER].size()))
                     {
                         //Setting exploration parameter to 2 to indicate a survivor has been found
-                        environment_map[UAV_COUNTER][list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 2;
+                        environment_map[UAV_COUNTER][vector_list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][vector_list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 2;
                         //If survivor within the calulcated threshold and counter hasn't been set to (grid_points), send a detected message to the CL and set counter to (grid_points)
                         cout << "UAV COUNTER: " << UAV_COUNTER << " "
                          << "Human Detected" << endl;
@@ -414,7 +414,7 @@ int main(int argc, char **argv)
                     if (cv_msgs[UAV_COUNTER].data == 1)
                     {
                         //Status 2 indicates that a survivor was found at that point.
-                        environment_map[UAV_COUNTER][list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 2;
+                        environment_map[UAV_COUNTER][vector_list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][vector_list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 2;
                         //If the waypoint can be switched, check for the presence of a survivor from the cv_msgs topic
                         cout << "Human Detected by: " << UAV_COUNTER << " UAV" << endl;
                         cout << "RTL" << endl;
@@ -424,7 +424,7 @@ int main(int argc, char **argv)
                     else
                     {
                         //Status 1 for exploration states that the UAV traversed the given point and did not find any survivor at that spot.
-                        environment_map[UAV_COUNTER][list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 1;
+                        environment_map[UAV_COUNTER][vector_list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][vector_list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 1;
                         // If UAV within switching threshold but no human detected switch the waypoint
                         cout << "Counter: " << counter_msgs[UAV_COUNTER].data << endl;
                         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
