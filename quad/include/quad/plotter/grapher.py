@@ -229,8 +229,8 @@ plt.savefig('/home/sarthak/catkin_ws/src/assets/UAVSurvivorInfo.png')
 plt.show()
 
 '''These points are required to plot the boundaries of the environment in the 3D plot'''
-x_points_env = [0, 21, 21, 0, 0]
-y_points_env = [0, 0, 21, 21, 0]
+x_points_env = [0, 19, 19, 0, 0]
+y_points_env = [0, 0, 19, 19, 0]
 z_points_env = [0, 0, 0, 0, 0]
 
 fig = plt.figure()
