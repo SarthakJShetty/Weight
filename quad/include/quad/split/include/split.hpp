@@ -1,3 +1,8 @@
+/*This library splits the working environment of the UAV teams, amongst themselves before the start of the search.
+
+-Sarthak
+(04/09/2020)*/
+
 #include "iostream"
 #include "math.h"
 

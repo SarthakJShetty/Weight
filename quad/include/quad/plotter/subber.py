@@ -15,7 +15,7 @@ import time
 
 def global_position_writer_1(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav0_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write("START: " + data)
     data_file_writer.write('\n')
@@ -23,7 +23,7 @@ def global_position_writer_1(data):
 
 def global_position_writer_2(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write("START: " + data)
     data_file_writer.write('\n')
@@ -31,7 +31,7 @@ def global_position_writer_2(data):
 
 def global_position_writer_3(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write("START: " + data)
     data_file_writer.write('\n')
@@ -39,7 +39,7 @@ def global_position_writer_3(data):
 
 def global_position_writer_4(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav4_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write("START: " + data)
     data_file_writer.write('\n')
@@ -47,7 +47,7 @@ def global_position_writer_4(data):
 
 def position_writer_1(data):
     '''Writing 1st position, i.e. UAV 1's position data.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav0_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
@@ -55,7 +55,7 @@ def position_writer_1(data):
 
 def position_writer_2(data):
     '''Writing 1st position, i.e. UAV 1's position data.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
@@ -63,7 +63,7 @@ def position_writer_2(data):
 
 def position_writer_3(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
@@ -71,7 +71,7 @@ def position_writer_3(data):
 
 def position_writer_4(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav4_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
@@ -79,7 +79,7 @@ def position_writer_4(data):
 
 def position_writer_5(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor1_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor0_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
@@ -87,7 +87,7 @@ def position_writer_5(data):
 
 def position_writer_6(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor2_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor1_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
@@ -95,7 +95,7 @@ def position_writer_6(data):
 
 def position_writer_7(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor3_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor2_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
@@ -103,7 +103,7 @@ def position_writer_7(data):
 
 def position_writer_8(data):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor4_pos.txt'
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor3_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
     data_file_writer.write('\n')
