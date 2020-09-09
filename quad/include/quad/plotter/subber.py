@@ -13,194 +13,98 @@ from nav_msgs.msg import Odometry
 import datetime
 import time
 
-def global_position_writer_1(data):
+def global_position_writer(data, data_file):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav0_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write("START: " + data)
     data_file_writer.write('\n')
     data_file_writer.close()
 
-def global_position_writer_2(data):
+def position_writer(data, data_file):
     '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
-    data_file_writer = open(data_file, 'a')
-    data_file_writer.write("START: " + data)
-    data_file_writer.write('\n')
-    data_file_writer.close()
-
-def global_position_writer_3(data):
-    '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt'
-    data_file_writer = open(data_file, 'a')
-    data_file_writer.write("START: " + data)
-    data_file_writer.write('\n')
-    data_file_writer.close()
-
-def global_position_writer_4(data):
-    '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt'
-    data_file_writer = open(data_file, 'a')
-    data_file_writer.write("START: " + data)
-    data_file_writer.write('\n')
-    data_file_writer.close()
-
-def position_writer_1(data):
-    '''Writing 1st position, i.e. UAV 1's position data.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav0_pos.txt'
     data_file_writer = open(data_file, 'a')
     data_file_writer.write(data)
-    data_file_writer.write('\n')
-    data_file_writer.close()  
-
-def position_writer_2(data):
-    '''Writing 1st position, i.e. UAV 1's position data.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
-    data_file_writer = open(data_file, 'a')
-    data_file_writer.write(data)
-    data_file_writer.write('\n')
     data_file_writer.close()
-
-def position_writer_3(data):
-    '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt'
-    data_file_writer = open(data_file, 'a')
-    data_file_writer.write(data)
-    data_file_writer.write('\n')
-    data_file_writer.close()
-
-def position_writer_4(data):
-    '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt'
-    data_file_writer = open(data_file, 'a')
-    data_file_writer.write(data)
-    data_file_writer.write('\n')
-    data_file_writer.close()
-
-def position_writer_5(data):
-    '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor0_pos.txt'
-    data_file_writer = open(data_file, 'a')
-    data_file_writer.write(data)
-    data_file_writer.write('\n')
-    data_file_writer.close()
-
-def position_writer_6(data):
-    '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor1_pos.txt'
-    data_file_writer = open(data_file, 'a')
-    data_file_writer.write(data)
-    data_file_writer.write('\n')
-    data_file_writer.close()
-
-def position_writer_7(data):
-    '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor2_pos.txt'
-    data_file_writer = open(data_file, 'a')
-    data_file_writer.write(data)
-    data_file_writer.write('\n')
-    data_file_writer.close()
-
-def position_writer_8(data):
-    '''Writing survivor's data to the disc.'''
-    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor3_pos.txt'
-    data_file_writer = open(data_file, 'a')
-    data_file_writer.write(data)
-    data_file_writer.write('\n')
-    data_file_writer.close()
-
 
 def pos1(data):
     '''Subscribes to the 1st position, i.e. UAV 1's position data.'''
-    print("Subscribing to UAV 1 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
+    print("Subscribing to UAV 0 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
         data.pose.pose.position.y), str(data.pose.pose.position.x), (str(data.pose.pose.position.z))))
-    position_writer_1(str(data.pose.pose.position.x))
-    position_writer_1(str(data.pose.pose.position.y))
-    position_writer_1(str(data.pose.pose.position.z))
-    position_writer_1(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
-                       str(datetime.datetime.now().time().second)))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav0_pos.txt'
+    position_writer(str(data.pose.pose.position.x)+'\n'+str(data.pose.pose.position.y)+'\n'+str(data.pose.pose.position.z)+'\n'+("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)+'\n'), data_file)
 
 def pos2(data):
-    '''Subscribes to the 1st position, i.e. UAV 2's position data.'''
-    print("Subscribing to UAV 2 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
+    '''Subscribes to the 1st position, i.e. UAV 1's position data.'''
+    print("Subscribing to UAV 1 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
         data.pose.pose.position.y), str(data.pose.pose.position.x), (str(data.pose.pose.position.z))))
-    position_writer_2(str(data.pose.pose.position.x))
-    position_writer_2(str(data.pose.pose.position.y))
-    position_writer_2(str(data.pose.pose.position.z))
-    position_writer_2(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
-                       str(datetime.datetime.now().time().second)))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
+    position_writer(str(data.pose.pose.position.x)+'\n'+str(data.pose.pose.position.y)+'\n'+str(data.pose.pose.position.z)+'\n'+("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)+'\n'), data_file)
 
 def pos3(data):
-    '''Subscribes to the 1st position, i.e. UAV 2's position data.'''
+    '''Subscribes to the 1st position, i.e. UAV 1's position data.'''
     print("Subscribing to UAV 2 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
         data.pose.pose.position.y), str(data.pose.pose.position.x), (str(data.pose.pose.position.z))))
-    position_writer_3(str(data.pose.pose.position.x))
-    position_writer_3(str(data.pose.pose.position.y))
-    position_writer_3(str(data.pose.pose.position.z))
-    position_writer_3(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
-                       str(datetime.datetime.now().time().second)))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt'
+    position_writer(str(data.pose.pose.position.x)+'\n'+str(data.pose.pose.position.y)+'\n'+str(data.pose.pose.position.z)+'\n'+("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)+'\n'), data_file)
 
 def pos4(data):
-    '''Subscribes to the 1st position, i.e. UAV 2's position data.'''
-    print("Subscribing to UAV 4 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
+    '''Subscribes to the 1st position, i.e. UAV 1's position data.'''
+    print("Subscribing to UAV 3 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
         data.pose.pose.position.y), str(data.pose.pose.position.x), (str(data.pose.pose.position.z))))
-    position_writer_4(str(data.pose.pose.position.x))
-    position_writer_4(str(data.pose.pose.position.y))
-    position_writer_4(str(data.pose.pose.position.z))
-    position_writer_4(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
-                       str(datetime.datetime.now().time().second)))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt'
+    position_writer(str(data.pose.pose.position.x)+'\n'+str(data.pose.pose.position.y)+'\n'+str(data.pose.pose.position.z)+'\n'+("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)+'\n'), data_file)
 
 def pos5(data):
-    '''Subscribes to the survivor's position data.'''
-    print("Subscribing to Survivor\'s Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (
-        str(data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
-    position_writer_5(str(data.pose.position.x))
-    position_writer_5(str(data.pose.position.y))
-    position_writer_5(str(data.pose.position.z))
-    position_writer_5(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
-                       str(datetime.datetime.now().time().second)))
+    '''Subscribes to the 1st position, i.e. UAV 1's position data.'''
+    print("Subscribing to Survivor 0 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
+        data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor0_pos.txt'
+    position_writer(str(data.pose.position.x)+'\n'+str(data.pose.position.y)+'\n'+str(data.pose.position.z)+'\n'+("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)+'\n'), data_file)
 
 def pos6(data):
-    '''Subscribes to the survivor's position data.'''
-    print("Subscribing to Survivor\'s Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (
-        str(data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
-    position_writer_6(str(data.pose.position.x))
-    position_writer_6(str(data.pose.position.y))
-    position_writer_6(str(data.pose.position.z))
-    position_writer_6(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
-                       str(datetime.datetime.now().time().second)))
+    '''Subscribes to the 1st position, i.e. UAV 1's position data.'''
+    print("Subscribing to UAV 1 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
+        data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor1_pos.txt'
+    position_writer(str(data.pose.position.x)+'\n'+str(data.pose.position.y)+'\n'+str(data.pose.position.z)+'\n'+("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)+'\n'), data_file)
 
 def pos7(data):
-    '''Subscribes to the survivor's position data.'''
-    print("Subscribing to Survivor\'s Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (
-        str(data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
-    position_writer_7(str(data.pose.position.x))
-    position_writer_7(str(data.pose.position.y))
-    position_writer_7(str(data.pose.position.z))
-    position_writer_7(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
-                       str(datetime.datetime.now().time().second)))
+    '''Subscribes to the 1st position, i.e. UAV 1's position data.'''
+    print("Subscribing to Survivor 3 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
+        data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor2_pos.txt'
+    position_writer(str(data.pose.position.x)+'\n'+str(data.pose.position.y)+'\n'+str(data.pose.position.z)+'\n'+("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)+'\n'), data_file)
 
 def pos8(data):
-    '''Subscribes to the survivor's position data.'''
-    print("Subscribing to Survivor\'s Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (
-        str(data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
-    position_writer_8(str(data.pose.position.x))
-    position_writer_8(str(data.pose.position.y))
-    position_writer_8(str(data.pose.position.z))
-    position_writer_8(("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
-                       str(datetime.datetime.now().time().second)))
+    '''Subscribes to the 1st position, i.e. UAV 1's position data.'''
+    print("Subscribing to Survivor 4 Data:\nX_Position: %s\nY_Position: %s\nZ_Position: %s\n" % (str(
+        data.pose.position.y), str(data.pose.position.x), (str(data.pose.position.z))))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/survivor3_pos.txt'
+    position_writer(str(data.pose.position.x)+'\n'+str(data.pose.position.y)+'\n'+str(data.pose.position.z)+'\n'+("SECONDS:" + str(datetime.datetime.now().time().hour) + "." + str(datetime.datetime.now().time().minute) + "." +
+                       str(datetime.datetime.now().time().second)+'\n'), data_file)
 
 def global_pos1(data):
-    global_position_writer_1(str(data.pose.position.x) + " " + str(data.pose.position.y))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav0_pos.txt'
+    global_position_writer(str(data.pose.position.x) + " " + str(data.pose.position.y), data_file)
 
 def global_pos2(data):
-    global_position_writer_2(str(data.pose.position.x) + " " + str(data.pose.position.y))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav1_pos.txt'
+    global_position_writer(str(data.pose.position.x) + " " + str(data.pose.position.y), data_file)
 
 def global_pos3(data):
-    global_position_writer_3(str(data.pose.position.x) + " " + str(data.pose.position.y))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav2_pos.txt'
+    global_position_writer(str(data.pose.position.x) + " " + str(data.pose.position.y), data_file)
 
 def global_pos4(data):
-    global_position_writer_4(str(data.pose.position.x) + " " + str(data.pose.position.y))
+    data_file = '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/uav3_pos.txt'
+    global_position_writer(str(data.pose.position.x) + " " + str(data.pose.position.y), data_file)
 
 def plot():
     '''Plotting all the data here'''
