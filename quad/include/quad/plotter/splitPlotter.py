@@ -11,9 +11,16 @@ import csv
 import numpy as np
 from matplotlib import colors
 from matplotlib.patches import Patch
+import os.path
 
-'''Filename pointing to the explorationMap csv file'''
-map_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_0.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_1.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_2.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_3.csv']
+'''This variable checks the number of UAV file data available on disc'''
+n_uav = 0
+
+'''This line checks the number of UAV/Survivor paits found in the disc'''
+while os.path.isfile('data/splitMap_'+str(n_uav)+'_pos.txt'):
+    n_uav+=1
+
+map_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_'+ str(uav) +'.csv' for uav in range(0, n_uav)]
 
 def get_cmap(n, name = 'viridis'):
     '''Here, we declare a simple function to generate a colormap to be utilized across the code'''
