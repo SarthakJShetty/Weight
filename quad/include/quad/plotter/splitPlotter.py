@@ -17,7 +17,7 @@ import os.path
 n_uav = 0
 
 '''This line checks the number of UAV/Survivor paits found in the disc'''
-while os.path.isfile('data/splitMap_'+str(n_uav)+'_pos.txt'):
+while os.path.isfile('data/splitMap_'+str(n_uav)+'.csv'):
     n_uav+=1
 
 map_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_'+ str(uav) +'.csv' for uav in range(0, n_uav)]
