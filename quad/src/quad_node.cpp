@@ -441,27 +441,10 @@ int main(int argc, char **argv)
                         counter_msgs[UAV_COUNTER].data += 1;
                     }
                 }
-                else if (counter_msgs[UAV_COUNTER].data == (vector_list_maximum_value_x_indices[UAV_COUNTER].size()) && survivor_detection_check[UAV_COUNTER] == 1)
+                else if (counter_msgs[UAV_COUNTER].data == (vector_list_maximum_value_x_indices[UAV_COUNTER].size()))
                 {
                     //This condition implies that the UAV has found the survivor, which has resulted in the counter being
                     //assigned to grid_points and survivor_detection_check equating to 1.
-                    cout << "UAV COUNTER: " << UAV_COUNTER << " "
-                     << "Survivor Status: " << survivor_detection_check[UAV_COUNTER]
-                     << " "
-                     << "RTL" << endl;
-                    pose[UAV_COUNTER].pose.position.x = 0;
-                    pose[UAV_COUNTER].pose.position.y = 0;
-                    pose[UAV_COUNTER].pose.position.z = 1;
-                    if ((exploration_dump_check[UAV_COUNTER]) == 0)
-                    {
-                        //This condition is to make sure that the exploration map gets dumped only once to the disc
-                        exploration_dumper(environment_map[UAV_COUNTER], x_max, y_max, UAV_COUNTER);
-                        exploration_dump_check[UAV_COUNTER] = 1;
-                    }
-                }
-                else if (counter_msgs[UAV_COUNTER].data == (vector_list_maximum_value_x_indices[UAV_COUNTER].size()) && survivor_detection_check[UAV_COUNTER] == 0)
-                {
-                    //This condition implies that the UAV has not found the survivor and now needs to head back to the origin.
                     cout << "UAV COUNTER: " << UAV_COUNTER << " "
                      << "Survivor Status: " << survivor_detection_check[UAV_COUNTER]
                      << " "
