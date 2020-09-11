@@ -64,6 +64,13 @@ std_msgs::Int32 switch_msgs[N_UAV];
 //This counter is used to publish the counter value for diagnostics primarily
 std_msgs::Int32 counter_msgs[N_UAV];
 
+/*What needs to be implemented here?
+1. A new variable[N_UAV] that is equal to the counter[N_UAV] variable at the start of the node.
+2. When the lawn_mower loop triggers -> counter = prev_counter (in first case it'll be 0)
+3. When weight_model triggers prev_counter = counter.
+4. If the UAV completes weight_based_search AND counter==vector.size(), then unlock the lawn_mower_check and run the counter = prev_counter*/
+std_msgs::Int32 last_counter_msgs[N_UAV];
+
 //Declaring the pose here for both UAVs
 geometry_msgs::PoseStamped pose[N_UAV];
 

@@ -93,6 +93,12 @@ int lawn_mower_generator_function(int y_max, int x_max, vector<int> &vector_list
     }
 
     lawn_mower_element_cycler = 0;
+
+    /*We resize the vector here before populating it because, if the UAV has decided to revert to the lawnmower appraoch after running the weighted model, then there will be pre-existing coordinates
+    in both the lists. Therefore, we have to resize the vector before each of those model calls from the quad_node.*/
+	vector_list_maximum_value_x_indices.resize(0);
+	vector_list_maximum_value_y_indices.resize(0);
+
     std::cout << "LAWN MOWER COORDINATES" << endl;
     while (lawn_mower_element_cycler < (x_max * y_max))
     {
