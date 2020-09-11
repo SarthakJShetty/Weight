@@ -12,6 +12,20 @@ from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry
 import datetime
 import time
+import os
+
+def archive_previous_data():
+    '''This function archives all the .txt and .csv files belonging to the previous run to a timestamped log folder'''
+    archive_folder = "data/LOG_" + str(datetime.datetime.now().time().hour) + "_" + str(datetime.datetime.now().time().minute) + "_" + str(datetime.datetime.now().time().second)
+    command_to_rm_function = "mkdir " + archive_folder
+    '''Making the timestamped folder'''
+    os.system(command_to_rm_function)
+    command_to_rm_function = 'mv data/*.csv ' + archive_folder
+    '''Moving all the .csv files generated'''
+    os.system(command_to_rm_function)
+    command_to_rm_function = 'mv data/*.txt ' + archive_folder
+    '''Moving all the .txt files generated'''
+    os.system(command_to_rm_function)
 
 def global_position_writer(data, data_file):
     '''Writing survivor's data to the disc.'''
@@ -133,6 +147,7 @@ def plot():
 
 if __name__ == '__main__':
     try:
+        archive_previous_data()
         plot()
     except rospy.ROSInterruptException:
         pass
