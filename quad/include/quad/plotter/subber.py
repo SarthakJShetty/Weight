@@ -16,16 +16,23 @@ import os
 
 def archive_previous_data():
     '''This function archives all the .txt and .csv files belonging to the previous run to a timestamped log folder'''
-    archive_folder = "data/LOG_" + str(datetime.datetime.now().time().hour) + "_" + str(datetime.datetime.now().time().minute) + "_" + str(datetime.datetime.now().time().second)
-    command_to_rm_function = "mkdir " + archive_folder
-    '''Making the timestamped folder'''
-    os.system(command_to_rm_function)
-    command_to_rm_function = 'mv data/*.csv ' + archive_folder
-    '''Moving all the .csv files generated'''
-    os.system(command_to_rm_function)
-    command_to_rm_function = 'mv data/*.txt ' + archive_folder
-    '''Moving all the .txt files generated'''
-    os.system(command_to_rm_function)
+    if os.path.isfile('data/uav0_pos.txt'):
+        '''We use this to check if there's at least some data from the previous run, if not don't create the LOG folder for no reason'''
+        archive_folder = "data/LOG_" + str(datetime.datetime.now().year) + "_" + str(datetime.datetime.now().month) + "_" + str(datetime.datetime.now().day) + "_" + str(datetime.datetime.now().time().hour) + "_" + str(datetime.datetime.now().time().minute) + "_" + str(datetime.datetime.now().time().second)
+        '''We first create the timestamped folder where the data will be stored'''
+        command_to_rm_function = "mkdir " + archive_folder
+        '''Making the timestamped folder'''
+        os.system(command_to_rm_function)
+        '''We then create the data sub-folder inside the timestamped folder so that we can run the grapher/densityPlotter/mapPlotter/splitPlotter scripts from inside the timestamped folder'''
+        archive_folder = archive_folder + '/data'
+        command_to_rm_function = "mkdir " + archive_folder
+        os.system(command_to_rm_function)
+        command_to_rm_function = 'mv data/*.csv ' + archive_folder
+        '''Moving all the .csv files generated'''
+        os.system(command_to_rm_function)
+        command_to_rm_function = 'mv data/*.txt ' + archive_folder
+        '''Moving all the .txt files generated'''
+        os.system(command_to_rm_function)
 
 def global_position_writer(data, data_file):
     '''Writing survivor's data to the disc.'''
