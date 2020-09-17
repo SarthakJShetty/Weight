@@ -27,7 +27,6 @@ def second_converter(time_in_decimal):
     '''Returning the total number of seconds here'''
     return (time_hours + time_minute + time_second)
 
-
 def file_reader(coordinates_file_txt, plotting_parameter):
     '''This function reads the coordinates_file_text and depending on the plotting_parameter, charts either the position, velocity or acceleration.'''
     position_file = open(coordinates_file_txt)
@@ -281,5 +280,54 @@ ax.set_zlabel('Z Axis')
 ax.legend(loc='best', title='Trajectories', numpoints=1)
 
 plt.savefig('/home/sarthak/catkin_ws/src/assets/Trajectories.png')
+
+plt.show()
+
+'''Here on out, we generate the X-Y Projection of the trajectories'''
+fig_projection = plt.figure()
+ax_projection = fig_projection.add_subplot(111)
+
+for agent_counter in range(0, n_uav):
+    '''Plotting the entire trajectory of UAV x in the environment'''
+    ax_projection.plot(y_points_uav[agent_counter], x_points_uav[agent_counter],
+            label='UAV '+str(agent_counter+1)+' Trajectory', color = cmap(agent_counter))
+
+    '''Plotting only the start point of UAV x trajectory'''
+    ax_projection.plot([y_points_uav[agent_counter][0]], [x_points_uav[agent_counter][0]],
+            label='UAV '+str(agent_counter+1)+' Start Point', color='g', marker='x')
+
+    '''Plotting only the end point of UAV x trajectory'''
+    ax_projection.plot([y_points_uav[agent_counter][len(x_points_uav[agent_counter])-1]], [x_points_uav[agent_counter][len(x_points_uav[agent_counter])-1]],
+            label='UAV '+str(agent_counter+1)+' End Point', color='r', marker='x')    
+
+    '''Plotting the entire trajectory of the survivors in the environment'''
+    ax_projection.plot(y_points_survivor[agent_counter], x_points_survivor[agent_counter],
+            label='Survivor '+str(agent_counter+1)+' Trajectory', color=cmap(agent_counter))
+
+    '''Plotting only the start point of the survivors trajectory'''
+    ax_projection.plot([y_points_survivor[agent_counter][0]], [x_points_survivor[agent_counter][0]],
+            label='Survivor '+str(agent_counter+1)+' Start Point', color='g', marker='D')
+
+    '''Plotting only the end point of the survivors trajectory'''
+    ax_projection.plot([y_points_survivor[agent_counter][len(y_points_survivor[agent_counter])-1]], [x_points_survivor[agent_counter][len(x_points_survivor[agent_counter])-1]],
+            label='Survivor '+str(agent_counter+1)+' End Point', color='r', marker='D')
+
+'''Plotting the environment boundary'''
+ax_projection.plot(y_points_env, x_points_env,
+        label='Environment Boundary', color='b', marker='>')
+
+plt.title('X-Y Projection of Trajectories')
+
+'''Flipping the labesl here to correspond to the right hand rule'''
+plt.ylabel('X Axis')
+plt.xlabel('Y Axis')
+
+'''Flipping the markings on the re-assigned X axis to reflect the Gazebo environment'''
+ax_projection.set_ylim(max(x_points_env) + 1, -1)
+
+'''Setting the aspect ratio to ensure a balanced figure'''
+ax_projection.set_aspect('equal')
+
+plt.savefig('/home/sarthak/catkin_ws/src/assets/XYProjection.png')
 
 plt.show()
