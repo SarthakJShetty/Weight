@@ -11,9 +11,19 @@ Tests are due to substantiate this claim. Will be updating a section in the READ
 import matplotlib.pyplot as plt
 import csv
 import numpy as np
+import os.path
+
+'''This variable checks the number of UAV file data available on disc'''
+n_uav = 0
+
+'''This line checks the number of UAV/Survivor paits found in the disc'''
+while os.path.isfile('data/weightMap_'+str(n_uav)+'.csv'):
+    n_uav+=1
 
 '''Filename pointing to the weightMap csv file'''
-weight_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/weightMap_0.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/priorityMap_0.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/weightMap_1.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/priorityMap_1.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/weightMap_2.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/priorityMap_2.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/weightMap_3.csv', '/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/priorityMap_3.csv']
+weight_files = ['data/weightMap_'+ str(uav) +'.csv' for uav in range(0, n_uav)]
+weight_files += ['data/priorityMap_'+ str(uav) +'.csv' for uav in range(0, n_uav)]
+
 
 for weight_file in weight_files:
     '''Start row makes sure that the row-elements are counted only once.'''
