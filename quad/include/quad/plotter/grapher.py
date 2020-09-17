@@ -132,7 +132,7 @@ def file_reader(coordinates_file_txt, plotting_parameter):
 n_uav = 0
 
 '''This line checks the number of UAV/Survivor paits found in the disc'''
-while os.path.isfile('data/uav'+str(n_uav)+'_pos.txt'):
+while os.path.isfile('data/uav'+str(n_uav)+'_pos.txt') and os.path.isfile('data/survivor'+str(n_uav)+'_pos.txt'):
     n_uav+=1
 
 '''All UAV data is collected in these lists. Numpy arrays are not used since pre-declaration is required'''
