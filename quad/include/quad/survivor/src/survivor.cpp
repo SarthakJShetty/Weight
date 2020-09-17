@@ -35,8 +35,8 @@ int survivor_model(int x_max, int y_max, int survivor_direction, int current_sec
         {
             if ((*survivor_y_coordinate <= 0) || (*survivor_x_coordinate <= 0))
             {
-                *survivor_x_coordinate = *survivor_y_coordinate;
-                *survivor_y_coordinate = *survivor_x_coordinate;
+                *survivor_x_coordinate = *survivor_x_coordinate;
+                *survivor_y_coordinate = *survivor_y_coordinate;
             }
             else
             {
