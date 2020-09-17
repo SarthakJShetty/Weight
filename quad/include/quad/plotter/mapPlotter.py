@@ -23,7 +23,7 @@ n_uav = 0
 while os.path.isfile('data/explorationMap_'+str(n_uav)+'.csv'):
     n_uav+=1
 
-map_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/explorationMap_'+ str(uav) +'.csv' for uav in range(0, n_uav)]
+map_files = ['data/explorationMap_'+ str(uav) +'.csv' for uav in range(0, n_uav)]
 
 for map_file in map_files:
     '''Start row makes sure that the row-elements are counted only once.'''

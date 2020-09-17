@@ -20,7 +20,7 @@ n_uav = 0
 while os.path.isfile('data/splitMap_'+str(n_uav)+'.csv'):
     n_uav+=1
 
-map_files = ['/home/sarthak/catkin_ws/src/quad/include/quad/plotter/data/splitMap_'+ str(uav) +'.csv' for uav in range(0, n_uav)]
+map_files = ['data/splitMap_'+ str(uav) +'.csv' for uav in range(0, n_uav)]
 
 def get_cmap(n, name = 'viridis'):
     '''Here, we declare a simple function to generate a colormap to be utilized across the code'''
