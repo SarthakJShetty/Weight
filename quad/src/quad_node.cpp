@@ -37,8 +37,8 @@ int main(int argc, char **argv)
     start_uav_x_position[0] = 9;
     start_uav_y_position[0] = 0;
 
-    start_survivor_x_coordinate[0] = 5;
-    start_survivor_y_coordinate[0] = 10;
+    start_survivor_x_coordinate[0] = 9;
+    start_survivor_y_coordinate[0] = 9;
     survivor_direction[0] = 2;
 
     survivor_x_coordinate[0] = &start_survivor_x_coordinate[0];
@@ -52,9 +52,9 @@ int main(int argc, char **argv)
     start_uav_x_position[1] = 19;
     start_uav_y_position[1] = 9;
 
-    start_survivor_x_coordinate[1] = 15;
-    start_survivor_y_coordinate[1] = 15;
-    survivor_direction[1] = 4;
+    start_survivor_x_coordinate[1] = 12;
+    start_survivor_y_coordinate[1] = 10;
+    survivor_direction[1] = 1;
 
     survivor_x_coordinate[1] = &start_survivor_x_coordinate[1];
     survivor_y_coordinate[1] = &start_survivor_y_coordinate[1];
@@ -67,7 +67,7 @@ int main(int argc, char **argv)
     start_uav_x_position[2] = 9;
     start_uav_y_position[2] = 19;
 
-    start_survivor_x_coordinate[2] = 17;
+    start_survivor_x_coordinate[2] = 10;
     start_survivor_y_coordinate[2] = 10;
     survivor_direction[2] = 1;
 
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
     weight_uav_y_position[2] = start_survivor_x_coordinate[2];
     weight_uav_x_position[2] = start_survivor_y_coordinate[2];
 
-    velocity[2] = 0.5;
+    velocity[2] = 1;
 
     start_uav_x_position[3] = 0;
     start_uav_y_position[3] = 9;
@@ -173,7 +173,7 @@ int main(int argc, char **argv)
         takeoff_client[pre_pub_sub_initializer] = nh.serviceClient<mavros_msgs::CommandTOL>(take_off_string);
     }
 
-    ros::Rate rate(10.0);
+    ros::Rate rate(20.0);
 
     for (int UAV_COUNTER = 0; UAV_COUNTER < N_UAV; UAV_COUNTER++)
     {
