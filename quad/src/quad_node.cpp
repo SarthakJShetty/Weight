@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 
     //This assignment of coordinates is not placed in a loop since it's each UAV has different survivor attributes. These values are set assuming the X axis to be
     // the horizontal and the Y axis to be vertical, opposite to the MAVROS/Gazebo assumption.
-    start_uav_x_position[0] = 9;
+    start_uav_x_position[0] = 0;
     start_uav_y_position[0] = 0;
 
     start_survivor_x_coordinate[0] = 9;
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     velocity[0] = 0.5;
 
     start_uav_x_position[1] = 19;
-    start_uav_y_position[1] = 9;
+    start_uav_y_position[1] = 0;
 
     start_survivor_x_coordinate[1] = 12;
     start_survivor_y_coordinate[1] = 10;
@@ -64,11 +64,11 @@ int main(int argc, char **argv)
 
     velocity[1] = 0.5;
 
-    start_uav_x_position[2] = 9;
+    start_uav_x_position[2] = 19;
     start_uav_y_position[2] = 19;
 
-    start_survivor_x_coordinate[2] = 10;
-    start_survivor_y_coordinate[2] = 10;
+    start_survivor_x_coordinate[2] = 17;
+    start_survivor_y_coordinate[2] = 17;
     survivor_direction[2] = 1;
 
     survivor_x_coordinate[2] = &start_survivor_x_coordinate[2];
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     velocity[2] = 1;
 
     start_uav_x_position[3] = 0;
-    start_uav_y_position[3] = 9;
+    start_uav_y_position[3] = 19;
 
     start_survivor_x_coordinate[3] = 10;
     start_survivor_y_coordinate[3] = 2;
@@ -93,6 +93,21 @@ int main(int argc, char **argv)
     weight_uav_x_position[3] = start_survivor_y_coordinate[3];
 
     velocity[3] = 0.5;
+
+    start_uav_x_position[4] = 9;
+    start_uav_y_position[4] = 9;
+
+    start_survivor_x_coordinate[4] = 10;
+    start_survivor_y_coordinate[4] = 10;
+    survivor_direction[3] = 3;
+
+    survivor_x_coordinate[4] = &start_survivor_x_coordinate[3];
+    survivor_y_coordinate[4] = &start_survivor_y_coordinate[3];
+
+    weight_uav_y_position[4] = start_survivor_x_coordinate[3];
+    weight_uav_x_position[4] = start_survivor_y_coordinate[3];
+
+    velocity[4] = 0.5;
 
     /*
     What are we trying to incorporate here?
@@ -418,7 +433,7 @@ int main(int argc, char **argv)
             if (waypoint_dist[UAV_COUNTER] < waypoint_dist_threshold)
             {
                 //Check if the UAV within the threshold distance to switch to the next waypoint
-                cout << "UAV_COUNTER: " << UAV_COUNTER << "Distance < " << waypoint_dist_threshold << endl;
+                cout << "UAV_COUNTER: " << UAV_COUNTER << " Distance < " << waypoint_dist_threshold << endl;
 
                 if (counter_msgs[UAV_COUNTER].data < (vector_list_maximum_value_x_indices[UAV_COUNTER].size()))
                 {
