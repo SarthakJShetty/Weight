@@ -177,36 +177,42 @@ while subplot_counter < (n_uav * 2):
     '''Here we plot the position graphs for the various UAVs'''
     axs[subplot_counter, 0].plot(x_time_uav[uav_counter], x_points_uav[uav_counter], 'r')
     axs[subplot_counter, 0].set_title('UAV '+str(uav_counter+1)+' X Coordinates vs Time')
-    axs[subplot_counter, 0].set_xlabel("Seconds (s)")
     axs[subplot_counter, 0].set_ylabel("X Position")
+    axs[subplot_counter, 0].set_yticks([min(x_points_uav[uav_counter]), max(x_points_uav[uav_counter])])
 
     axs[subplot_counter, 1].plot(y_time_uav[uav_counter], y_points_uav[uav_counter], 'g')
     axs[subplot_counter, 1].set_title('UAV '+str(uav_counter+1)+' Y Coordinates vs Time')
-    axs[subplot_counter, 1].set_xlabel("Seconds (s)")
     axs[subplot_counter, 1].set_ylabel("Y Position")
+    axs[subplot_counter, 1].set_yticks([min(y_points_uav[uav_counter]), max(y_points_uav[uav_counter])])
 
     axs[subplot_counter, 2].plot(z_time_uav[uav_counter], z_points_uav[uav_counter], 'b')
     axs[subplot_counter, 2].set_title('UAV '+str(uav_counter+1)+' Z Coordinates vs Time')
-    axs[subplot_counter, 2].set_xlabel("Seconds (s)")
     axs[subplot_counter, 2].set_ylabel("Z Position")
+    axs[subplot_counter, 2].set_yticks([min(z_points_uav[uav_counter]), max(z_points_uav[uav_counter])])
 
     '''For the same UAV, plot the survivor's data as well'''
     subplot_counter+=1
 
     axs[subplot_counter, 0].plot(x_time_survivor[uav_counter], x_points_survivor[uav_counter], 'r')
     axs[subplot_counter, 0].set_title('Survivor '+str(uav_counter+1)+' X Coordinates vs Time')
-    axs[subplot_counter, 0].set_xlabel("Seconds (s)")
     axs[subplot_counter, 0].set_ylabel("X Position")
+    axs[subplot_counter, 0].set_yticks([min(x_points_survivor[uav_counter]), max(x_points_survivor[uav_counter])])
 
     axs[subplot_counter, 1].plot(y_time_survivor[uav_counter], y_points_survivor[uav_counter], 'g')
     axs[subplot_counter, 1].set_title('Survivor '+str(uav_counter+1)+' Y Coordinates vs Time')
-    axs[subplot_counter, 1].set_xlabel("Seconds (s)")
     axs[subplot_counter, 1].set_ylabel("Y Position")
+    axs[subplot_counter, 1].set_yticks([min(y_points_survivor[uav_counter]), max(y_points_survivor[uav_counter])])
 
     axs[subplot_counter, 2].plot(z_time_survivor[uav_counter], z_points_survivor[uav_counter], 'b')
     axs[subplot_counter, 2].set_title('Survivor '+str(uav_counter+1)+' Z Coordinates vs Time')
-    axs[subplot_counter, 2].set_xlabel("Seconds (s)")
     axs[subplot_counter, 2].set_ylabel("Z Position")
+    axs[subplot_counter, 2].set_yticks([min(z_points_survivor[uav_counter]), max(z_points_survivor[uav_counter])])
+
+    if((subplot_counter+1) == (n_uav * 2)):
+        '''We add the x-axis labl only to the last set of subplots to prevent overcrowding between the title and the x-axis labels'''
+        axs[subplot_counter, 0].set_xlabel("Seconds (s)")
+        axs[subplot_counter, 1].set_xlabel("Seconds (s)")
+        axs[subplot_counter, 2].set_xlabel("Seconds (s)")
 
     '''After each iteration, we go to the next pair of subplots (UAV + Survivor combo) and the next agent (refers to the index of UAV/Survivor lists)'''
     subplot_counter+=1
