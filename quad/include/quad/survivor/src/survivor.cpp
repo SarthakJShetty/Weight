@@ -17,7 +17,7 @@ int survivor_model(int x_max, int y_max, int survivor_direction, int current_sec
     {
         if (survivor_direction == 1)
         {
-            if ((*survivor_y_coordinate > y_max) || (*survivor_x_coordinate <= 0))
+            if ((*survivor_y_coordinate >= (y_max - 1)) || (*survivor_x_coordinate <= 0))
             {
                 *survivor_x_coordinate = *survivor_x_coordinate;
                 *survivor_y_coordinate = *survivor_y_coordinate;
@@ -48,7 +48,7 @@ int survivor_model(int x_max, int y_max, int survivor_direction, int current_sec
         }
         else if (survivor_direction == 3)
         {
-            if ((*survivor_y_coordinate <= 0) || (*survivor_x_coordinate > x_max))
+            if ((*survivor_y_coordinate <= 0) || (*survivor_x_coordinate >= (x_max - 1)))
             {
                 *survivor_x_coordinate = *survivor_x_coordinate;
                 *survivor_y_coordinate = *survivor_y_coordinate;
@@ -63,7 +63,7 @@ int survivor_model(int x_max, int y_max, int survivor_direction, int current_sec
         }
         else if (survivor_direction == 4)
         {
-            if ((*survivor_y_coordinate > y_max) || (*survivor_x_coordinate > x_max))
+            if ((*survivor_y_coordinate >= (y_max - 1)) || (*survivor_x_coordinate >= (x_max - 1)))
             {
                 *survivor_x_coordinate = *survivor_x_coordinate;
                 *survivor_y_coordinate = *survivor_y_coordinate;
