@@ -29,7 +29,7 @@ float waypoint_dist_threshold = 0.5;
 float survivor_dist_threshold = 4.0;
 
 //Declaring the number of UAVs being used here
-const int N_UAV = 5;
+const int N_UAV = 1;
 
 //Boundaries of the flood environment
 extern const int x_max;
