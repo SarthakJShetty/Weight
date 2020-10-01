@@ -52,7 +52,7 @@ int main(int argc, char **argv)
     start_uav_x_position[1] = 19;
     start_uav_y_position[1] = 0;
 
-    start_survivor_x_coordinate[1] = 15;
+    start_survivor_x_coordinate[1] = 5;
     start_survivor_y_coordinate[1] = 15;
     survivor_direction[1] = 1;
 
@@ -358,13 +358,17 @@ int main(int argc, char **argv)
                          << "Human Detected" << endl;
                     //This check makes sure that the survivor's model does not update the survivor's location after it has been detected.
                     survivor_detection_check[UAV_COUNTER] = 1;
-
-                    if (weight_trigger_check[UAV_COUNTER] == 1)
+                    if ((weight_trigger_check[UAV_COUNTER] == 1) && (survivor_detection_check[UAV_COUNTER] == 1))
                     {
-                        /*This condition ensures that the survivor is found if weightage model is invoked. If not,
+                        /*This condition ensures that if the survivor is found when the weight-mpdel is invoked, then it retreats to the lawn-mower model once the search has concluded. If not,
                             then it reverts to the last lawn-mower position and begins search from there. Also, freeing up the switch_msgs here so that the weight_model isn't repeateldly evoked.*/
                         switch_msgs[*global_pointer].data = 0;
                         lawn_mower_trigger_check[UAV_COUNTER] = 0;
+                    }
+                    else if((lawn_mower_trigger_check[UAV_COUNTER] == 1) && (survivor_detection_check[UAV_COUNTER] == 1))
+                    {
+                        //During the lawn-mower search, if the UAV has already found the survivor corresponding to UAV_COUNTER index, no need to search for it again if the weight-model is triggered.
+                        weight_trigger_check[UAV_COUNTER] = 1;
                     }
                 }
             }
@@ -456,7 +460,11 @@ int main(int argc, char **argv)
                     else
                     {
                         //Status 1 for exploration states that the UAV traversed the given point and did not find any survivor at that spot.
-                        environment_map[UAV_COUNTER][vector_list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][vector_list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration += 1;
+                        if (environment_map[UAV_COUNTER][vector_list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][vector_list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration == 0)
+                        {
+                            //In the survivor loop above, if a given waypoint has already been registered as a survivor_cell, we do not want this line to upset that. Therefore, assign a value to the cell, iff it is an unexplored cell.
+                            environment_map[UAV_COUNTER][vector_list_maximum_value_y_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]][vector_list_maximum_value_x_indices[UAV_COUNTER][counter_msgs[UAV_COUNTER].data]].exploration = 1;
+                        }
                         // If UAV within switching threshold but no human detected switch the waypoint
                         cout << "Counter: " << counter_msgs[UAV_COUNTER].data << endl;
                         cout << "UAV_COUNTER: " << UAV_COUNTER << " "
