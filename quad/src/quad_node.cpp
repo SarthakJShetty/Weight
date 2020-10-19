@@ -82,8 +82,8 @@ int main(int argc, char **argv)
     start_uav_x_position[3] = 9;
     start_uav_y_position[3] = 9;
 
-    start_survivor_x_coordinate[3] = 15;
-    start_survivor_y_coordinate[3] = 5;
+    start_survivor_x_coordinate[3] = 8;
+    start_survivor_y_coordinate[3] = 8;
     survivor_direction[3] = 3;
 
     survivor_x_coordinate[3] = &start_survivor_x_coordinate[3];
@@ -97,8 +97,8 @@ int main(int argc, char **argv)
     start_uav_x_position[4] = 0;
     start_uav_y_position[4] = 19;
 
-    start_survivor_x_coordinate[4] = 8;
-    start_survivor_y_coordinate[4] = 12;
+    start_survivor_x_coordinate[4] = 15;
+    start_survivor_y_coordinate[4] = 5;
     survivor_direction[4] = 3;
 
     survivor_x_coordinate[4] = &start_survivor_x_coordinate[4];
@@ -330,6 +330,40 @@ int main(int argc, char **argv)
                 2. Implement a pointer here which points to the memory location of survivor_x_coordinate & survivor_y_coordinate.
                 3. The memory location is then shared across the files as oppossed to passing solely by reference.*/
 
+            //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
+            if (switch_msgs[*global_pointer].data == 1)
+            {
+                //Weighted exploration has been triggered here
+                if (weight_trigger_check[UAV_COUNTER] != 1)
+                {
+                    //We keep track of the last position from where the UAV has embarked for the weighted model
+                    last_counter_msgs[UAV_COUNTER].data = counter_msgs[UAV_COUNTER].data;
+
+                    //This counter is refreshed so that the exploration can begin again. Only for that specific UAV.
+                    counter_msgs[UAV_COUNTER].data = 0;
+
+                    //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
+                    weight_trigger_check[UAV_COUNTER] = 1;
+                    weight_generator_function(weight_uav_x_position[UAV_COUNTER], weight_uav_y_position[UAV_COUNTER], X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, survivor_direction[UAV_COUNTER], x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, weight_element_cycler, vector_list_maximum_value_x_indices[UAV_COUNTER], vector_list_maximum_value_y_indices[UAV_COUNTER], list_maximum_value_x_indices[UAV_COUNTER], list_maximum_value_y_indices[UAV_COUNTER], start_uav_x_position, start_uav_y_position, N_UAV, UAV_COUNTER);
+                }
+                //Enter this condition if weight based is not triggered
+            }
+            else if (switch_msgs[*global_pointer].data == 0)
+            {
+                if (lawn_mower_trigger_check[UAV_COUNTER] != 1)
+                {
+                    //We point to the coordinates from where the UAV escaped to the weighted model here
+                    counter_msgs[UAV_COUNTER].data = last_counter_msgs[UAV_COUNTER].data;
+
+                    //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
+                    lawn_mower_trigger_check[UAV_COUNTER] = 1;
+
+                    //Splitting the environment amongst the UAVs here
+                    split_environment(environment_map[UAV_COUNTER], start_uav_x_position, start_uav_y_position, y_max, x_max, N_UAV, UAV_COUNTER);
+                    lawn_mower_generator_function(y_max, x_max, vector_list_maximum_value_x_indices[UAV_COUNTER], vector_list_maximum_value_y_indices[UAV_COUNTER], list_maximum_value_x_indices[UAV_COUNTER], list_maximum_value_y_indices[UAV_COUNTER], pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler, start_uav_x_position, start_uav_y_position, N_UAV, UAV_COUNTER);
+                }
+            }
+
             if ((survivor_detection_check[UAV_COUNTER] != 1) and (weight_trigger_check[UAV_COUNTER] == 1))
             {
                 //This condition makes sure that the survivor's model updates the coordinates in the heading reported only if the survivor has not been encountered by the UAV and is exploring in the weight_based mode only.
@@ -384,39 +418,6 @@ int main(int argc, char **argv)
             survivor_pose[UAV_COUNTER].pose.position.z = 0;
             survivor_position_pub[UAV_COUNTER].publish(survivor_pose[UAV_COUNTER]);
 
-            //In this loop we check if a survivor has been detected by an observer. If yes, the weight-based exploration is triggered.
-            if (switch_msgs[*global_pointer].data == 1)
-            {
-                //Weighted exploration has been triggered here
-                if (weight_trigger_check[UAV_COUNTER] != 1)
-                {
-                    //We keep track of the last position from where the UAV has embarked for the weighted model
-                    last_counter_msgs[UAV_COUNTER].data = counter_msgs[UAV_COUNTER].data;
-
-                    //This counter is refreshed so that the exploration can begin again. Only for that specific UAV.
-                    counter_msgs[UAV_COUNTER].data = 0;
-
-                    //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
-                    weight_trigger_check[UAV_COUNTER] = 1;
-                    weight_generator_function(weight_uav_x_position[UAV_COUNTER], weight_uav_y_position[UAV_COUNTER], X_1, X_2, X_3, X_4, X_5, n_x_difference, n_y_difference, n_set, survivor_direction[UAV_COUNTER], x_corner_coordinate_1, x_corner_coordinate_2, x_corner_coordinate_3, x_corner_coordinate_4, y_corner_coordinate_1, y_corner_coordinate_2, y_corner_coordinate_3, y_corner_coordinate_4, maximum_value, weight_element_cycler, vector_list_maximum_value_x_indices[UAV_COUNTER], vector_list_maximum_value_y_indices[UAV_COUNTER], list_maximum_value_x_indices[UAV_COUNTER], list_maximum_value_y_indices[UAV_COUNTER], start_uav_x_position, start_uav_y_position, N_UAV, UAV_COUNTER);
-                }
-                //Enter this condition if weight based is not triggered
-            }
-            else if (switch_msgs[*global_pointer].data == 0)
-            {
-                if (lawn_mower_trigger_check[UAV_COUNTER] != 1)
-                {
-                    //We point to the coordinates from where the UAV escaped to the weighted model here
-                    counter_msgs[UAV_COUNTER].data = last_counter_msgs[UAV_COUNTER].data;
-
-                    //This counter is to make sure that the lawn-mower coordinates are triggered only once in the entire program
-                    lawn_mower_trigger_check[UAV_COUNTER] = 1;
-
-                    //Splitting the environment amongst the UAVs here
-                    split_environment(environment_map[UAV_COUNTER], start_uav_x_position, start_uav_y_position, y_max, x_max, N_UAV, UAV_COUNTER);
-                    lawn_mower_generator_function(y_max, x_max, vector_list_maximum_value_x_indices[UAV_COUNTER], vector_list_maximum_value_y_indices[UAV_COUNTER], list_maximum_value_x_indices[UAV_COUNTER], list_maximum_value_y_indices[UAV_COUNTER], pre_list_lawn_mower_x_indices, pre_list_lawn_mower_y_indices, lawn_mower_element_cycler, lawn_lawn_mower_element_cycler, start_uav_x_position, start_uav_y_position, N_UAV, UAV_COUNTER);
-                }
-            }
             //Difference between the current position and the next waypoint (x, y)
             waypoint_dist[UAV_COUNTER] = sqrt(pow((pose[UAV_COUNTER].pose.position.x - current_position_x[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.y - current_position_y[UAV_COUNTER]), 2) + pow((pose[UAV_COUNTER].pose.position.z - current_position_z[UAV_COUNTER]), 2));
 
