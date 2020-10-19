@@ -79,8 +79,8 @@ int main(int argc, char **argv)
 
     velocity[2] = 1;
 
-    start_uav_x_position[3] = 0;
-    start_uav_y_position[3] = 19;
+    start_uav_x_position[3] = 9;
+    start_uav_y_position[3] = 9;
 
     start_survivor_x_coordinate[3] = 15;
     start_survivor_y_coordinate[3] = 5;
@@ -94,8 +94,8 @@ int main(int argc, char **argv)
 
     velocity[3] = 0.5;
 
-    start_uav_x_position[4] = 9;
-    start_uav_y_position[4] = 9;
+    start_uav_x_position[4] = 0;
+    start_uav_y_position[4] = 19;
 
     start_survivor_x_coordinate[4] = 8;
     start_survivor_y_coordinate[4] = 12;
