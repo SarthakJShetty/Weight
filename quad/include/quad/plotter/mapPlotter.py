@@ -35,21 +35,24 @@ def individualMapGenerator(map_file):
                 start_row += 1
                 for column_element in row_element:
                     if(column_element != ''):
-                        columns+=1
+                        '''The last element of each column is a '' for some reason. We do not want to read that element.'''
+                        columns += 1
 
     '''Generating a numpy array to hold the individualMap read from the .csv file.'''
     individualMap = np.zeros([rows, columns])
 
-    '''Using numpy arrays here for rows and columns, because colormesh takes input in these forms.'''
-    column_array = np.arange(0, columns)
-    row_array = np.arange(0, rows)
+    '''A variable to keep track of which row is currently being accessed by the reader'''
+    row_counter = 0
 
     with open(map_file) as csv_file:
+        '''Opening the .csv file here once again to copy the contents onto a 2D numpy array'''
         read_file = csv.reader(csv_file, delimiter='\t')
-        for (y_element, element) in zip(column_array, read_file):
-            for (x_element, by_element) in zip(row_array, element):
-                if by_element is not '':
-                    individualMap[y_element, x_element] = by_element
+        for row_element in read_file:
+            '''Reading each row in the file, which is an indexed list'''
+            for column_element in range(columns):
+                '''Since we know the number of columns in the file, we just traverse the row list and access the column elements''''
+                individualMap[row_counter, column_element] = row_element[column_element]
+            row_counter += 1
 
     return individualMap
 
