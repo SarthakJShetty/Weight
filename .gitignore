@@ -6,3 +6,4 @@ quad/include/quad/plotter/data/
 Quad.code-workspace
 *.vscode
 assets/WCDM
+myrobot*
