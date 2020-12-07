@@ -50,7 +50,7 @@ def individualMapGenerator(map_file):
         for row_element in read_file:
             '''Reading each row in the file, which is an indexed list'''
             for column_element in range(columns):
-                '''Since we know the number of columns in the file, we just traverse the row list and access the column elements''''
+                '''Since we know the number of columns in the file, we just traverse the row list and access the column elements'''
                 individualMap[row_counter, column_element] = row_element[column_element]
             row_counter += 1
 
