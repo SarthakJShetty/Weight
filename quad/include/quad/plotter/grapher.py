@@ -269,6 +269,11 @@ for agent_counter in range(0, n_uav):
     ax.plot([uav_ending[agent_counter][0]], [uav_ending[agent_counter][1]], [uav_ending[agent_counter][2]],
             color='r', marker='x')
 
+    if (survivor_starting[agent_counter] != survivor_ending[agent_counter]):
+        '''Plotting the entire trajectory of the survivors in the environment inly if there was some movemement'''
+        ax.plot(x_points_survivor[agent_counter], y_points_survivor[agent_counter], z_points_survivor[agent_counter],
+                label='Survivor '+str(agent_counter+1)+' Trajectory', color=cmap(agent_counter), marker = '<')
+
     '''Plotting only the start point of the survivors trajectory'''
     ax.plot([survivor_starting[agent_counter][0]], [survivor_starting[agent_counter][1]], [survivor_starting[agent_counter][2]],
             color='g', marker='D')
@@ -276,11 +281,6 @@ for agent_counter in range(0, n_uav):
     '''Plotting only the end point of the survivors trajectory'''
     ax.plot([survivor_ending[agent_counter][0]], [survivor_ending[agent_counter][1]], [survivor_ending[agent_counter][2]],
             color='r', marker='D')
-
-    if (survivor_starting[agent_counter] != survivor_ending[agent_counter]):
-        '''Plotting the entire trajectory of the survivors in the environment inly if there was some movemement'''
-        ax.plot(x_points_survivor[agent_counter], y_points_survivor[agent_counter], z_points_survivor[agent_counter],
-                label='Survivor '+str(agent_counter+1)+' Trajectory', color=cmap(agent_counter), marker = '>')
 
     if (agent_counter == (n_uav - 1)):
         '''We want only one set of starting and ending points points to be plotted for the UAV and the Survivor. We plot only for the (n_uav - 1)th UAV
@@ -321,7 +321,7 @@ ax.set_xlabel('X Axis')
 ax.set_ylabel('Y Axis')
 ax.set_zlabel('Z Axis')
 
-ax.legend(loc='best', title='Trajectories', numpoints=1)
+ax.legend(loc='best', title='Legend', numpoints=1)
 
 plt.savefig('/home/sarthak/catkin_ws/src/assets/Trajectories.png')
 
@@ -337,55 +337,24 @@ for agent_counter in range(0, n_uav):
             label='UAV '+str(agent_counter+1)+' Trajectory', color = cmap(agent_counter))
 
     '''Plotting only the start point of UAV x trajectory'''
-    ax_projection.plot([uav_starting[agent_counter][0]], [uav_starting[agent_counter][1]],
+    ax_projection.plot([uav_starting[agent_counter][1]], [uav_starting[agent_counter][0]],
             color='g', marker='x')
 
     '''Plotting only the end point of UAV x trajectory'''
-    ax_projection.plot([uav_ending[agent_counter][0]], [uav_ending[agent_counter][1]],
+    ax_projection.plot([uav_ending[agent_counter][1]], [uav_ending[agent_counter][0]],
             color='r', marker='x')
 
+    '''Plotting the entire trajectory of the survivors in the environment'''
+    ax_projection.plot(y_points_survivor[agent_counter], x_points_survivor[agent_counter],
+            label='Survivor '+str(agent_counter+1)+' Trajectory', color=cmap(agent_counter), marker = '>')
+
     '''Plotting only the start point of the survivors trajectory'''
-    ax_projection.plot([survivor_starting[agent_counter][0]], [survivor_starting[agent_counter][1]],
+    ax_projection.plot([survivor_starting[agent_counter][1]], [survivor_starting[agent_counter][0]],
             color='g', marker='D')
 
     '''Plotting only the end point of the survivors trajectory'''
-    ax_projection.plot([survivor_ending[agent_counter][0]], [survivor_ending[agent_counter][1]],
+    ax_projection.plot([survivor_ending[agent_counter][1]], [survivor_ending[agent_counter][0]],
             color='r', marker='D')
-
-    if (survivor_starting[agent_counter] != survivor_ending[agent_counter]):
-        '''Plotting the survivor trajectory only if it was triggered in the simulation and was dynamic in nature'''
-        
-        '''Plotting the entire trajectory of the survivors in the environment'''
-        ax_projection.plot(x_points_survivor[agent_counter], y_points_survivor[agent_counter],
-                label='Survivor '+str(agent_counter+1)+' Trajectory', color=cmap(agent_counter), marker = '>')
-
-        '''Plotting only the start point of the survivors trajectory'''
-        ax_projection.plot([survivor_starting[agent_counter][0]], [survivor_starting[agent_counter][1]],
-                color='g', marker='D')
-
-        '''Plotting only the end point of the survivors trajectory'''
-        ax_projection.plot([survivor_ending[agent_counter][0]], [survivor_ending[agent_counter][1]],
-                color='r', marker='D')
-
-    if (agent_counter == (n_uav - 1)):
-        '''We want only one set of starting and ending points points to be plotted for the UAV and the Survivor. We plot only for the (n_uav - 1)th UAV
-        since it will be located at the end of the legend instead of the beginning'''
-
-        '''Plotting only the start point of UAV x trajectory'''
-        ax_projection.plot([y_points_uav[agent_counter][0]], [x_points_uav[agent_counter][0]],
-                label='UAV Start Point', color='g', marker='x')
-
-        '''Plotting only the end point of UAV x trajectory'''
-        ax_projection.plot([y_points_uav[agent_counter][len(x_points_uav[agent_counter])-1]], [x_points_uav[agent_counter][len(x_points_uav[agent_counter])-1]],
-                label='UAV End Point', color='r', marker='x')    
-
-        '''Plotting only the start point of the survivors trajectory'''
-        ax_projection.plot([y_points_survivor[agent_counter][0]], [x_points_survivor[agent_counter][0]],
-                label='Survivor Start Point', color='g', marker='D')
-
-        '''Plotting only the end point of the survivors trajectory'''
-        ax_projection.plot([y_points_survivor[agent_counter][len(y_points_survivor[agent_counter])-1]], [x_points_survivor[agent_counter][len(x_points_survivor[agent_counter])-1]],
-                label='Survivor End Point', color='r', marker='D')
 
 '''Plotting the environment boundary'''
 ax_projection.plot(y_points_env, x_points_env,
