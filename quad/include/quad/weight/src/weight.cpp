@@ -215,8 +215,8 @@ int weighting_function(int weight_uav_x_position, int weight_uav_y_position, flo
 	}
 
 	X_1 = ((X_4 * pow(n_set, 3)) + pow(n_set, 2) + pow(n_set, 1)) + 1;
-	X_3 = ((X_1 - pow(n_set, 1)) - pow(n_set, 1)) / pow(n_set, 2);
-	X_2 = (X_1 - pow(n_set, 0)) / pow(n_set, 1);
+	X_2 = (X_1 - 1) / pow(n_set, 1);
+	X_3 = (X_1 - pow(n_set, 1) - 1) / pow(n_set, 2);
 	X_5 = ((X_1 * n_set) + 1);
 }
 
